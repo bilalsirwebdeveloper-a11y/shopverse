@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHOPVERSE - Premium Shopping Destination</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #030304;
+            font-family: 'Inter', sans-serif;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px 30px;
+            background: rgba(3, 3, 4, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 16, 240, 0.3);
+            border-radius: 40px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .nav-menu a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #FF10F0, #00F5FF);
+            transition: width 0.3s;
+        }
+
+        .nav-menu a:hover::after {
+            width: 100%;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-icons .icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+            color: white;
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #FF10F0;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,16,240,0.2) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+            z-index: 1;
+        }
+
+        .hero-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            letter-spacing: 4px;
+            color: #FF10F0;
+            margin-bottom: 20px;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 64px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .hero-title .neon {
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 16px;
+            line-height: 1.8;
+            color: rgba(255,255,255,0.7);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border: none;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 40px;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            color: #030304;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            margin-left: 15px;
+        }
+
+        .btn-outline:hover {
+            border-color: #00F5FF;
+            background: rgba(0,245,255,0.1);
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, #FF10F0, #00F5FF);
+            margin: 20px auto 0;
+        }
+
+        /* Categories Grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .category-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,16,240,0.1);
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: white;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            border-color: #FF10F0;
+            box-shadow: 0 20px 40px rgba(255,16,240,0.3);
+        }
+
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, rgba(255,16,240,0.1), rgba(0,245,255,0.1));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            color: #00F5FF;
+        }
+
+        .category-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .product-card {
+            background: rgba(255,255,255,0.02);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: #00F5FF;
+            box-shadow: 0 20px 40px rgba(0,245,255,0.3);
+        }
+
+        .product-image {
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+            background: rgba(255,16,240,0.05);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            color: #030304;
+            padding: 5px 15px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            font-size: 11px;
+            color: #FF10F0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .product-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .product-rating {
+            color: #ffc107;
+            font-size: 12px;
+        }
+
+        .product-rating span {
+            color: rgba(255,255,255,0.5);
+            margin-left: 5px;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 100px;
+            padding: 60px 20px 30px;
+            background: rgba(0,0,0,0.5);
+            border-top: 1px solid rgba(255,16,240,0.2);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .footer-section h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-section p, .footer-section a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            line-height: 1.8;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .footer-section a:hover {
+            color: #00F5FF;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .categories-grid,
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .categories-grid,
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            .hero-title {
+                font-size: 42px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <a href="index.html" class="logo">SHOPVERSE</a>
+        
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="cart.html">Cart</a>
+            <a href="account.html">Account</a>
+        </nav>
+        
+        <div class="header-icons">
+            <div class="icon" onclick="window.location.href='wishlist.html'">
+                <i class="far fa-heart"></i>
+                <span class="badge" id="wishlistCount">0</span>
+            </div>
+            <div class="icon" onclick="window.location.href='cart.html'">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="badge" id="cartCount">0</span>
+            </div>
+            <div class="icon" onclick="window.location.href='account.html'">
+                <i class="far fa-user"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-glow"></div>
+        <div class="hero-content">
+            <div class="hero-subtitle">SUMMER COLLECTION 2024</div>
+            <h1 class="hero-title">WELCOME TO <span class="neon">SHOPVERSE</span></h1>
+            <p class="hero-desc">Discover premium products with our signature neon aesthetic.</p>
+            <div>
+                <a href="products.html" class="btn btn-primary">Shop Now</a>
+                <a href="#categories" class="btn btn-outline">Explore</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section class="section" id="categories">
+        <h2 class="section-title">Shop by Category</h2>
+        <div class="categories-grid" id="categoriesContainer">
+            <!-- Categories loaded via JS -->
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="section">
+        <h2 class="section-title">Featured Products</h2>
+        <div class="products-grid" id="featuredProducts">
+            <!-- Products loaded via JS -->
+        </div>
+    </section>
+
+    <!-- New Arrivals -->
+    <section class="section">
+        <h2 class="section-title">New Arrivals</h2>
+        <div class="products-grid" id="newArrivals">
+            <!-- Products loaded via JS -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>SHOPVERSE</h3>
+                <p>Your premium shopping destination for quality products.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="cart.html">Cart</a>
+                <a href="account.html">Account</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-phone"></i> +92 300 1234567</p>
+                <p><i class="fas fa-envelope"></i> info@shopverse.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Lahore, Pakistan</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 SHOPVERSE. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase Config -->
+    <script>
+        // APNI FIREBASE CONFIG YAHAN DALO
+        const firebaseConfig = {
+            apiKey: "AIzaSyCbpgjPk2ce7igWjfQZsMzDa7fD2iaZMgI",
+            authDomain: "shopeverse-fff80.firebaseapp.com",
+            projectId: "shopeverse-fff80",
+            storageBucket: "shopeverse-fff80.firebasestorage.app",
+            messagingSenderId: "738679244636",
+            appId: "1:738679244636:web:8171f1170cc7f3ec876399",
+            measurementId: "G-45X5GXEDLC"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        
+        const collections = {
+            products: db.collection('products'),
+            categories: db.collection('categories'),
+            users: db.collection('users'),
+            wishlist: db.collection('wishlist'),
+            cart: db.collection('cart'),
+            orders: db.collection('orders'),
+            reviews: db.collection('reviews')
+        };
+
+        // Global variables
+        let currentUser = null;
+        let cart = [];
+        let wishlist = [];
+
+        // Auth state
+        auth.onAuthStateChanged(user => {
+            currentUser = user;
+            if (user) {
+                loadUserData();
+            }
+            updateCounts();
+        });
+
+        async function loadUserData() {
+            if (!currentUser) return;
+            try {
+                const wishlistSnapshot = await collections.wishlist
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                wishlist = wishlistSnapshot.docs.map(doc => doc.data().productId);
+                
+                const cartSnapshot = await collections.cart
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                cart = cartSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                updateCounts();
+            } catch (error) {
+                console.error('Error loading user data:', error);
+            }
+        }
+
+        function updateCounts() {
+            document.getElementById('wishlistCount').textContent = wishlist.length;
+            document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+        }
+
+        // Load categories
+        async function loadCategories() {
+            const container = document.getElementById('categoriesContainer');
+            try {
+                const snapshot = await collections.categories.limit(4).get();
+                container.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    // Sample categories
+                    container.innerHTML = `
+                        <div class="category-card" onclick="window.location.href='products.html?category=Electronics'">
+                            <div class="category-icon"><i class="fas fa-laptop"></i></div>
+                            <h3 class="category-title">Electronics</h3>
+                        </div>
+                        <div class="category-card" onclick="window.location.href='products.html?category=Fashion'">
+                            <div class="category-icon"><i class="fas fa-tshirt"></i></div>
+                            <h3 class="category-title">Fashion</h3>
+                        </div>
+                        <div class="category-card" onclick="window.location.href='products.html?category=Home'">
+                            <div class="category-icon"><i class="fas fa-home"></i></div>
+                            <h3 class="category-title">Home</h3>
+                        </div>
+                        <div class="category-card" onclick="window.location.href='products.html?category=Beauty'">
+                            <div class="category-icon"><i class="fas fa-magic"></i></div>
+                            <h3 class="category-title">Beauty</h3>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                snapshot.forEach(doc => {
+                    const cat = doc.data();
+                    container.innerHTML += `
+                        <div class="category-card" onclick="window.location.href='products.html?category=${cat.name}'">
+                            <div class="category-icon"><i class="fas ${cat.icon || 'fa-tag'}"></i></div>
+                            <h3 class="category-title">${cat.name}</h3>
+                        </div>
+                    `;
+                });
+            } catch (error) {
+                console.error('Error loading categories:', error);
+            }
+        }
+
+        // Load products
+        async function loadProducts() {
+            const featuredContainer = document.getElementById('featuredProducts');
+            const newContainer = document.getElementById('newArrivals');
+            
+            try {
+                // Sample products
+                const sampleProducts = [
+                    {
+                        id: 'sample1',
+                        name: 'Wireless Headphones',
+                        category: 'Electronics',
+                        price: 5499,
+                        rating: 4.5,
+                        reviews: 128,
+                        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400',
+                        badge: 'NEW'
+                    },
+                    {
+                        id: 'sample2',
+                        name: 'Premium Watch',
+                        category: 'Fashion',
+                        price: 3299,
+                        rating: 4,
+                        reviews: 89,
+                        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400'
+                    },
+                    {
+                        id: 'sample3',
+                        name: 'Running Shoes',
+                        category: 'Fashion',
+                        price: 4599,
+                        rating: 4.5,
+                        reviews: 210,
+                        image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400',
+                        badge: 'SALE'
+                    },
+                    {
+                        id: 'sample4',
+                        name: 'Smart Watch',
+                        category: 'Electronics',
+                        price: 8999,
+                        rating: 5,
+                        reviews: 56,
+                        image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400'
+                    }
+                ];
+                
+                featuredContainer.innerHTML = '';
+                newContainer.innerHTML = '';
+                
+                sampleProducts.forEach(product => {
+                    const card = createProductCard(product);
+                    featuredContainer.innerHTML += card;
+                    newContainer.innerHTML += card;
+                });
+                
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+
+        function createProductCard(product) {
+            const isInWishlist = wishlist.includes(product.id);
+            
+            return `
+                <div class="product-card" onclick="viewProduct('${product.id}')">
+                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                    <div class="product-image">
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${product.category}</div>
+                        <h3 class="product-title">${product.name}</h3>
+                        <div class="product-price">Rs ${product.price.toLocaleString()}</div>
+                        <div class="product-rating">
+                            ${generateStars(product.rating)}
+                            <span>(${product.reviews})</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= Math.floor(rating)) {
+                    stars += '<i class="fas fa-star"></i>';
+                } else if (i - rating < 1) {
+                    stars += '<i class="fas fa-star-half-alt"></i>';
+                } else {
+                    stars += '<i class="far fa-star"></i>';
+                }
+            }
+            return stars;
+        }
+
+        window.viewProduct = function(id) {
+            window.location.href = `product-detail.html?id=${id}`;
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCategories();
+            loadProducts();
+        });
+    </script>
+</body>
+</html>
