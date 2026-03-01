@@ -109,6 +109,24 @@
             box-shadow: 0 10px 20px rgba(255,16,240,0.3);
         }
 
+        .btn-google {
+            background: #ffffff;
+            color: #030304;
+            border: 1px solid #dadce0;
+            margin-top: 10px;
+        }
+
+        .btn-google:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .btn-google i {
+            color: #4285f4;
+            margin-right: 10px;
+        }
+
         .toggle {
             text-align: center;
             color: rgba(255,255,255,0.7);
@@ -140,6 +158,32 @@
             color: #00F5FF;
             text-align: center;
             display: none;
+        }
+
+        .divider {
+            position: relative;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(255,16,240,0.3);
+            z-index: 1;
+        }
+
+        .divider span {
+            background: #030304;
+            padding: 0 10px;
+            color: rgba(255,255,255,0.5);
+            position: relative;
+            z-index: 2;
+            font-size: 12px;
         }
 
         .back-link {
@@ -222,6 +266,16 @@
                 <p class="toggle" onclick="showLogin()">Already have an account? Login</p>
             </div>
             
+            <!-- Divider -->
+            <div class="divider">
+                <span>OR</span>
+            </div>
+            
+            <!-- Google Sign-In Button -->
+            <button class="btn btn-google" onclick="googleSignIn()">
+                <i class="fab fa-google"></i> Continue with Google
+            </button>
+            
             <div class="back-link">
                 <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Shopping</a>
             </div>
@@ -275,6 +329,83 @@
                 notification.remove();
             }, 3000);
         }
+
+        // ===== GOOGLE SIGN-IN FUNCTION =====
+        window.googleSignIn = function() {
+            // Show loading
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting to Google...';
+            
+            // Create Google provider
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            // Optional: Add scopes
+            provider.addScope('profile');
+            provider.addScope('email');
+            
+            // Optional: Set custom parameters
+            provider.setCustomParameters({
+                'prompt': 'select_account'  // Always show account selection
+            });
+            
+            // Sign in with popup
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    // Get user info
+                    const user = result.user;
+                    
+                    console.log('✅ Google Sign-In successful:', user.email);
+                    
+                    // Check if user exists in Firestore
+                    return db.collection('users').doc(user.uid).get().then((doc) => {
+                        if (!doc.exists) {
+                            // Create new user document for Google Sign-In
+                            return db.collection('users').doc(user.uid).set({
+                                name: user.displayName || 'User',
+                                email: user.email,
+                                photoURL: user.photoURL || '',
+                                isAdmin: false,
+                                authProvider: 'google',
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                                lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
+                                orders: [],
+                                wishlist: []
+                            });
+                        } else {
+                            // Update last login for existing user
+                            return db.collection('users').doc(user.uid).update({
+                                lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+                        }
+                    });
+                })
+                .then(() => {
+                    showSuccess('Login successful! Redirecting...');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1500);
+                })
+                .catch((error) => {
+                    console.error('❌ Google Sign-In error:', error);
+                    
+                    // Handle specific errors
+                    if (error.code === 'auth/popup-closed-by-user') {
+                        showError('Sign-in cancelled. Please try again.');
+                    } else if (error.code === 'auth/account-exists-with-different-credential') {
+                        showError('An account already exists with this email. Please login with email/password.');
+                    } else if (error.code === 'auth/popup-blocked') {
+                        showError('Popup was blocked by your browser. Please allow popups for this site.');
+                    } else {
+                        showError(error.message);
+                    }
+                    
+                    // Reset button
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
+                });
+        };
 
         // LOGIN FUNCTION
         window.login = function() {
@@ -377,6 +508,7 @@
                             name: name,
                             email: email,
                             isAdmin: false,
+                            authProvider: 'email',
                             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                             lastLogin: firebase.firestore.FieldValue.serverTimestamp(),
                             orders: [],
