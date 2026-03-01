@@ -418,6 +418,25 @@
             color: rgba(255,255,255,0.5);
         }
 
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            color: #030304;
+            border-radius: 40px;
+            font-weight: 600;
+            z-index: 9999;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
         /* Responsive */
         @media (max-width: 992px) {
             .categories-grid,
@@ -536,15 +555,17 @@
 
     <!-- Firebase Config -->
     <script>
-        // APNI FIREBASE CONFIG YAHAN DALO
+        // ===== FIREBASE CONFIG - UPDATED =====
         const firebaseConfig = {
-  apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
-  authDomain: "shopverse-c2642.firebaseapp.com",
-  projectId: "shopverse-c2642",
-  storageBucket: "shopverse-c2642.firebasestorage.app",
-  messagingSenderId: "281981664356",
-  appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
-};
+            apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
+            authDomain: "shopverse-c2642.firebaseapp.com",
+            projectId: "shopverse-c2642",
+            storageBucket: "shopverse-c2642.firebasestorage.app",
+            messagingSenderId: "281981664356",
+            appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
+        };
+
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -568,7 +589,10 @@
         auth.onAuthStateChanged(user => {
             currentUser = user;
             if (user) {
+                console.log('✅ User logged in:', user.email);
                 loadUserData();
+            } else {
+                console.log('👤 User not logged in');
             }
             updateCounts();
         });
@@ -647,56 +671,71 @@
             const newContainer = document.getElementById('newArrivals');
             
             try {
-                // Sample products
-                const sampleProducts = [
-                    {
-                        id: 'sample1',
-                        name: 'Wireless Headphones',
-                        category: 'Electronics',
-                        price: 5499,
-                        rating: 4.5,
-                        reviews: 128,
-                        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400',
-                        badge: 'NEW'
-                    },
-                    {
-                        id: 'sample2',
-                        name: 'Premium Watch',
-                        category: 'Fashion',
-                        price: 3299,
-                        rating: 4,
-                        reviews: 89,
-                        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400'
-                    },
-                    {
-                        id: 'sample3',
-                        name: 'Running Shoes',
-                        category: 'Fashion',
-                        price: 4599,
-                        rating: 4.5,
-                        reviews: 210,
-                        image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400',
-                        badge: 'SALE'
-                    },
-                    {
-                        id: 'sample4',
-                        name: 'Smart Watch',
-                        category: 'Electronics',
-                        price: 8999,
-                        rating: 5,
-                        reviews: 56,
-                        image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400'
-                    }
-                ];
+                // Try to load from Firebase first
+                const productsSnapshot = await collections.products.limit(4).get();
                 
-                featuredContainer.innerHTML = '';
-                newContainer.innerHTML = '';
-                
-                sampleProducts.forEach(product => {
-                    const card = createProductCard(product);
-                    featuredContainer.innerHTML += card;
-                    newContainer.innerHTML += card;
-                });
+                if (!productsSnapshot.empty) {
+                    featuredContainer.innerHTML = '';
+                    newContainer.innerHTML = '';
+                    
+                    productsSnapshot.forEach(doc => {
+                        const product = { id: doc.id, ...doc.data() };
+                        const card = createProductCard(product);
+                        featuredContainer.innerHTML += card;
+                        newContainer.innerHTML += card;
+                    });
+                } else {
+                    // Fallback to sample products
+                    const sampleProducts = [
+                        {
+                            id: 'sample1',
+                            name: 'Wireless Headphones',
+                            category: 'Electronics',
+                            price: 5499,
+                            rating: 4.5,
+                            reviews: 128,
+                            image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400',
+                            badge: 'NEW'
+                        },
+                        {
+                            id: 'sample2',
+                            name: 'Premium Watch',
+                            category: 'Fashion',
+                            price: 3299,
+                            rating: 4,
+                            reviews: 89,
+                            image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400'
+                        },
+                        {
+                            id: 'sample3',
+                            name: 'Running Shoes',
+                            category: 'Fashion',
+                            price: 4599,
+                            rating: 4.5,
+                            reviews: 210,
+                            image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400',
+                            badge: 'SALE'
+                        },
+                        {
+                            id: 'sample4',
+                            name: 'Smart Watch',
+                            category: 'Electronics',
+                            price: 8999,
+                            rating: 5,
+                            reviews: 56,
+                            image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400'
+                        }
+                    ];
+                    
+                    featuredContainer.innerHTML = '';
+                    newContainer.innerHTML = '';
+                    
+                    sampleProducts.forEach(product => {
+                        const card = createProductCard(product);
+                        featuredContainer.innerHTML += card;
+                        newContainer.innerHTML += card;
+                    });
+                }
                 
             } catch (error) {
                 console.error('Error loading products:', error);
@@ -710,15 +749,15 @@
                 <div class="product-card" onclick="viewProduct('${product.id}')">
                     ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
                     <div class="product-image">
-                        <img src="${product.image}" alt="${product.name}">
+                        <img src="${product.images?.[0] || product.image || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" alt="${product.name}">
                     </div>
                     <div class="product-info">
-                        <div class="product-category">${product.category}</div>
+                        <div class="product-category">${product.category || 'General'}</div>
                         <h3 class="product-title">${product.name}</h3>
-                        <div class="product-price">Rs ${product.price.toLocaleString()}</div>
+                        <div class="product-price">Rs ${product.price?.toLocaleString() || '0'}</div>
                         <div class="product-rating">
-                            ${generateStars(product.rating)}
-                            <span>(${product.reviews})</span>
+                            ${generateStars(product.rating || 4.5)}
+                            <span>(${product.reviews || 0})</span>
                         </div>
                     </div>
                 </div>
@@ -750,5 +789,4 @@
         });
     </script>
 </body>
-
 </html>
