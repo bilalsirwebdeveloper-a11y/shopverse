@@ -109,16 +109,6 @@
             box-shadow: 0 10px 20px rgba(255,16,240,0.3);
         }
 
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #00F5FF;
-            color: white;
-        }
-
-        .btn-outline:hover {
-            background: rgba(0,245,255,0.1);
-        }
-
         .toggle {
             text-align: center;
             color: rgba(255,255,255,0.7);
@@ -165,32 +155,6 @@
 
         .back-link a:hover {
             color: #00F5FF;
-        }
-
-        .divider {
-            position: relative;
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: rgba(255,16,240,0.3);
-            z-index: 1;
-        }
-
-        .divider span {
-            background: #030304;
-            padding: 0 10px;
-            color: rgba(255,255,255,0.5);
-            position: relative;
-            z-index: 2;
-            font-size: 12px;
         }
 
         .notification {
@@ -258,16 +222,6 @@
                 <p class="toggle" onclick="showLogin()">Already have an account? Login</p>
             </div>
             
-            <!-- Divider -->
-            <div class="divider">
-                <span>OR</span>
-            </div>
-            
-            <!-- Phone Login Button -->
-            <button class="btn btn-outline" onclick="window.location.href='phone-login.html'">
-                <i class="fas fa-mobile-alt"></i> Continue with Phone
-            </button>
-            
             <div class="back-link">
                 <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Shopping</a>
             </div>
@@ -322,7 +276,7 @@
             }, 3000);
         }
 
-        // LOGIN FUNCTION - FIXED
+        // LOGIN FUNCTION
         window.login = function() {
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
@@ -384,7 +338,7 @@
                 });
         };
 
-        // SIGNUP FUNCTION - FIXED
+        // SIGNUP FUNCTION
         window.signup = function() {
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
@@ -470,7 +424,7 @@
         // Check auth state
         auth.onAuthStateChanged(user => {
             if (user) {
-                console.log('✅ User logged in:', user.email || user.phoneNumber);
+                console.log('✅ User logged in:', user.email);
             }
         });
     </script>
