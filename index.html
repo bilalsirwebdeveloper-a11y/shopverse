@@ -41,6 +41,11 @@
             to { opacity: 1; transform: scale(1); }
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* Header */
         .header {
             position: fixed;
@@ -105,6 +110,7 @@
         .header-icons {
             display: flex;
             gap: 20px;
+            align-items: center;
         }
 
         .header-icons .icon {
@@ -112,6 +118,12 @@
             cursor: pointer;
             font-size: 20px;
             color: white;
+            transition: all 0.3s;
+        }
+
+        .header-icons .icon:hover {
+            color: #00F5FF;
+            transform: translateY(-2px);
         }
 
         .badge {
@@ -123,6 +135,63 @@
             font-size: 10px;
             padding: 2px 6px;
             border-radius: 50%;
+        }
+
+        /* User Menu Styles */
+        .user-menu {
+            position: relative;
+        }
+
+        #userDropdown {
+            display: none;
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background: rgba(3, 3, 4, 0.95);
+            border: 1px solid #FF10F0;
+            border-radius: 10px;
+            min-width: 200px;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        #userDropdown a {
+            display: block;
+            padding: 12px 15px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            border-bottom: 1px solid rgba(255, 16, 240, 0.1);
+        }
+
+        #userDropdown a:last-child {
+            border-bottom: none;
+        }
+
+        #userDropdown a:hover {
+            background: rgba(255, 16, 240, 0.1);
+            padding-left: 20px;
+        }
+
+        #userDropdown a i {
+            width: 20px;
+            margin-right: 8px;
+            color: #FF10F0;
+        }
+
+        #userDropdown a:hover i {
+            color: #00F5FF;
+        }
+
+        #userNameDisplay {
+            padding: 15px;
+            border-bottom: 1px solid rgba(255, 16, 240, 0.3);
+            color: #00F5FF;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
         }
 
         /* Hero Section */
@@ -430,6 +499,7 @@
             font-weight: 600;
             z-index: 9999;
             animation: slideIn 0.3s ease-out;
+            box-shadow: 0 10px 30px rgba(255,16,240,0.3);
         }
 
         @keyframes slideIn {
@@ -459,6 +529,9 @@
             .hero-title {
                 font-size: 42px;
             }
+            #userDropdown {
+                min-width: 160px;
+            }
         }
     </style>
 </head>
@@ -483,8 +556,20 @@
                 <i class="fas fa-shopping-cart"></i>
                 <span class="badge" id="cartCount">0</span>
             </div>
-            <div class="icon" onclick="window.location.href='account.html'">
-                <i class="far fa-user"></i>
+            
+            <!-- User Menu with Dropdown -->
+            <div class="user-menu" id="userMenu">
+                <div class="icon" id="userIcon" onclick="toggleUserMenu()">
+                    <i class="far fa-user"></i>
+                </div>
+                
+                <!-- Dropdown Menu -->
+                <div id="userDropdown">
+                    <div id="userNameDisplay">Not logged in</div>
+                    <a href="account.html"><i class="fas fa-user"></i> My Account</a>
+                    <a href="orders.html"><i class="fas fa-shopping-bag"></i> My Orders</a>
+                    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
             </div>
         </div>
     </header>
@@ -553,9 +638,9 @@
         </div>
     </footer>
 
-    <!-- Firebase Config -->
+    <!-- Firebase Config & Scripts -->
     <script>
-        // ===== FIREBASE CONFIG - UPDATED =====
+        // ===== FIREBASE CONFIG =====
         const firebaseConfig = {
             apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
             authDomain: "shopverse-c2642.firebaseapp.com",
@@ -585,16 +670,68 @@
         let cart = [];
         let wishlist = [];
 
+        // ===== USER MENU FUNCTIONS =====
+        window.toggleUserMenu = function() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        };
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const userMenu = document.getElementById('userMenu');
+            const dropdown = document.getElementById('userDropdown');
+            
+            if (userMenu && !userMenu.contains(event.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        // Update user display in header
+        function updateUserDisplay() {
+            const userNameDisplay = document.getElementById('userNameDisplay');
+            const userIcon = document.getElementById('userIcon');
+            
+            if (currentUser) {
+                // Get user name from different sources
+                let displayName = '';
+                if (currentUser.displayName) {
+                    displayName = currentUser.displayName;
+                } else if (currentUser.phoneNumber) {
+                    displayName = currentUser.phoneNumber;
+                } else if (currentUser.email) {
+                    displayName = currentUser.email.split('@')[0];
+                } else {
+                    displayName = 'User';
+                }
+                
+                userNameDisplay.innerHTML = `<strong>${displayName}</strong>`;
+                userIcon.innerHTML = '<i class="fas fa-user-check" style="color: #00F5FF;"></i>';
+            } else {
+                userNameDisplay.innerHTML = 'Not logged in';
+                userIcon.innerHTML = '<i class="far fa-user"></i>';
+            }
+        }
+
+        // Logout function
+        window.logout = function() {
+            auth.signOut().then(() => {
+                window.location.reload();
+            }).catch((error) => {
+                console.error('Logout error:', error);
+            });
+        };
+
         // Auth state
         auth.onAuthStateChanged(user => {
             currentUser = user;
             if (user) {
-                console.log('✅ User logged in:', user.email);
+                console.log('✅ User logged in:', user.email || user.phoneNumber);
                 loadUserData();
             } else {
                 console.log('👤 User not logged in');
             }
             updateCounts();
+            updateUserDisplay();
         });
 
         async function loadUserData() {
@@ -611,6 +748,7 @@
                 cart = cartSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 
                 updateCounts();
+                updateUserDisplay();
             } catch (error) {
                 console.error('Error loading user data:', error);
             }
@@ -743,8 +881,6 @@
         }
 
         function createProductCard(product) {
-            const isInWishlist = wishlist.includes(product.id);
-            
             return `
                 <div class="product-card" onclick="viewProduct('${product.id}')">
                     ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
