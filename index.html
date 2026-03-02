@@ -396,6 +396,7 @@
             transition: all 0.3s;
             cursor: pointer;
             animation: fadeIn 0.5s ease-out;
+            position: relative;
         }
 
         .product-card:hover {
@@ -405,7 +406,7 @@
         }
 
         .product-image {
-            height: 300px;
+            height: 250px;
             position: relative;
             overflow: hidden;
             background: rgba(255,16,240,0.05);
@@ -433,6 +434,40 @@
             font-size: 12px;
             font-weight: 600;
             z-index: 2;
+        }
+
+        .product-actions {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            gap: 8px;
+            z-index: 3;
+        }
+
+        .product-action-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: rgba(3, 3, 4, 0.8);
+            border: 1px solid #FF10F0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .product-action-btn:hover {
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            color: #030304;
+            transform: scale(1.1);
+        }
+
+        .product-action-btn.active {
+            background: #FF10F0;
+            color: white;
         }
 
         .product-info {
@@ -465,11 +500,6 @@
         .product-rating {
             color: #ffc107;
             font-size: 12px;
-        }
-
-        .product-rating span {
-            color: rgba(255,255,255,0.5);
-            margin-left: 5px;
         }
 
         .footer {
@@ -520,7 +550,7 @@
             position: fixed;
             top: 100px;
             right: 20px;
-            padding: 15px 30px;
+            padding: 12px 25px;
             background: linear-gradient(135deg, #FF10F0, #00F5FF);
             color: #030304;
             border-radius: 40px;
@@ -563,9 +593,6 @@
             .hero-title {
                 font-size: 42px;
             }
-            .loading-products {
-                grid-column: span 1;
-            }
         }
     </style>
 </head>
@@ -581,7 +608,7 @@
         
         <div class="header-icons">
             <div class="icon" onclick="window.location.href='wishlist.html'">
-                <i class="far fa-heart"></i>
+                <i class="fas fa-heart"></i>
                 <span class="badge" id="wishlistCount">0</span>
             </div>
             <div class="icon" onclick="window.location.href='cart.html'">
@@ -589,7 +616,7 @@
                 <span class="badge" id="cartCount">0</span>
             </div>
             
-            <!-- User Menu with Real Google Photo -->
+            <!-- User Menu -->
             <div class="user-menu" id="userMenu">
                 <div id="userDisplay" onclick="toggleUserMenu()"></div>
                 <div id="userDropdown">
@@ -679,14 +706,12 @@
             users: db.collection('users'),
             wishlist: db.collection('wishlist'),
             cart: db.collection('cart'),
-            orders: db.collection('orders'),
-            reviews: db.collection('reviews')
+            orders: db.collection('orders')
         };
 
         let currentUser = null;
         let cart = [];
         let wishlist = [];
-        let productsListener = null;
 
         // ===== USER MENU FUNCTIONS =====
         window.toggleUserMenu = function() {
@@ -740,27 +765,40 @@
         auth.onAuthStateChanged(user => {
             currentUser = user;
             if (user) {
-                console.log('✅ Logged in:', user.email);
                 loadUserData();
+            } else {
+                cart = [];
+                wishlist = [];
+                updateCounts();
             }
-            updateCounts();
             updateUserDisplay();
         });
 
         async function loadUserData() {
             if (!currentUser) return;
+            
             try {
-                const wishlistSnapshot = await collections.wishlist
+                // Load wishlist with real-time listener
+                collections.wishlist
                     .where('userId', '==', currentUser.uid)
-                    .get();
-                wishlist = wishlistSnapshot.docs.map(doc => doc.data().productId);
+                    .onSnapshot((snapshot) => {
+                        wishlist = snapshot.docs.map(doc => doc.data().productId);
+                        updateCounts();
+                        updateProductButtons();
+                    }, (error) => {
+                        console.error('Wishlist error:', error);
+                    });
                 
-                const cartSnapshot = await collections.cart
+                // Load cart with real-time listener
+                collections.cart
                     .where('userId', '==', currentUser.uid)
-                    .get();
-                cart = cartSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    .onSnapshot((snapshot) => {
+                        cart = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                        updateCounts();
+                    }, (error) => {
+                        console.error('Cart error:', error);
+                    });
                 
-                updateCounts();
             } catch (error) {
                 console.error('Error loading user data:', error);
             }
@@ -771,7 +809,59 @@
             document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
         }
 
-        // ===== REAL-TIME CATEGORIES LOADING =====
+        function updateProductButtons() {
+            document.querySelectorAll('.product-action-btn[data-product-id]').forEach(btn => {
+                const productId = btn.dataset.productId;
+                if (btn.classList.contains('wishlist-btn')) {
+                    if (wishlist.includes(productId)) {
+                        btn.classList.add('active');
+                        btn.innerHTML = '<i class="fas fa-heart"></i>';
+                    } else {
+                        btn.classList.remove('active');
+                        btn.innerHTML = '<i class="far fa-heart"></i>';
+                    }
+                }
+            });
+        }
+
+        // ===== WISHLIST FUNCTION =====
+        window.toggleWishlist = async function(productId, event) {
+            if (event) event.stopPropagation();
+            
+            if (!currentUser) {
+                window.location.href = 'account.html';
+                return;
+            }
+
+            try {
+                if (wishlist.includes(productId)) {
+                    // Remove from wishlist
+                    const snapshot = await collections.wishlist
+                        .where('userId', '==', currentUser.uid)
+                        .where('productId', '==', productId)
+                        .get();
+                    
+                    const deletePromises = snapshot.docs.map(doc => doc.ref.delete());
+                    await Promise.all(deletePromises);
+                    
+                    showNotification('Removed from wishlist');
+                } else {
+                    // Add to wishlist
+                    await collections.wishlist.add({
+                        userId: currentUser.uid,
+                        productId: productId,
+                        addedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    showNotification('Added to wishlist');
+                }
+            } catch (error) {
+                console.error('Wishlist error:', error);
+                showNotification('Error updating wishlist', 'error');
+            }
+        };
+
+        // ===== LOAD CATEGORIES =====
         function loadCategories() {
             collections.categories.limit(4).onSnapshot((snapshot) => {
                 const container = document.getElementById('categoriesContainer');
@@ -809,24 +899,16 @@
                     `;
                 });
             }, (error) => {
-                console.error('Error loading categories:', error);
+                console.error('Categories error:', error);
             });
         }
 
-        // ===== REAL-TIME PRODUCTS LOADING (INSTANT UPDATES) =====
+        // ===== LOAD PRODUCTS =====
         function loadProducts() {
             const featuredContainer = document.getElementById('featuredProducts');
             const newContainer = document.getElementById('newArrivals');
             
-            // Remove old listener if exists
-            if (productsListener) {
-                productsListener();
-            }
-            
-            // Real-time listener for products
-            productsListener = collections.products.orderBy('createdAt', 'desc').limit(8).onSnapshot((snapshot) => {
-                console.log('🔥 Products updated in real-time:', new Date().toLocaleTimeString());
-                
+            collections.products.orderBy('createdAt', 'desc').limit(8).onSnapshot((snapshot) => {
                 if (snapshot.empty) {
                     showSampleProducts(featuredContainer, newContainer);
                     return;
@@ -834,26 +916,24 @@
                 
                 const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 
-                // Show loading state removed
                 featuredContainer.innerHTML = '';
                 newContainer.innerHTML = '';
                 
-                // Split products
                 const featured = products.filter(p => p.featured).slice(0, 4);
                 const newest = products.slice(0, 4);
                 
-                // Show featured products (or first 4 if no featured)
                 (featured.length ? featured : products.slice(0, 4)).forEach(product => {
                     featuredContainer.innerHTML += createProductCard(product);
                 });
                 
-                // Show new arrivals
                 newest.forEach(product => {
                     newContainer.innerHTML += createProductCard(product);
                 });
                 
+                updateProductButtons();
+                
             }, (error) => {
-                console.error('Error loading products:', error);
+                console.error('Products error:', error);
                 showSampleProducts(featuredContainer, newContainer);
             });
         }
@@ -902,14 +982,24 @@
             
             container1.innerHTML = sampleProducts.map(p => createProductCard(p)).join('');
             container2.innerHTML = sampleProducts.map(p => createProductCard(p)).join('');
+            updateProductButtons();
         }
 
         function createProductCard(product) {
+            const isInWishlist = wishlist.includes(product.id);
+            
             return `
                 <div class="product-card" onclick="viewProduct('${product.id}')">
                     ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                    <div class="product-actions">
+                        <div class="product-action-btn wishlist-btn ${isInWishlist ? 'active' : ''}" 
+                             data-product-id="${product.id}" 
+                             onclick="toggleWishlist('${product.id}', event)">
+                            <i class="${isInWishlist ? 'fas' : 'far'} fa-heart"></i>
+                        </div>
+                    </div>
                     <div class="product-image">
-                        <img src="${product.images?.[0] || product.image || 'https://via.placeholder.com/300'}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/300'">
+                        <img src="${product.images?.[0] || product.image || 'https://via.placeholder.com/300'}" alt="${product.name}" loading="lazy">
                     </div>
                     <div class="product-info">
                         <div class="product-category">${product.category || 'General'}</div>
@@ -942,7 +1032,15 @@
             window.location.href = `product-detail.html?id=${id}`;
         };
 
-        // Initialize real-time listeners
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
+        }
+
+        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             loadCategories();
             loadProducts();
