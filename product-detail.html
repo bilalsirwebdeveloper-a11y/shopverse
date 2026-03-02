@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHOPVERSE - Product Details</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #030304;
+            font-family: 'Inter', sans-serif;
+            color: #ffffff;
+        }
+
+        .header {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 15px 30px;
+            background: rgba(3, 3, 4, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 16, 240, 0.3);
+            border-radius: 40px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-icons .icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+            color: white;
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #FF10F0;
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 120px auto 40px;
+            padding: 0 20px;
+        }
+
+        .product-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,16,240,0.3);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 2px solid rgba(255,16,240,0.3);
+        }
+
+        .product-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 42px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .product-price {
+            font-size: 36px;
+            font-weight: 700;
+            color: #00F5FF;
+            margin-bottom: 20px;
+        }
+
+        .product-category {
+            color: #FF10F0;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .product-description {
+            color: rgba(255,255,255,0.8);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .product-rating {
+            color: #ffc107;
+            margin-bottom: 30px;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,16,240,0.3);
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: all 0.3s;
+        }
+
+        .quantity-btn:hover {
+            background: rgba(255,16,240,0.2);
+        }
+
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,16,240,0.3);
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            margin-right: 15px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            color: #030304;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid #FF10F0;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255,16,240,0.3);
+        }
+
+        .order-form-section {
+            margin-top: 30px;
+            padding: 30px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 15px;
+            border: 1px solid rgba(255,16,240,0.2);
+            display: none;
+        }
+
+        .form-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            margin-bottom: 25px;
+            color: #00F5FF;
+            text-align: center;
+        }
+
+        .form-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            margin: 20px 0 15px;
+            color: #FF10F0;
+            border-bottom: 1px solid rgba(255,16,240,0.3);
+            padding-bottom: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #FF10F0;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group label i {
+            margin-right: 5px;
+            color: #00F5FF;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,16,240,0.3);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00F5FF;
+        }
+
+        .required:after {
+            content: " *";
+            color: #FF10F0;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .payment-method {
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .payment-method.selected {
+            border-color: #00F5FF;
+            background: rgba(0,245,255,0.1);
+        }
+
+        .payment-method i {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .payment-method span {
+            display: block;
+            font-weight: 600;
+        }
+
+        .payment-method.easypaisa i { color: #6f2c91; }
+        .payment-method.jazzcash i { color: #d62b27; }
+
+        .payment-details {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(0,245,255,0.05);
+            border: 1px solid #00F5FF;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .payment-details.active {
+            display: block;
+        }
+
+        .payment-details h4 {
+            color: #00F5FF;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .payment-details p {
+            margin: 8px 0;
+            color: rgba(255,255,255,0.9);
+        }
+
+        .payment-details .account-number {
+            font-size: 20px;
+            font-weight: 700;
+            color: #FF10F0;
+            background: rgba(255,16,240,0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .order-summary {
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255,16,240,0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255,16,240,0.3);
+        }
+
+        .order-summary h4 {
+            color: #00F5FF;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .order-summary .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 20px;
+            font-weight: 700;
+            color: #FF10F0;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255,16,240,0.3);
+        }
+
+        .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #FF10F0;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #00F5FF;
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            color: #030304;
+            border-radius: 40px;
+            font-weight: 600;
+            z-index: 9999;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .notification.error {
+            background: #FF10F0;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">SHOPVERSE</a>
+        <nav class="nav-menu">
+            <a href="index.html">Home</a>
+            <a href="products.html">Products</a>
+            <a href="cart.html">Cart</a>
+        </nav>
+        <div class="header-icons">
+            <div class="icon" onclick="window.location.href='wishlist.html'">
+                <i class="far fa-heart"></i>
+                <span class="badge" id="wishlistCount">0</span>
+            </div>
+            <div class="icon" onclick="window.location.href='cart.html'">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="badge" id="cartCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="product-container" id="productContainer">
+            <!-- Product loaded via JS -->
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
+            authDomain: "shopverse-c2642.firebaseapp.com",
+            projectId: "shopverse-c2642",
+            storageBucket: "shopverse-c2642.firebasestorage.app",
+            messagingSenderId: "281981664356",
+            appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUser = null;
+        let currentProduct = null;
+        let quantity = 1;
+        let selectedPayment = 'easypaisa';
+
+        const STORE_ACCOUNT = {
+            easypaisa: {
+                number: "03001234567",
+                title: "MISHA STORE"
+            },
+            jazzcash: {
+                number: "03001234567",
+                title: "MISHA STORE"
+            }
+        };
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const productId = urlParams.get('id');
+
+        auth.onAuthStateChanged(user => {
+            currentUser = user;
+            updateCartCount();
+            loadProduct();
+        });
+
+        async function loadProduct() {
+            if (!productId) {
+                window.location.href = 'products.html';
+                return;
+            }
+
+            try {
+                const doc = await db.collection('products').doc(productId).get();
+                if (doc.exists) {
+                    currentProduct = { id: doc.id, ...doc.data() };
+                } else {
+                    currentProduct = {
+                        id: productId,
+                        name: 'Wireless Headphones',
+                        price: 5499,
+                        category: 'Electronics',
+                        description: 'Premium wireless headphones with noise cancellation.',
+                        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400',
+                        rating: 4.5,
+                        reviews: 128
+                    };
+                }
+                displayProduct();
+            } catch (error) {
+                console.error('Error loading product:', error);
+                showNotification('Error loading product', 'error');
+            }
+        }
+
+        function displayProduct() {
+            const container = document.getElementById('productContainer');
+            container.innerHTML = `
+                <img src="${currentProduct.image}" alt="${currentProduct.name}" class="product-image">
+                <div>
+                    <div class="product-category">${currentProduct.category || 'General'}</div>
+                    <h1 class="product-title">${currentProduct.name}</h1>
+                    <div class="product-price">Rs ${currentProduct.price?.toLocaleString() || '0'}</div>
+                    <div class="product-rating">
+                        ${generateStars(currentProduct.rating || 4.5)}
+                        <span>(${currentProduct.reviews || 0} reviews)</span>
+                    </div>
+                    <p class="product-description">${currentProduct.description || 'No description available.'}</p>
+                    
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" onclick="changeQuantity(-1)">-</button>
+                        <input type="text" class="quantity-input" id="quantity" value="1" readonly>
+                        <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="showOrderForm()">
+                        <i class="fas fa-bolt"></i> Buy Now
+                    </button>
+
+                    <div class="order-form-section" id="orderFormSection">
+                        <h3 class="form-title">Complete Your Order</h3>
+                        
+                        <div class="form-subtitle">
+                            <i class="fas fa-user"></i> Personal Information
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="required"><i class="fas fa-user"></i> Full Name</label>
+                            <input type="text" id="fullName" placeholder="Enter your full name" value="${currentUser?.displayName || ''}">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="required"><i class="fas fa-mobile-alt"></i> Mobile Number</label>
+                                <input type="tel" id="mobileNumber" placeholder="03XXXXXXXXX">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label><i class="fas fa-phone-alt"></i> Alternate Mobile</label>
+                                <input type="tel" id="alternateMobile" placeholder="03XXXXXXXXX">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" id="email" placeholder="your@email.com" value="${currentUser?.email || ''}">
+                        </div>
+
+                        <div class="form-subtitle">
+                            <i class="fas fa-map-marker-alt"></i> Shipping Address
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required"><i class="fas fa-home"></i> House / Street Address</label>
+                            <input type="text" id="streetAddress" placeholder="House number, Street name">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="required"><i class="fas fa-map"></i> Area / Sector</label>
+                                <input type="text" id="area" placeholder="e.g., Gulberg, DHA">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="required"><i class="fas fa-city"></i> City</label>
+                                <input type="text" id="city" placeholder="e.g., Karachi, Lahore">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required"><i class="fas fa-globe"></i> Province</label>
+                            <select id="province">
+                                <option value="">Select Province</option>
+                                <option value="Punjab">Punjab</option>
+                                <option value="Sindh">Sindh</option>
+                                <option value="KPK">Khyber Pakhtunkhwa</option>
+                                <option value="Balochistan">Balochistan</option>
+                                <option value="Gilgit-Baltistan">Gilgit-Baltistan</option>
+                                <option value="AJK">Azad Jammu & Kashmir</option>
+                            </select>
+                        </div>
+
+                        <div class="form-subtitle">
+                            <i class="fas fa-credit-card"></i> Payment Method
+                        </div>
+
+                        <div class="payment-methods">
+                            <div class="payment-method easypaisa selected" onclick="selectPayment('easypaisa')">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>EasyPaisa</span>
+                            </div>
+                            <div class="payment-method jazzcash" onclick="selectPayment('jazzcash')">
+                                <i class="fas fa-mobile-alt"></i>
+                                <span>JazzCash</span>
+                            </div>
+                        </div>
+
+                        <div class="payment-details active" id="easypaisaDetails">
+                            <h4><i class="fas fa-info-circle"></i> EasyPaisa Payment Instructions</h4>
+                            <p>Send exact amount to:</p>
+                            <div class="account-number">Rs ${(currentProduct.price * quantity).toLocaleString()}</div>
+                            <div class="account-number">📱 ${STORE_ACCOUNT.easypaisa.number}</div>
+                            <p style="margin-top: 15px;">Account Title: <strong>${STORE_ACCOUNT.easypaisa.title}</strong></p>
+                            <p style="margin-top: 15px; color: #FF10F0;">After payment, enter Transaction ID below:</p>
+                        </div>
+
+                        <div class="payment-details" id="jazzcashDetails">
+                            <h4><i class="fas fa-info-circle"></i> JazzCash Payment Instructions</h4>
+                            <p>Send exact amount to:</p>
+                            <div class="account-number">Rs ${(currentProduct.price * quantity).toLocaleString()}</div>
+                            <div class="account-number">📱 ${STORE_ACCOUNT.jazzcash.number}</div>
+                            <p style="margin-top: 15px;">Account Title: <strong>${STORE_ACCOUNT.jazzcash.title}</strong></p>
+                            <p style="margin-top: 15px; color: #FF10F0;">After payment, enter Transaction ID below:</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="required"><i class="fas fa-hashtag"></i> Transaction ID</label>
+                            <input type="text" id="transactionId" placeholder="Enter your transaction ID">
+                        </div>
+
+                        <div class="order-summary">
+                            <h4>Order Summary</h4>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Product:</span>
+                                <span>${currentProduct.name}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Price per item:</span>
+                                <span>Rs ${currentProduct.price.toLocaleString()}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>Quantity:</span>
+                                <span id="summaryQuantity">${quantity}</span>
+                            </div>
+                            <div class="total-row">
+                                <span>Total Amount:</span>
+                                <span id="summaryTotal">Rs ${(currentProduct.price * quantity).toLocaleString()}</span>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="placeOrder()" style="width: 100%;">
+                            <i class="fas fa-check"></i> Place Order
+                        </button>
+                        <button class="btn btn-secondary" onclick="hideOrderForm()" style="width: 100%; margin-top: 10px;">
+                            Cancel
+                        </button>
+                    </div>
+                    
+                    <a href="products.html" class="back-link">
+                        <i class="fas fa-arrow-left"></i> Back to Products
+                    </a>
+                </div>
+            `;
+        }
+
+        function generateStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= Math.floor(rating)) {
+                    stars += '<i class="fas fa-star"></i>';
+                } else if (i - rating < 1) {
+                    stars += '<i class="fas fa-star-half-alt"></i>';
+                } else {
+                    stars += '<i class="far fa-star"></i>';
+                }
+            }
+            return stars;
+        }
+
+        window.changeQuantity = function(change) {
+            quantity = Math.max(1, quantity + change);
+            document.getElementById('quantity').value = quantity;
+            
+            const summaryQuantity = document.getElementById('summaryQuantity');
+            const summaryTotal = document.getElementById('summaryTotal');
+            if (summaryQuantity) summaryQuantity.textContent = quantity;
+            if (summaryTotal) summaryTotal.textContent = `Rs ${(currentProduct.price * quantity).toLocaleString()}`;
+            
+            updatePaymentAmount();
+        };
+
+        function updatePaymentAmount() {
+            if (!currentProduct) return;
+            const totalAmount = (currentProduct.price * quantity).toLocaleString();
+            const easypaisaDetails = document.getElementById('easypaisaDetails');
+            const jazzcashDetails = document.getElementById('jazzcashDetails');
+            
+            if (easypaisaDetails) {
+                const amountDiv = easypaisaDetails.querySelector('.account-number:first-of-type');
+                if (amountDiv) amountDiv.textContent = `Rs ${totalAmount}`;
+            }
+            
+            if (jazzcashDetails) {
+                const amountDiv = jazzcashDetails.querySelector('.account-number:first-of-type');
+                if (amountDiv) amountDiv.textContent = `Rs ${totalAmount}`;
+            }
+        }
+
+        window.showOrderForm = function() {
+            if (!auth.currentUser) {
+                window.location.href = 'account.html';
+                return;
+            }
+            document.getElementById('orderFormSection').style.display = 'block';
+            window.scrollTo({ top: document.getElementById('orderFormSection').offsetTop, behavior: 'smooth' });
+        };
+
+        window.hideOrderForm = function() {
+            document.getElementById('orderFormSection').style.display = 'none';
+        };
+
+        window.selectPayment = function(method) {
+            selectedPayment = method;
+            
+            document.querySelectorAll('.payment-method').forEach(opt => opt.classList.remove('selected'));
+            document.querySelectorAll('.payment-details').forEach(detail => detail.classList.remove('active'));
+            
+            if (method === 'easypaisa') {
+                document.querySelector('.payment-method.easypaisa').classList.add('selected');
+                document.getElementById('easypaisaDetails').classList.add('active');
+            } else {
+                document.querySelector('.payment-method.jazzcash').classList.add('selected');
+                document.getElementById('jazzcashDetails').classList.add('active');
+            }
+        };
+
+        // ===== FIXED PLACE ORDER FUNCTION =====
+        window.placeOrder = async function() {
+            try {
+                // ✅ STEP 1: Check if user is logged in using auth.currentUser
+                if (!auth.currentUser) {
+                    showNotification('Please login to place order', 'error');
+                    window.location.href = 'account.html';
+                    return;
+                }
+
+                // ✅ STEP 2: Check if product is loaded
+                if (!currentProduct || !currentProduct.id) {
+                    showNotification('Product is still loading. Please wait.', 'error');
+                    return;
+                }
+
+                // ✅ STEP 3: Get all form values
+                const fullName = document.getElementById('fullName')?.value;
+                const mobileNumber = document.getElementById('mobileNumber')?.value;
+                const alternateMobile = document.getElementById('alternateMobile')?.value || '';
+                const email = document.getElementById('email')?.value || '';
+                const streetAddress = document.getElementById('streetAddress')?.value;
+                const area = document.getElementById('area')?.value;
+                const city = document.getElementById('city')?.value;
+                const province = document.getElementById('province')?.value;
+                const transactionId = document.getElementById('transactionId')?.value;
+
+                // ✅ STEP 4: Validate all required fields
+                if (!fullName) throw new Error('Please enter your full name');
+                if (!mobileNumber || !mobileNumber.match(/^03\d{9}$/)) {
+                    throw new Error('Please enter valid mobile number (03xxxxxxxxx)');
+                }
+                if (!streetAddress) throw new Error('Please enter street address');
+                if (!area) throw new Error('Please enter area/sector');
+                if (!city) throw new Error('Please enter city');
+                if (!province) throw new Error('Please select province');
+                if (!transactionId) throw new Error('Please enter transaction ID');
+
+                // ✅ STEP 5: Create full address
+                const fullAddress = `${streetAddress}, ${area}, ${city}, ${province}`;
+
+                // ✅ STEP 6: Prepare order data
+                const order = {
+                    userId: auth.currentUser.uid,
+                    customerName: fullName,
+                    customerPhone: mobileNumber,
+                    customerAlternatePhone: alternateMobile,
+                    customerEmail: email || auth.currentUser.email,
+                    
+                    items: [{
+                        productId: currentProduct.id,
+                        productName: currentProduct.name,
+                        price: currentProduct.price,
+                        quantity: quantity,
+                        total: currentProduct.price * quantity
+                    }],
+                    totalAmount: currentProduct.price * quantity,
+                    
+                    deliveryAddress: fullAddress,
+                    streetAddress: streetAddress,
+                    area: area,
+                    city: city,
+                    province: province,
+                    
+                    paymentMethod: selectedPayment,
+                    paymentAccount: STORE_ACCOUNT[selectedPayment].number,
+                    transactionId: transactionId,
+                    
+                    status: 'pending',
+                    statusHistory: [{
+                        status: 'pending',
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        note: 'Order placed, payment verification pending'
+                    }],
+                    
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                console.log('📦 Saving order:', order);
+
+                // ✅ STEP 7: Save to Firestore
+                const orderRef = await db.collection('orders').add(order);
+                await orderRef.update({ orderId: orderRef.id });
+                
+                console.log('✅ Order saved with ID:', orderRef.id);
+                
+                showNotification('Order placed successfully! We will verify your payment soon.');
+                
+                hideOrderForm();
+                
+                // ✅ STEP 8: Redirect after success
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 3000);
+                
+            } catch (error) {
+                console.error('❌ Order error:', error);
+                showNotification(error.message || 'Error placing order', 'error');
+            }
+        };
+
+        async function updateCartCount() {
+            if (!auth.currentUser) return;
+            
+            try {
+                const cartSnapshot = await db.collection('cart')
+                    .where('userId', '==', auth.currentUser.uid)
+                    .get();
+                const cart = cartSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+                
+                const wishlistSnapshot = await db.collection('wishlist')
+                    .where('userId', '==', auth.currentUser.uid)
+                    .get();
+                document.getElementById('wishlistCount').textContent = wishlistSnapshot.size;
+            } catch (error) {
+                console.error('Error updating counts:', error);
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification' + (type === 'error' ? ' error' : '');
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+    </script>
+</body>
+</html>
