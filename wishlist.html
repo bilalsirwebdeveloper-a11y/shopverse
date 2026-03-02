@@ -13,7 +13,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     
     <style>
-        /* Same styles as products.html */
         * {
             margin: 0;
             padding: 0;
@@ -171,6 +170,11 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.6s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
         }
 
         .product-info {
@@ -186,22 +190,69 @@
         .product-price {
             color: #00F5FF;
             font-weight: 600;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .product-category {
+            color: #FF10F0;
+            font-size: 12px;
+            margin-bottom: 5px;
         }
 
         .remove-wishlist {
             position: absolute;
             top: 10px;
             right: 10px;
+            width: 35px;
+            height: 35px;
             background: rgba(255,16,240,0.9);
             color: white;
-            width: 30px;
-            height: 30px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             z-index: 10;
+            transition: all 0.2s;
+        }
+
+        .remove-wishlist:hover {
+            background: #FF10F0;
+            transform: scale(1.1);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,16,240,0.3);
+            border-top: 3px solid #00F5FF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 50px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            color: #030304;
+            border-radius: 40px;
+            font-weight: 600;
+            z-index: 9999;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         @media (max-width: 992px) {
@@ -224,7 +275,6 @@
             <a href="index.html">Home</a>
             <a href="products.html">Products</a>
             <a href="cart.html">Cart</a>
-            <a href="account.html">Account</a>
         </nav>
         <div class="header-icons">
             <div class="icon" onclick="window.location.href='wishlist.html'" style="color: #00F5FF;">
@@ -242,12 +292,16 @@
         <h1 class="page-title">My Wishlist</h1>
         
         <div id="wishlistContent">
-            <div class="empty-wishlist">
+            <div class="empty-wishlist" style="display: none;" id="emptyWishlistMessage">
                 <i class="fas fa-heart"></i>
                 <h2>Your wishlist is empty</h2>
                 <p>Save your favorite items here</p>
                 <button class="shop-now-btn" onclick="window.location.href='products.html'">Explore Products</button>
             </div>
+            
+            <div class="spinner" id="wishlistSpinner"></div>
+            
+            <div class="products-grid" id="wishlistItems" style="display: none;"></div>
         </div>
     </div>
 
@@ -266,76 +320,93 @@
         const db = firebase.firestore();
 
         let currentUser = null;
-        let wishlistItems = [];
+        let wishlistProducts = [];
 
         auth.onAuthStateChanged(user => {
             if (user) {
                 currentUser = user;
                 loadWishlist();
+                loadCartCount();
             } else {
-                document.getElementById('wishlistContent').innerHTML = `
-                    <div class="empty-wishlist">
-                        <i class="fas fa-user-lock"></i>
-                        <h2>Please login to view your wishlist</h2>
-                        <p>You need to be logged in to see your saved items</p>
-                        <button class="shop-now-btn" onclick="window.location.href='account.html'">Login</button>
-                    </div>
-                `;
+                document.getElementById('wishlistSpinner').style.display = 'none';
+                document.getElementById('emptyWishlistMessage').style.display = 'block';
+                document.getElementById('wishlistItems').style.display = 'none';
+                document.getElementById('wishlistCount').textContent = '0';
             }
         });
 
-        async function loadWishlist() {
-            try {
-                const snapshot = await db.collection('wishlist')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
-                
-                wishlistItems = snapshot.docs.map(doc => doc.data().productId);
-                
-                if (wishlistItems.length === 0) {
-                    showEmptyWishlist();
-                } else {
+        function loadCartCount() {
+            if (!currentUser) return;
+            
+            db.collection('cart')
+                .where('userId', '==', currentUser.uid)
+                .onSnapshot((snapshot) => {
+                    const totalItems = snapshot.docs.reduce((sum, doc) => sum + (doc.data().quantity || 1), 0);
+                    document.getElementById('cartCount').textContent = totalItems;
+                });
+        }
+
+        function loadWishlist() {
+            document.getElementById('wishlistSpinner').style.display = 'block';
+            document.getElementById('emptyWishlistMessage').style.display = 'none';
+            document.getElementById('wishlistItems').style.display = 'none';
+            
+            db.collection('wishlist')
+                .where('userId', '==', currentUser.uid)
+                .onSnapshot(async (snapshot) => {
+                    const wishlistIds = snapshot.docs.map(doc => doc.data().productId);
+                    
+                    // Update wishlist count
+                    document.getElementById('wishlistCount').textContent = wishlistIds.length;
+                    
+                    if (wishlistIds.length === 0) {
+                        document.getElementById('wishlistSpinner').style.display = 'none';
+                        document.getElementById('emptyWishlistMessage').style.display = 'block';
+                        document.getElementById('wishlistItems').style.display = 'none';
+                        return;
+                    }
+                    
+                    // Load product details
+                    const products = [];
+                    for (const productId of wishlistIds) {
+                        try {
+                            const productDoc = await db.collection('products').doc(productId).get();
+                            if (productDoc.exists) {
+                                products.push({ id: productDoc.id, ...productDoc.data() });
+                            }
+                        } catch (error) {
+                            console.error('Error loading product:', error);
+                        }
+                    }
+                    
+                    wishlistProducts = products;
                     displayWishlist();
-                }
-                
-                updateCounts();
-            } catch (error) {
-                console.error('Error loading wishlist:', error);
-            }
+                    
+                    document.getElementById('wishlistSpinner').style.display = 'none';
+                    document.getElementById('wishlistItems').style.display = 'grid';
+                    
+                }, (error) => {
+                    console.error('Wishlist error:', error);
+                    document.getElementById('wishlistSpinner').style.display = 'none';
+                    document.getElementById('emptyWishlistMessage').style.display = 'block';
+                });
         }
 
-        function showEmptyWishlist() {
-            document.getElementById('wishlistContent').innerHTML = `
-                <div class="empty-wishlist">
-                    <i class="fas fa-heart"></i>
-                    <h2>Your wishlist is empty</h2>
-                    <p>Save your favorite items here</p>
-                    <button class="shop-now-btn" onclick="window.location.href='products.html'">Explore Products</button>
-                </div>
-            `;
-        }
-
-        async function displayWishlist() {
-            // Get product details for each wishlist item
-            const productPromises = wishlistItems.map(async (productId) => {
-                const productDoc = await db.collection('products').doc(productId).get();
-                return { id: productDoc.id, ...productDoc.data() };
-            });
+        function displayWishlist() {
+            const container = document.getElementById('wishlistItems');
             
-            const products = await Promise.all(productPromises);
-            
-            let html = '<div class="products-grid">';
-            
-            products.forEach(product => {
+            let html = '';
+            wishlistProducts.forEach(product => {
                 html += `
                     <div class="product-card" onclick="viewProduct('${product.id}')">
                         <div class="remove-wishlist" onclick="event.stopPropagation(); removeFromWishlist('${product.id}')">
                             <i class="fas fa-times"></i>
                         </div>
                         <div class="product-image">
-                            <img src="${product.images?.[0] || product.image || 'https://via.placeholder.com/300'}" alt="${product.name}">
+                            <img src="${product.images?.[0] || product.image || 'https://via.placeholder.com/300'}" alt="${product.name}" loading="lazy">
                         </div>
                         <div class="product-info">
+                            <div class="product-category">${product.category || 'General'}</div>
                             <h3 class="product-title">${product.name}</h3>
                             <div class="product-price">Rs ${product.price?.toLocaleString() || '0'}</div>
                         </div>
@@ -343,9 +414,7 @@
                 `;
             });
             
-            html += '</div>';
-            
-            document.getElementById('wishlistContent').innerHTML = html;
+            container.innerHTML = html;
         }
 
         window.removeFromWishlist = async function(productId) {
@@ -355,19 +424,15 @@
                     .where('productId', '==', productId)
                     .get();
                 
-                snapshot.forEach(doc => doc.ref.delete());
+                const deletePromises = snapshot.docs.map(doc => doc.ref.delete());
+                await Promise.all(deletePromises);
                 
-                wishlistItems = wishlistItems.filter(id => id !== productId);
+                showNotification('Removed from wishlist');
+                // UI will update automatically via onSnapshot
                 
-                if (wishlistItems.length === 0) {
-                    showEmptyWishlist();
-                } else {
-                    displayWishlist();
-                }
-                
-                updateCounts();
             } catch (error) {
                 console.error('Error removing from wishlist:', error);
+                showNotification('Error removing item', 'error');
             }
         };
 
@@ -375,18 +440,12 @@
             window.location.href = `product-detail.html?id=${id}`;
         };
 
-        async function updateCounts() {
-            if (currentUser) {
-                const wishlistSnapshot = await db.collection('wishlist')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
-                document.getElementById('wishlistCount').textContent = wishlistSnapshot.size;
-                
-                const cartSnapshot = await db.collection('cart')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
-                document.getElementById('cartCount').textContent = cartSnapshot.size;
-            }
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
         }
     </script>
 </body>
