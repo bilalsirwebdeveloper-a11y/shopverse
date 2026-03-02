@@ -155,6 +155,12 @@
             border: 1px solid rgba(255,16,240,0.2);
             border-radius: 15px;
             padding: 20px;
+            transition: all 0.2s;
+        }
+
+        .cart-item:hover {
+            border-color: #00F5FF;
+            transform: translateX(5px);
         }
 
         .cart-item img {
@@ -195,11 +201,11 @@
             border-radius: 5px;
             color: white;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .quantity-value {
-            min-width: 30px;
-            text-align: center;
+        .quantity-btn:hover {
+            background: rgba(255,16,240,0.2);
         }
 
         .item-total {
@@ -211,7 +217,12 @@
         .remove-btn {
             color: #FF10F0;
             cursor: pointer;
-            font-size: 20px;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+
+        .remove-btn:hover {
+            transform: scale(1.2);
         }
 
         .cart-summary {
@@ -248,7 +259,69 @@
             font-weight: 600;
             font-size: 16px;
             cursor: pointer;
+            transition: all 0.2s;
             margin-top: 20px;
+        }
+
+        .checkout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(255,16,240,0.3);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,16,240,0.3);
+            border-top: 3px solid #00F5FF;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 50px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            color: #030304;
+            border-radius: 40px;
+            font-weight: 600;
+            z-index: 9999;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .cart-item {
+                grid-template-columns: 80px 1fr;
+                grid-template-rows: auto auto;
+            }
+            
+            .item-quantity {
+                grid-column: span 2;
+                justify-content: center;
+            }
+            
+            .item-total {
+                grid-column: span 2;
+                text-align: center;
+            }
+            
+            .remove-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+            }
         }
     </style>
 </head>
@@ -259,7 +332,6 @@
             <a href="index.html">Home</a>
             <a href="products.html">Products</a>
             <a href="cart.html" style="color: #00F5FF;">Cart</a>
-            <a href="account.html">Account</a>
         </nav>
         <div class="header-icons">
             <div class="icon" onclick="window.location.href='wishlist.html'">
@@ -277,12 +349,16 @@
         <h1 class="page-title">Shopping Cart</h1>
         
         <div id="cartContent">
-            <div class="empty-cart">
+            <div class="empty-cart" style="display: none;" id="emptyCartMessage">
                 <i class="fas fa-shopping-cart"></i>
                 <h2>Your cart is empty</h2>
                 <p>Looks like you haven't added anything to your cart yet</p>
                 <button class="shop-now-btn" onclick="window.location.href='products.html'">Shop Now</button>
             </div>
+            
+            <div class="spinner" id="cartSpinner"></div>
+            
+            <div id="cartItemsContainer" style="display: none;"></div>
         </div>
     </div>
 
@@ -302,77 +378,101 @@
 
         let currentUser = null;
         let cartItems = [];
+        let products = {};
 
         auth.onAuthStateChanged(user => {
             if (user) {
                 currentUser = user;
                 loadCart();
+                loadWishlistCount();
             } else {
-                document.getElementById('cartContent').innerHTML = `
-                    <div class="empty-cart">
-                        <i class="fas fa-user-lock"></i>
-                        <h2>Please login to view your cart</h2>
-                        <p>You need to be logged in to see your cart items</p>
-                        <button class="shop-now-btn" onclick="window.location.href='account.html'">Login</button>
-                    </div>
-                `;
+                document.getElementById('cartSpinner').style.display = 'none';
+                document.getElementById('emptyCartMessage').style.display = 'block';
+                document.getElementById('cartCount').textContent = '0';
             }
         });
 
-        async function loadCart() {
-            try {
-                const snapshot = await db.collection('cart')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
-                
-                cartItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                
-                if (cartItems.length === 0) {
-                    showEmptyCart();
-                } else {
-                    displayCart();
-                }
-                
-                updateCartCount();
-            } catch (error) {
-                console.error('Error loading cart:', error);
-            }
-        }
-
-        function showEmptyCart() {
-            document.getElementById('cartContent').innerHTML = `
-                <div class="empty-cart">
-                    <i class="fas fa-shopping-cart"></i>
-                    <h2>Your cart is empty</h2>
-                    <p>Looks like you haven't added anything to your cart yet</p>
-                    <button class="shop-now-btn" onclick="window.location.href='products.html'">Shop Now</button>
-                </div>
-            `;
-        }
-
-        async function displayCart() {
-            // Get product details for each cart item
-            const productPromises = cartItems.map(async (item) => {
-                const productDoc = await db.collection('products').doc(item.productId).get();
-                return { ...item, product: productDoc.data() };
-            });
+        function loadWishlistCount() {
+            if (!currentUser) return;
             
-            const itemsWithProducts = await Promise.all(productPromises);
+            db.collection('wishlist')
+                .where('userId', '==', currentUser.uid)
+                .onSnapshot((snapshot) => {
+                    document.getElementById('wishlistCount').textContent = snapshot.size;
+                }, (error) => {
+                    console.error('Wishlist count error:', error);
+                });
+        }
+
+        function loadCart() {
+            document.getElementById('cartSpinner').style.display = 'block';
+            document.getElementById('emptyCartMessage').style.display = 'none';
+            document.getElementById('cartItemsContainer').style.display = 'none';
+            
+            db.collection('cart')
+                .where('userId', '==', currentUser.uid)
+                .onSnapshot(async (snapshot) => {
+                    cartItems = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    
+                    // Update cart count in header
+                    document.getElementById('cartCount').textContent = cartItems.reduce((sum, item) => sum + (item.quantity || 1), 0);
+                    
+                    if (cartItems.length === 0) {
+                        document.getElementById('cartSpinner').style.display = 'none';
+                        document.getElementById('emptyCartMessage').style.display = 'block';
+                        document.getElementById('cartItemsContainer').style.display = 'none';
+                        return;
+                    }
+                    
+                    // Load product details for each cart item
+                    const productPromises = cartItems.map(async (item) => {
+                        if (!products[item.productId]) {
+                            const productDoc = await db.collection('products').doc(item.productId).get();
+                            if (productDoc.exists) {
+                                products[item.productId] = { id: productDoc.id, ...productDoc.data() };
+                            }
+                        }
+                        return item;
+                    });
+                    
+                    await Promise.all(productPromises);
+                    
+                    displayCart();
+                    
+                    document.getElementById('cartSpinner').style.display = 'none';
+                    document.getElementById('cartItemsContainer').style.display = 'block';
+                    
+                }, (error) => {
+                    console.error('Cart error:', error);
+                    document.getElementById('cartSpinner').style.display = 'none';
+                    document.getElementById('emptyCartMessage').style.display = 'block';
+                });
+        }
+
+        function displayCart() {
+            const container = document.getElementById('cartItemsContainer');
             
             let subtotal = 0;
             let html = '<div class="cart-items">';
             
-            itemsWithProducts.forEach(item => {
-                const itemTotal = item.product.price * item.quantity;
+            cartItems.forEach(item => {
+                const product = products[item.productId] || { 
+                    name: 'Product', 
+                    price: 0, 
+                    images: ['https://via.placeholder.com/100'],
+                    category: 'General'
+                };
+                
+                const itemTotal = product.price * item.quantity;
                 subtotal += itemTotal;
                 
                 html += `
                     <div class="cart-item" data-cart-id="${item.id}">
-                        <img src="${item.product.images?.[0] || 'https://via.placeholder.com/100'}" alt="${item.product.name}">
+                        <img src="${product.images?.[0] || 'https://via.placeholder.com/100'}" alt="${product.name}" loading="lazy">
                         <div class="item-details">
-                            <h3>${item.product.name}</h3>
-                            <div class="price">Rs ${item.product.price.toLocaleString()}</div>
-                            <div class="category">${item.product.category || 'General'}</div>
+                            <h3>${product.name}</h3>
+                            <div class="price">Rs ${product.price.toLocaleString()}</div>
+                            <div class="category">${product.category || 'General'}</div>
                         </div>
                         <div class="item-quantity">
                             <button class="quantity-btn" onclick="updateQuantity('${item.id}', -1)">-</button>
@@ -387,6 +487,9 @@
             
             html += '</div>';
             
+            const shipping = subtotal > 0 ? 200 : 0;
+            const total = subtotal + shipping;
+            
             html += `
                 <div class="cart-summary">
                     <div class="summary-row">
@@ -395,17 +498,19 @@
                     </div>
                     <div class="summary-row">
                         <span>Shipping</span>
-                        <span>Rs 200</span>
+                        <span>Rs ${shipping}</span>
                     </div>
                     <div class="summary-row total">
                         <span>Total</span>
-                        <span>Rs ${(subtotal + 200).toLocaleString()}</span>
+                        <span>Rs ${total.toLocaleString()}</span>
                     </div>
-                    <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+                    <button class="checkout-btn" onclick="checkout()">
+                        Proceed to Checkout
+                    </button>
                 </div>
             `;
             
-            document.getElementById('cartContent').innerHTML = html;
+            container.innerHTML = html;
         }
 
         window.updateQuantity = async function(cartId, change) {
@@ -416,11 +521,13 @@
             if (newQuantity < 1) return;
             
             try {
-                await db.collection('cart').doc(cartId).update({ quantity: newQuantity });
-                item.quantity = newQuantity;
-                displayCart();
+                await db.collection('cart').doc(cartId).update({ 
+                    quantity: newQuantity 
+                });
+                // UI will update automatically via onSnapshot
             } catch (error) {
                 console.error('Error updating quantity:', error);
+                showNotification('Error updating quantity', 'error');
             }
         };
 
@@ -429,36 +536,28 @@
             
             try {
                 await db.collection('cart').doc(cartId).delete();
-                cartItems = cartItems.filter(i => i.id !== cartId);
-                
-                if (cartItems.length === 0) {
-                    showEmptyCart();
-                } else {
-                    displayCart();
-                }
-                
-                updateCartCount();
+                showNotification('Item removed from cart');
+                // UI will update automatically via onSnapshot
             } catch (error) {
                 console.error('Error removing item:', error);
+                showNotification('Error removing item', 'error');
             }
         };
 
         window.checkout = function() {
+            if (cartItems.length === 0) {
+                showNotification('Your cart is empty', 'error');
+                return;
+            }
             window.location.href = 'products.html';
         };
 
-        async function updateCartCount() {
-            if (currentUser) {
-                const snapshot = await db.collection('cart')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
-                document.getElementById('cartCount').textContent = snapshot.size;
-                
-                const wishlistSnapshot = await db.collection('wishlist')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
-                document.getElementById('wishlistCount').textContent = wishlistSnapshot.size;
-            }
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 2000);
         }
     </script>
 </body>
