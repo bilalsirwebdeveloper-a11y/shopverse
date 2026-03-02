@@ -192,7 +192,6 @@
             cursor: pointer;
             transition: all 0.3s;
             font-size: 16px;
-            margin-right: 15px;
         }
 
         .btn-primary {
@@ -206,9 +205,24 @@
             color: white;
         }
 
+        .btn-success {
+            background: #00F5FF;
+            color: #030304;
+        }
+
         .btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(255,16,240,0.3);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .button-group .btn {
+            flex: 1;
         }
 
         .order-form-section {
@@ -425,6 +439,9 @@
             .payment-methods {
                 grid-template-columns: 1fr;
             }
+            .button-group {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -542,9 +559,15 @@
                         <button class="quantity-btn" onclick="changeQuantity(1)">+</button>
                     </div>
 
-                    <button class="btn btn-primary" onclick="showOrderForm()">
-                        <i class="fas fa-bolt"></i> Buy Now
-                    </button>
+                    <!-- BUTTON GROUP: Add to Cart + Buy Now -->
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="addToCart()">
+                            <i class="fas fa-shopping-cart"></i> Add to Cart
+                        </button>
+                        <button class="btn btn-secondary" onclick="showOrderForm()">
+                            <i class="fas fa-bolt"></i> Buy Now
+                        </button>
+                    </div>
 
                     <div class="order-form-section" id="orderFormSection">
                         <h3 class="form-title">Complete Your Order</h3>
@@ -725,6 +748,52 @@
             }
         }
 
+        // ===== ADD TO CART FUNCTION =====
+        window.addToCart = async function() {
+            if (!auth.currentUser) {
+                showNotification('Please login to add items to cart', 'error');
+                window.location.href = 'account.html';
+                return;
+            }
+
+            if (!currentProduct || !currentProduct.id) {
+                showNotification('Product is still loading', 'error');
+                return;
+            }
+
+            try {
+                // Check if product already in cart
+                const existingCart = await db.collection('cart')
+                    .where('userId', '==', auth.currentUser.uid)
+                    .where('productId', '==', currentProduct.id)
+                    .get();
+
+                if (!existingCart.empty) {
+                    // Update quantity if already in cart
+                    const cartItem = existingCart.docs[0];
+                    const newQuantity = cartItem.data().quantity + quantity;
+                    await cartItem.ref.update({ quantity: newQuantity });
+                    showNotification('Cart updated! Quantity increased.');
+                } else {
+                    // Add new item to cart
+                    await db.collection('cart').add({
+                        userId: auth.currentUser.uid,
+                        productId: currentProduct.id,
+                        quantity: quantity,
+                        addedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    showNotification('Added to cart successfully!');
+                }
+
+                // Update cart count in header
+                updateCartCount();
+
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                showNotification('Error adding to cart', 'error');
+            }
+        };
+
         window.showOrderForm = function() {
             if (!auth.currentUser) {
                 window.location.href = 'account.html';
@@ -753,23 +822,19 @@
             }
         };
 
-        // ===== FIXED PLACE ORDER FUNCTION =====
         window.placeOrder = async function() {
             try {
-                // ✅ STEP 1: Check if user is logged in using auth.currentUser
                 if (!auth.currentUser) {
                     showNotification('Please login to place order', 'error');
                     window.location.href = 'account.html';
                     return;
                 }
 
-                // ✅ STEP 2: Check if product is loaded
                 if (!currentProduct || !currentProduct.id) {
                     showNotification('Product is still loading. Please wait.', 'error');
                     return;
                 }
 
-                // ✅ STEP 3: Get all form values
                 const fullName = document.getElementById('fullName')?.value;
                 const mobileNumber = document.getElementById('mobileNumber')?.value;
                 const alternateMobile = document.getElementById('alternateMobile')?.value || '';
@@ -780,7 +845,6 @@
                 const province = document.getElementById('province')?.value;
                 const transactionId = document.getElementById('transactionId')?.value;
 
-                // ✅ STEP 4: Validate all required fields
                 if (!fullName) throw new Error('Please enter your full name');
                 if (!mobileNumber || !mobileNumber.match(/^03\d{9}$/)) {
                     throw new Error('Please enter valid mobile number (03xxxxxxxxx)');
@@ -791,10 +855,8 @@
                 if (!province) throw new Error('Please select province');
                 if (!transactionId) throw new Error('Please enter transaction ID');
 
-                // ✅ STEP 5: Create full address
                 const fullAddress = `${streetAddress}, ${area}, ${city}, ${province}`;
 
-                // ✅ STEP 6: Prepare order data
                 const order = {
                     userId: auth.currentUser.uid,
                     customerName: fullName,
@@ -822,11 +884,11 @@
                     transactionId: transactionId,
                     
                     status: 'pending',
-                   statusHistory: [{
-    status: 'pending',
-    timestamp: new Date(),
-    note: 'Order placed, payment verification pending'
-}],
+                    statusHistory: [{
+                        status: 'pending',
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        note: 'Order placed, payment verification pending'
+                    }],
                     
                     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -834,7 +896,6 @@
 
                 console.log('📦 Saving order:', order);
 
-                // ✅ STEP 7: Save to Firestore
                 const orderRef = await db.collection('orders').add(order);
                 await orderRef.update({ orderId: orderRef.id });
                 
@@ -844,7 +905,6 @@
                 
                 hideOrderForm();
                 
-                // ✅ STEP 8: Redirect after success
                 setTimeout(() => {
                     window.location.href = 'index.html';
                 }, 3000);
@@ -883,5 +943,4 @@
         }
     </script>
 </body>
-
 </html>
