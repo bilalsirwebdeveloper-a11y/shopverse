@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZYVORASHOP - All Products</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
@@ -21,9 +20,21 @@
         }
 
         body {
-            background: #030304;
-            font-family: 'Inter', sans-serif;
-            color: #ffffff;
+            background: #0a0a0a;
+            font-family: 'Space Grotesk', sans-serif;
+            color: #fff;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255,0,255,0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(0,255,255,0.15) 0%, transparent 50%);
+            z-index: -1;
         }
 
         .header {
@@ -33,22 +44,24 @@
             right: 20px;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 15px 30px;
-            background: rgba(3, 3, 4, 0.9);
+            padding: 16px 30px;
+            background: rgba(255,255,255,0.05);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 16, 240, 0.3);
-            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50px;
             z-index: 1000;
+        }
+
+        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            background: linear-gradient(135deg, #fff, #a8a8a8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-decoration: none;
@@ -60,36 +73,38 @@
         }
 
         .nav-menu a {
-            color: white;
+            color: rgba(255,255,255,0.8);
             text-decoration: none;
-            font-family: 'Montserrat', sans-serif;
             font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            text-transform: uppercase;
         }
 
         .header-icons {
             display: flex;
-            gap: 20px;
+            gap: 15px;
         }
 
-        .header-icons .icon {
-            position: relative;
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            font-size: 20px;
-            color: white;
+            position: relative;
         }
 
         .badge {
             position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #FF10F0;
-            color: white;
+            top: -5px;
+            right: -5px;
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            color: #000;
             font-size: 10px;
             padding: 2px 6px;
-            border-radius: 50%;
+            border-radius: 20px;
         }
 
         .container {
@@ -99,89 +114,76 @@
         }
 
         .page-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 42px;
+            font-size: 48px;
             text-align: center;
             margin-bottom: 40px;
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .filters {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
             gap: 20px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
         }
 
         .search-box {
             flex: 1;
-            max-width: 400px;
             position: relative;
         }
 
         .search-box input {
             width: 100%;
-            padding: 12px 20px;
+            padding: 16px 20px;
             background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,16,240,0.3);
-            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
             color: white;
-            font-size: 14px;
-        }
-
-        .search-box input:focus {
-            outline: none;
-            border-color: #00F5FF;
         }
 
         .search-box i {
             position: absolute;
-            right: 15px;
+            right: 20px;
             top: 50%;
             transform: translateY(-50%);
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.3);
         }
 
         .category-filter select {
-            padding: 12px 20px;
+            padding: 16px 20px;
             background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,16,240,0.3);
-            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
             color: white;
-            font-size: 14px;
             min-width: 180px;
         }
 
         .products-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
+            gap: 25px;
         }
 
         .product-card {
-            background: rgba(255,255,255,0.02);
-            border-radius: 15px;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s;
             cursor: pointer;
+            transition: all 0.3s;
         }
 
         .product-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: #00F5FF;
-            box-shadow: 0 20px 40px rgba(0,245,255,0.3);
+            transform: translateY(-10px);
+            border-color: #ff00ff;
         }
 
         .product-image {
             height: 250px;
-            position: relative;
             overflow: hidden;
-            background: rgba(255,16,240,0.05);
         }
 
         .product-image img {
@@ -195,77 +197,19 @@
             transform: scale(1.1);
         }
 
-        .product-badge {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
-            color: #030304;
-            padding: 5px 15px;
-            border-radius: 25px;
-            font-size: 12px;
-            font-weight: 600;
-            z-index: 2;
-        }
-
         .product-info {
             padding: 20px;
         }
 
-        .product-category {
-            font-size: 11px;
-            color: #FF10F0;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .product-title {
+            font-size: 16px;
+            font-weight: 600;
             margin-bottom: 5px;
         }
 
-        .product-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
         .product-price {
-            font-size: 22px;
+            color: #00ffff;
             font-weight: 700;
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
-        }
-
-        .product-rating {
-            color: #ffc107;
-            font-size: 12px;
-        }
-
-        .no-products {
-            grid-column: span 4;
-            text-align: center;
-            padding: 60px;
-            color: rgba(255,255,255,0.5);
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 40px;
-        }
-
-        .page-btn {
-            padding: 10px 15px;
-            background: rgba(255,255,255,0.05);
-            border: 1px solid rgba(255,16,240,0.3);
-            border-radius: 8px;
-            color: white;
-            cursor: pointer;
-        }
-
-        .page-btn.active {
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
-            color: #030304;
         }
 
         @media (max-width: 992px) {
@@ -280,37 +224,34 @@
             }
             .filters {
                 flex-direction: column;
-                align-items: stretch;
-            }
-            .search-box {
-                max-width: 100%;
             }
         }
     </style>
 </head>
 <body>
     <header class="header">
-        <a href="index.html" class="logo">ZYVORASHOP</a>
-        <nav class="nav-menu">
-            <a href="index.html">Home</a>
-            <a href="products.html" style="color: #00F5FF;">Products</a>
-            <a href="cart.html">Cart</a>
-            <a href="account.html">Account</a>
-        </nav>
-        <div class="header-icons">
-            <div class="icon" onclick="window.location.href='wishlist.html'">
-                <i class="far fa-heart"></i>
-                <span class="badge" id="wishlistCount">0</span>
-            </div>
-            <div class="icon" onclick="window.location.href='cart.html'">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="badge" id="cartCount">0</span>
+        <div class="header-content">
+            <a href="index.html" class="logo">ZYVORASHOP</a>
+            <nav class="nav-menu">
+                <a href="index.html">HOME</a>
+                <a href="products.html" style="color: #00ffff;">PRODUCTS</a>
+                <a href="cart.html">CART</a>
+            </nav>
+            <div class="header-icons">
+                <div class="icon-btn" onclick="window.location.href='wishlist.html'">
+                    <i class="far fa-heart"></i>
+                    <span class="badge" id="wishlistCount">0</span>
+                </div>
+                <div class="icon-btn" onclick="window.location.href='cart.html'">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="badge" id="cartCount">0</span>
+                </div>
             </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">All Products</h1>
+        <h1 class="page-title">ALL PRODUCTS</h1>
         
         <div class="filters">
             <div class="search-box">
@@ -320,19 +261,16 @@
             <div class="category-filter">
                 <select id="categoryFilter">
                     <option value="all">All Categories</option>
-                    <option value="Electronics">Electronics</option>
+                    <option value="Watches">Watches</option>
                     <option value="Fashion">Fashion</option>
-                    <option value="Home">Home</option>
-                    <option value="Beauty">Beauty</option>
+                    <option value="Electronics">Electronics</option>
                 </select>
             </div>
         </div>
 
         <div class="products-grid" id="productsContainer">
-            <div class="no-products">Loading products...</div>
+            <div class="loading">Loading products...</div>
         </div>
-
-        <div class="pagination" id="pagination"></div>
     </div>
 
     <script>
@@ -346,189 +284,60 @@
         };
 
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
         const db = firebase.firestore();
+        const auth = firebase.auth();
 
         let allProducts = [];
-        let filteredProducts = [];
-        let currentPage = 1;
-        const productsPerPage = 12;
 
         auth.onAuthStateChanged(user => {
-            if (user) {
-                updateCounts(user);
-            }
+            if (user) updateCounts(user);
+            loadProducts();
         });
-
-        async function updateCounts(user) {
-            try {
-                const cartSnapshot = await db.collection('cart')
-                    .where('userId', '==', user.uid)
-                    .get();
-                document.getElementById('cartCount').textContent = cartSnapshot.size;
-                
-                const wishlistSnapshot = await db.collection('wishlist')
-                    .where('userId', '==', user.uid)
-                    .get();
-                document.getElementById('wishlistCount').textContent = wishlistSnapshot.size;
-            } catch (error) {
-                console.error('Error updating counts:', error);
-            }
-        }
 
         async function loadProducts() {
             try {
                 const snapshot = await db.collection('products').get();
-                if (snapshot.empty) {
-                    // Sample products
-                    allProducts = [
-                        {
-                            id: 'sample1',
-                            name: 'Wireless Headphones',
-                            category: 'Electronics',
-                            price: 5499,
-                            rating: 4.5,
-                            reviews: 128,
-                            image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400',
-                            badge: 'NEW'
-                        },
-                        {
-                            id: 'sample2',
-                            name: 'Premium Watch',
-                            category: 'Fashion',
-                            price: 3299,
-                            rating: 4,
-                            reviews: 89,
-                            image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400'
-                        },
-                        {
-                            id: 'sample3',
-                            name: 'Running Shoes',
-                            category: 'Fashion',
-                            price: 4599,
-                            rating: 4.5,
-                            reviews: 210,
-                            image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400',
-                            badge: 'SALE'
-                        },
-                        {
-                            id: 'sample4',
-                            name: 'Smart Watch',
-                            category: 'Electronics',
-                            price: 8999,
-                            rating: 5,
-                            reviews: 56,
-                            image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400'
-                        }
-                    ];
-                } else {
-                    allProducts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                }
-                
-                filterAndDisplayProducts();
+                allProducts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                displayProducts();
             } catch (error) {
-                console.error('Error loading products:', error);
+                console.error('Error:', error);
             }
         }
 
-        function filterAndDisplayProducts() {
+        function displayProducts() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const category = document.getElementById('categoryFilter').value;
             
-            filteredProducts = allProducts.filter(p => {
+            const filtered = allProducts.filter(p => {
                 const matchesSearch = p.name.toLowerCase().includes(searchTerm);
                 const matchesCategory = category === 'all' || p.category === category;
                 return matchesSearch && matchesCategory;
             });
             
-            displayProducts();
-        }
-
-        function displayProducts() {
-            const start = (currentPage - 1) * productsPerPage;
-            const end = start + productsPerPage;
-            const productsToShow = filteredProducts.slice(start, end);
-            
             const container = document.getElementById('productsContainer');
-            
-            if (productsToShow.length === 0) {
-                container.innerHTML = '<div class="no-products">No products found</div>';
-                document.getElementById('pagination').innerHTML = '';
-                return;
-            }
-            
-            container.innerHTML = productsToShow.map(product => `
-                <div class="product-card" onclick="viewProduct('${product.id}')">
-                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+            container.innerHTML = filtered.map(p => `
+                <div class="product-card" onclick="viewProduct('${p.id}')">
                     <div class="product-image">
-                        <img src="${product.images?.[0] || product.image || 'https://via.placeholder.com/300'}" alt="${product.name}">
+                        <img src="${p.images?.[0] || 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400'}">
                     </div>
                     <div class="product-info">
-                        <div class="product-category">${product.category || 'General'}</div>
-                        <h3 class="product-title">${product.name}</h3>
-                        <div class="product-price">Rs ${product.price?.toLocaleString() || '0'}</div>
-                        <div class="product-rating">
-                            ${generateStars(product.rating || 4.5)}
-                        </div>
+                        <div class="product-title">${p.name}</div>
+                        <div class="product-price">Rs ${p.price?.toLocaleString()}</div>
                     </div>
                 </div>
             `).join('');
-            
-            displayPagination();
         }
-
-        function generateStars(rating) {
-            let stars = '';
-            for (let i = 1; i <= 5; i++) {
-                if (i <= Math.floor(rating)) {
-                    stars += '<i class="fas fa-star"></i>';
-                } else if (i - rating < 1) {
-                    stars += '<i class="fas fa-star-half-alt"></i>';
-                } else {
-                    stars += '<i class="far fa-star"></i>';
-                }
-            }
-            return stars;
-        }
-
-        function displayPagination() {
-            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-            const pagination = document.getElementById('pagination');
-            
-            if (totalPages <= 1) {
-                pagination.innerHTML = '';
-                return;
-            }
-            
-            let html = '';
-            for (let i = 1; i <= totalPages; i++) {
-                html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
-            }
-            pagination.innerHTML = html;
-        }
-
-        window.goToPage = function(page) {
-            currentPage = page;
-            displayProducts();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
 
         window.viewProduct = function(id) {
             window.location.href = `product-detail.html?id=${id}`;
         };
 
-        document.getElementById('searchInput').addEventListener('input', () => {
-            currentPage = 1;
-            filterAndDisplayProducts();
-        });
+        document.getElementById('searchInput').addEventListener('input', displayProducts);
+        document.getElementById('categoryFilter').addEventListener('change', displayProducts);
 
-        document.getElementById('categoryFilter').addEventListener('change', () => {
-            currentPage = 1;
-            filterAndDisplayProducts();
-        });
-
-        loadProducts();
+        async function updateCounts(user) {
+            // Update counts logic here
+        }
     </script>
 </body>
-
 </html>
