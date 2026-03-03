@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> ZYVORASHOP - Premium Shopping Destination</title>
+    <title>ZYVORASHOP - Luxury Redefined</title>
     
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -24,23 +24,35 @@
         }
 
         body {
-            background: #030304;
-            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            font-family: 'Space Grotesk', sans-serif;
             color: #ffffff;
             overflow-x: hidden;
+            position: relative;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Animated Gradient Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(76, 0, 255, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(255, 0, 255, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 20%, rgba(0, 255, 255, 0.15) 0%, transparent 50%);
+            animation: gradientMove 15s ease infinite;
+            z-index: -1;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes gradientMove {
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(2deg); }
+            100% { transform: scale(1) rotate(0deg); }
         }
 
-        /* Header */
+        /* Header - Glassmorphism */
         .header {
             position: fixed;
             top: 20px;
@@ -48,41 +60,44 @@
             right: 20px;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 15px 30px;
-            background: rgba(3, 3, 4, 0.9);
+            padding: 16px 30px;
+            background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 16, 240, 0.3);
-            border-radius: 40px;
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
             z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            animation: slideUp 0.6s ease-out;
         }
 
         .logo {
-            font-family: 'Cormorant Garamond', serif;
             font-size: 28px;
             font-weight: 700;
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            background: linear-gradient(135deg, #fff, #a8a8a8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-decoration: none;
+            letter-spacing: 2px;
         }
 
         .nav-menu {
             display: flex;
-            gap: 30px;
+            gap: 40px;
         }
 
         .nav-menu a {
-            color: white;
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 500;
             letter-spacing: 1px;
-            text-transform: uppercase;
+            transition: all 0.3s;
             position: relative;
         }
 
@@ -93,8 +108,12 @@
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #FF10F0, #00F5FF);
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
             transition: width 0.3s;
+        }
+
+        .nav-menu a:hover {
+            color: #fff;
         }
 
         .nav-menu a:hover::after {
@@ -107,31 +126,42 @@
             align-items: center;
         }
 
-        .header-icons .icon {
+        .icon-btn {
             position: relative;
             cursor: pointer;
-            font-size: 20px;
-            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
             transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .header-icons .icon:hover {
-            color: #00F5FF;
+        .icon-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
 
         .badge {
             position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #FF10F0;
-            color: white;
+            top: -5px;
+            right: -5px;
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            color: #000;
             font-size: 10px;
+            font-weight: 600;
             padding: 2px 6px;
-            border-radius: 50%;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        /* User Menu Styles */
+        /* User Menu */
         .user-menu {
             position: relative;
         }
@@ -140,89 +170,72 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            border: 2px solid #FF10F0;
             cursor: pointer;
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, #ff00ff, #00ffff) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
             object-fit: cover;
-            transition: all 0.3s;
         }
 
-        .user-avatar:hover {
-            border-color: #00F5FF;
-            transform: scale(1.1);
-        }
-
-        .user-icon {
-            font-size: 24px;
-            cursor: pointer;
-            color: white;
-        }
-
-        #userDropdown {
-            display: none;
+        .dropdown {
             position: absolute;
             top: 50px;
             right: 0;
-            background: rgba(3, 3, 4, 0.95);
-            border: 1px solid #FF10F0;
-            border-radius: 10px;
-            min-width: 260px;
+            width: 250px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 15px;
+            display: none;
             z-index: 1000;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            animation: fadeIn 0.2s ease-out;
         }
 
-        #userDropdown a {
+        .dropdown.active {
             display: block;
-            padding: 12px 15px;
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s;
-            border-top: 1px solid rgba(255,16,240,0.2);
-        }
-
-        #userDropdown a:hover {
-            background: rgba(255,16,240,0.1);
-            color: #00F5FF;
-        }
-
-        #userDropdown a i {
-            width: 20px;
-            margin-right: 8px;
-            color: #FF10F0;
         }
 
         .dropdown-header {
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            border-bottom: 1px solid rgba(255,16,240,0.3);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .dropdown-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            border: 2px solid #00F5FF;
-            object-fit: cover;
+        .dropdown-header h4 {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
         }
 
-        .dropdown-user-info {
-            flex: 1;
-        }
-
-        .dropdown-user-name {
-            color: #00F5FF;
-            font-weight: 600;
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-
-        .dropdown-user-email {
-            color: rgba(255,255,255,0.5);
+        .dropdown-header p {
             font-size: 12px;
-            word-break: break-all;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .dropdown a {
+            display: block;
+            padding: 10px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 13px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .dropdown a:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
+
+        .dropdown a i {
+            width: 20px;
+            margin-right: 10px;
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         /* Hero Section */
@@ -232,184 +245,214 @@
             align-items: center;
             justify-content: center;
             text-align: center;
+            padding: 100px 20px;
             position: relative;
-            overflow: hidden;
-        }
-
-        .hero-glow {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle, rgba(255,16,240,0.2) 0%, transparent 70%);
-            animation: pulse 4s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.7; transform: scale(1.1); }
         }
 
         .hero-content {
-            max-width: 800px;
-            padding: 0 20px;
-            z-index: 1;
+            max-width: 900px;
         }
 
         .hero-subtitle {
-            font-family: 'Montserrat', sans-serif;
             font-size: 14px;
             letter-spacing: 4px;
-            color: #FF10F0;
+            color: rgba(255, 255, 255, 0.6);
             margin-bottom: 20px;
         }
 
         .hero-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 64px;
+            font-size: 72px;
             font-weight: 700;
+            line-height: 1.1;
             margin-bottom: 30px;
         }
 
-        .hero-title .neon {
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+        .hero-title .gradient-text {
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .hero-desc {
-            font-size: 16px;
-            line-height: 1.8;
-            color: rgba(255,255,255,0.7);
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.7);
             max-width: 600px;
-            margin: 0 auto 30px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .btn {
-            padding: 15px 35px;
+            padding: 16px 40px;
             border: none;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            cursor: pointer;
             border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
-            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
-            color: #030304;
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            color: #000;
         }
 
         .btn-outline {
             background: transparent;
-            border: 2px solid rgba(255,255,255,0.3);
-            color: white;
-            margin-left: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: #fff;
         }
 
         .btn-outline:hover {
-            border-color: #00F5FF;
-            background: rgba(0,245,255,0.1);
+            border-color: #ff00ff;
+            background: rgba(255, 0, 255, 0.1);
         }
 
+        /* Sections */
         .section {
-            padding: 80px 20px;
             max-width: 1400px;
-            margin: 0 auto;
+            margin: 80px auto;
+            padding: 0 20px;
         }
 
         .section-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 42px;
+            font-size: 48px;
+            font-weight: 700;
             text-align: center;
             margin-bottom: 50px;
         }
 
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 100px;
-            height: 2px;
-            background: linear-gradient(90deg, #FF10F0, #00F5FF);
-            margin: 20px auto 0;
+        .section-title .gradient-text {
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
+        /* Glass Cards Grid */
         .categories-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 30px;
         }
 
-        .category-card {
-            background: rgba(255,255,255,0.02);
-            border: 1px solid rgba(255,16,240,0.1);
-            border-radius: 20px;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
             padding: 40px 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
-            text-decoration: none;
-            color: white;
+            position: relative;
+            overflow: hidden;
         }
 
-        .category-card:hover {
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .glass-card:hover {
             transform: translateY(-10px);
-            border-color: #FF10F0;
-            box-shadow: 0 20px 40px rgba(255,16,240,0.3);
+            border-color: rgba(255, 0, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(255, 0, 255, 0.2);
         }
 
-        .category-icon {
+        .glass-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
             width: 80px;
             height: 80px;
             margin: 0 auto 20px;
-            background: linear-gradient(135deg, rgba(255,16,240,0.1), rgba(0,245,255,0.1));
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 35px;
-            color: #00F5FF;
+            font-size: 32px;
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        .category-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 22px;
-            margin-bottom: 10px;
+        .card-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
         }
 
+        .card-subtitle {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Products Grid */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 30px;
-            min-height: 400px;
         }
 
         .product-card {
-            background: rgba(255,255,255,0.02);
-            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s;
             cursor: pointer;
-            animation: fadeIn 0.5s ease-out;
+            transition: all 0.3s;
             position: relative;
         }
 
         .product-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: #00F5FF;
-            box-shadow: 0 20px 40px rgba(0,245,255,0.3);
+            transform: translateY(-10px);
+            border-color: rgba(0, 255, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
         }
 
         .product-image {
-            height: 250px;
+            height: 280px;
             position: relative;
             overflow: hidden;
-            background: rgba(255,16,240,0.05);
         }
 
         .product-image img {
@@ -425,88 +468,92 @@
 
         .product-badge {
             position: absolute;
-            top: 15px;
-            right: 15px;
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
-            color: #030304;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            color: #000;
             padding: 5px 15px;
             border-radius: 25px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             z-index: 2;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
-        .product-actions {
+        .product-wishlist {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            display: flex;
-            gap: 8px;
-            z-index: 3;
-        }
-
-        .product-action-btn {
+            top: 20px;
+            left: 20px;
             width: 35px;
             height: 35px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 50%;
-            background: rgba(3, 3, 4, 0.8);
-            border: 1px solid #FF10F0;
-            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s;
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s;
+            z-index: 2;
         }
 
-        .product-action-btn:hover {
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
-            color: #030304;
-            transform: scale(1.1);
+        .product-wishlist:hover {
+            background: rgba(255, 0, 255, 0.2);
+            border-color: #ff00ff;
         }
 
-        .product-action-btn.active {
-            background: #FF10F0;
-            color: white;
+        .product-wishlist.active {
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
+            color: #000;
         }
 
         .product-info {
-            padding: 20px;
+            padding: 25px;
         }
 
         .product-category {
             font-size: 11px;
-            color: #FF10F0;
+            color: rgba(255, 255, 255, 0.5);
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 5px;
         }
 
         .product-title {
-            font-family: 'Cormorant Garamond', serif;
             font-size: 18px;
+            font-weight: 600;
             margin-bottom: 10px;
         }
 
         .product-price {
             font-size: 22px;
             font-weight: 700;
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .product-rating {
-            color: #ffc107;
+            color: #ffd700;
             font-size: 12px;
         }
 
+        .product-rating span {
+            color: rgba(255, 255, 255, 0.5);
+            margin-left: 5px;
+        }
+
+        /* Footer */
         .footer {
-            margin-top: 100px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             padding: 60px 20px 30px;
-            background: rgba(0,0,0,0.5);
-            border-top: 1px solid rgba(255,16,240,0.2);
+            margin-top: 100px;
         }
 
         .footer-content {
@@ -518,65 +565,105 @@
         }
 
         .footer-section h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 22px;
+            font-size: 18px;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: rgba(255, 255, 255, 0.9);
         }
 
-        .footer-section p, .footer-section a {
-            color: rgba(255,255,255,0.7);
-            text-decoration: none;
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
             line-height: 1.8;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
+            transition: color 0.3s;
         }
 
         .footer-section a:hover {
-            color: #00F5FF;
+            color: #fff;
         }
 
         .footer-bottom {
             text-align: center;
             margin-top: 50px;
             padding-top: 30px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: rgba(255,255,255,0.5);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 13px;
         }
 
+        /* Notification */
         .notification {
             position: fixed;
             top: 100px;
             right: 20px;
-            padding: 12px 25px;
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
-            color: #030304;
-            border-radius: 40px;
-            font-weight: 600;
+            padding: 15px 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            color: #fff;
+            font-size: 14px;
             z-index: 9999;
-            animation: slideIn 0.3s ease-out;
+            animation: slideIn 0.3s ease;
         }
 
         @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
-        .loading-products {
-            grid-column: span 4;
+        /* Loading */
+        .loading {
             text-align: center;
             padding: 50px;
-            color: rgba(255,255,255,0.5);
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #ff00ff;
+            border-right: 3px solid #00ffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .categories-grid,
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
 
         @media (max-width: 992px) {
-            .categories-grid, .products-grid {
+            .categories-grid,
+            .products-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            .loading-products {
-                grid-column: span 2;
+            
+            .hero-title {
+                font-size: 56px;
             }
         }
 
@@ -584,101 +671,134 @@
             .nav-menu {
                 display: none;
             }
-            .categories-grid, .products-grid {
+            
+            .hero-title {
+                font-size: 42px;
+            }
+            
+            .categories-grid,
+            .products-grid {
                 grid-template-columns: 1fr;
             }
+            
             .footer-content {
                 grid-template-columns: 1fr;
             }
-            .hero-title {
-                font-size: 42px;
+            
+            .hero-btns .btn {
+                width: 100%;
+                margin: 5px 0;
             }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header class="header">
-        <a href="index.html" class="logo">ZYVORASHOP</a>
-        
-        <nav class="nav-menu">
-            <a href="index.html">Home</a>
-            <a href="products.html">Products</a>
-            <a href="cart.html">Cart</a>
-        </nav>
-        
-        <div class="header-icons">
-            <div class="icon" onclick="window.location.href='wishlist.html'">
-                <i class="fas fa-heart"></i>
-                <span class="badge" id="wishlistCount">0</span>
-            </div>
-            <div class="icon" onclick="window.location.href='cart.html'">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="badge" id="cartCount">0</span>
-            </div>
+        <div class="header-content">
+            <a href="index.html" class="logo">ZYVORASHOP</a>
             
-            <!-- User Menu -->
-            <div class="user-menu" id="userMenu">
-                <div id="userDisplay" onclick="toggleUserMenu()"></div>
-                <div id="userDropdown">
-                    <div class="dropdown-header" id="dropdownHeader"></div>
-                    <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
-                    <a href="orders.html"><i class="fas fa-shopping-bag"></i> My Orders</a>
-                    <a href="wishlist.html"><i class="fas fa-heart"></i> Wishlist</a>
-                    <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <nav class="nav-menu">
+                <a href="index.html">HOME</a>
+                <a href="products.html">PRODUCTS</a>
+                <a href="cart.html">CART</a>
+                <a href="account.html">ACCOUNT</a>
+            </nav>
+            
+            <div class="header-icons">
+                <div class="icon-btn" onclick="window.location.href='wishlist.html'">
+                    <i class="far fa-heart"></i>
+                    <span class="badge" id="wishlistCount">0</span>
+                </div>
+                <div class="icon-btn" onclick="window.location.href='cart.html'">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="badge" id="cartCount">0</span>
+                </div>
+                
+                <!-- User Menu -->
+                <div class="user-menu" id="userMenu">
+                    <div id="userDisplay" onclick="toggleMenu()"></div>
+                    
+                    <div class="dropdown" id="userDropdown">
+                        <div class="dropdown-header" id="dropdownHeader"></div>
+                        <a href="profile.html"><i class="fas fa-user"></i> My Profile</a>
+                        <a href="orders.html"><i class="fas fa-shopping-bag"></i> My Orders</a>
+                        <a href="wishlist.html"><i class="fas fa-heart"></i> Wishlist</a>
+                        <a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-glow"></div>
         <div class="hero-content">
-            <div class="hero-subtitle">SUMMER COLLECTION 2024</div>
-            <h1 class="hero-title">WELCOME TO <span class="neon">ZYVORASHOP</span></h1>
-            <p class="hero-desc">Discover premium products with our signature neon aesthetic.</p>
-            <div>
-                <a href="products.html" class="btn btn-primary">Shop Now</a>
-                <a href="#categories" class="btn btn-outline">Explore</a>
+            <div class="hero-subtitle">LUXURY REDEFINED</div>
+            <h1 class="hero-title">
+                WELCOME TO <br>
+                <span class="gradient-text">ZYVORASHOP</span>
+            </h1>
+            <p class="hero-desc">
+                Experience the future of shopping with our premium collection of luxury products. 
+                Where elegance meets innovation.
+            </p>
+            <div class="hero-btns">
+                <a href="products.html" class="btn btn-primary">SHOP NOW</a>
+                <a href="#categories" class="btn btn-outline">EXPLORE</a>
             </div>
         </div>
     </section>
 
+    <!-- Categories -->
     <section class="section" id="categories">
-        <h2 class="section-title">Shop by Category</h2>
-        <div class="categories-grid" id="categoriesContainer"></div>
+        <h2 class="section-title">
+            <span class="gradient-text">SHOP BY CATEGORY</span>
+        </h2>
+        <div class="categories-grid" id="categoriesContainer">
+            <div class="loading">Loading categories...</div>
+        </div>
     </section>
 
+    <!-- Featured Products -->
     <section class="section">
-        <h2 class="section-title">Featured Products</h2>
+        <h2 class="section-title">
+            <span class="gradient-text">FEATURED COLLECTION</span>
+        </h2>
         <div class="products-grid" id="featuredProducts">
-            <div class="loading-products">Loading products...</div>
+            <div class="loading">Loading products...</div>
         </div>
     </section>
 
+    <!-- New Arrivals -->
     <section class="section">
-        <h2 class="section-title">New Arrivals</h2>
+        <h2 class="section-title">
+            <span class="gradient-text">NEW ARRIVALS</span>
+        </h2>
         <div class="products-grid" id="newArrivals">
-            <div class="loading-products">Loading products...</div>
+            <div class="loading">Loading products...</div>
         </div>
     </section>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
                 <h3>ZYVORASHOP</h3>
-                <p>Your premium shopping destination for quality products.</p>
+                <p>Luxury shopping reimagined. Premium products, exceptional quality, and innovative design.</p>
             </div>
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <a href="index.html">Home</a>
                 <a href="products.html">Products</a>
                 <a href="cart.html">Cart</a>
+                <a href="account.html">Account</a>
             </div>
             <div class="footer-section">
                 <h3>Contact</h3>
                 <p><i class="fas fa-phone"></i> +92 300 1234567</p>
-                <p><i class="fas fa-envelope"></i> info@shopverse.com</p>
-                <p><i class="fas fa-map-marker-alt"></i> Lahore, Pakistan</p>
+                <p><i class="fas fa-envelope"></i> info@zyvorashop.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Dubai, UAE</p>
             </div>
         </div>
         <div class="footer-bottom">
@@ -700,133 +820,68 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        const collections = {
-            products: db.collection('products'),
-            categories: db.collection('categories'),
-            users: db.collection('users'),
-            wishlist: db.collection('wishlist'),
-            cart: db.collection('cart'),
-            orders: db.collection('orders')
-        };
-
         let currentUser = null;
-        let cart = [];
         let wishlist = [];
 
-        // ===== USER MENU FUNCTIONS =====
-        window.toggleUserMenu = function() {
-            const dropdown = document.getElementById('userDropdown');
-            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        // Toggle User Menu
+        window.toggleMenu = function() {
+            document.getElementById('userDropdown').classList.toggle('active');
         };
 
-        document.addEventListener('click', function(event) {
-            const userMenu = document.getElementById('userMenu');
-            const dropdown = document.getElementById('userDropdown');
-            if (userMenu && !userMenu.contains(event.target)) {
-                dropdown.style.display = 'none';
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.user-menu')) {
+                document.getElementById('userDropdown').classList.remove('active');
             }
         });
 
+        // Update User Display
         function updateUserDisplay() {
             const userDisplay = document.getElementById('userDisplay');
             const dropdownHeader = document.getElementById('dropdownHeader');
             
             if (currentUser) {
-                const photoURL = currentUser.photoURL;
-                const displayName = currentUser.displayName || 'User';
-                const email = currentUser.email || '';
-                
-                userDisplay.innerHTML = photoURL ? 
-                    `<img src="${photoURL}" alt="${displayName}" class="user-avatar" referrerpolicy="no-referrer">` : 
-                    `<i class="fas fa-user-circle user-icon"></i>`;
-                
+                userDisplay.innerHTML = `<img src="${currentUser.photoURL || 'https://ui-avatars.com/api/?name=' + currentUser.displayName}" class="user-avatar">`;
                 dropdownHeader.innerHTML = `
-                    <img src="${photoURL || 'https://via.placeholder.com/60'}" alt="${displayName}" class="dropdown-avatar">
-                    <div class="dropdown-user-info">
-                        <div class="dropdown-user-name">${displayName}</div>
-                        <div class="dropdown-user-email">${email}</div>
-                    </div>
+                    <h4>${currentUser.displayName || 'User'}</h4>
+                    <p>${currentUser.email}</p>
                 `;
             } else {
-                userDisplay.innerHTML = `<i class="fas fa-user-circle user-icon" onclick="window.location.href='account.html'"></i>`;
+                userDisplay.innerHTML = '<i class="fas fa-user-circle" style="font-size: 40px; color: rgba(255,255,255,0.5);"></i>';
                 dropdownHeader.innerHTML = `
-                    <div style="padding: 20px; text-align: center;">
-                        <p style="color: rgba(255,255,255,0.7); margin-bottom: 10px;">Not logged in</p>
-                        <a href="account.html" style="color: #00F5FF; text-decoration: none; padding: 8px 20px; border: 1px solid #00F5FF; border-radius: 20px;">Login</a>
-                    </div>
+                    <p style="text-align: center;">Not logged in</p>
+                    <a href="account.html" style="display: block; text-align: center; background: linear-gradient(135deg, #ff00ff, #00ffff); color: #000; border-radius: 25px;">Login</a>
                 `;
             }
         }
 
+        // Logout
         window.logout = function() {
             auth.signOut().then(() => window.location.reload());
         };
 
         auth.onAuthStateChanged(user => {
             currentUser = user;
-            if (user) {
-                loadUserData();
-            } else {
-                cart = [];
-                wishlist = [];
-                updateCounts();
-            }
             updateUserDisplay();
+            loadUserData();
         });
 
         async function loadUserData() {
             if (!currentUser) return;
             
             try {
-                // Load wishlist with real-time listener
-                collections.wishlist
+                const wishlistSnap = await db.collection('wishlist')
                     .where('userId', '==', currentUser.uid)
-                    .onSnapshot((snapshot) => {
-                        wishlist = snapshot.docs.map(doc => doc.data().productId);
-                        updateCounts();
-                        updateProductButtons();
-                    }, (error) => {
-                        console.error('Wishlist error:', error);
-                    });
-                
-                // Load cart with real-time listener
-                collections.cart
-                    .where('userId', '==', currentUser.uid)
-                    .onSnapshot((snapshot) => {
-                        cart = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                        updateCounts();
-                    }, (error) => {
-                        console.error('Cart error:', error);
-                    });
-                
+                    .get();
+                wishlist = wishlistSnap.docs.map(doc => doc.data().productId);
+                document.getElementById('wishlistCount').textContent = wishlist.length;
             } catch (error) {
-                console.error('Error loading user data:', error);
+                console.error('Error:', error);
             }
         }
 
-        function updateCounts() {
-            document.getElementById('wishlistCount').textContent = wishlist.length;
-            document.getElementById('cartCount').textContent = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-        }
-
-        function updateProductButtons() {
-            document.querySelectorAll('.product-action-btn[data-product-id]').forEach(btn => {
-                const productId = btn.dataset.productId;
-                if (btn.classList.contains('wishlist-btn')) {
-                    if (wishlist.includes(productId)) {
-                        btn.classList.add('active');
-                        btn.innerHTML = '<i class="fas fa-heart"></i>';
-                    } else {
-                        btn.classList.remove('active');
-                        btn.innerHTML = '<i class="far fa-heart"></i>';
-                    }
-                }
-            });
-        }
-
-        // ===== WISHLIST FUNCTION =====
+        // Toggle Wishlist
         window.toggleWishlist = async function(productId, event) {
-            if (event) event.stopPropagation();
+            event.stopPropagation();
             
             if (!currentUser) {
                 window.location.href = 'account.html';
@@ -835,176 +890,122 @@
 
             try {
                 if (wishlist.includes(productId)) {
-                    // Remove from wishlist
-                    const snapshot = await collections.wishlist
+                    const snap = await db.collection('wishlist')
                         .where('userId', '==', currentUser.uid)
                         .where('productId', '==', productId)
                         .get();
-                    
-                    const deletePromises = snapshot.docs.map(doc => doc.ref.delete());
-                    await Promise.all(deletePromises);
-                    
+                    snap.forEach(doc => doc.ref.delete());
+                    wishlist = wishlist.filter(id => id !== productId);
                     showNotification('Removed from wishlist');
                 } else {
-                    // Add to wishlist
-                    await collections.wishlist.add({
+                    await db.collection('wishlist').add({
                         userId: currentUser.uid,
                         productId: productId,
                         addedAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
-                    
+                    wishlist.push(productId);
                     showNotification('Added to wishlist');
                 }
+                document.getElementById('wishlistCount').textContent = wishlist.length;
             } catch (error) {
-                console.error('Wishlist error:', error);
-                showNotification('Error updating wishlist', 'error');
+                showNotification('Error', 'error');
             }
         };
 
-        // ===== LOAD CATEGORIES =====
-        function loadCategories() {
-            collections.categories.limit(4).onSnapshot((snapshot) => {
-                const container = document.getElementById('categoriesContainer');
+        // Load Categories
+        async function loadCategories() {
+            const container = document.getElementById('categoriesContainer');
+            try {
+                const snap = await db.collection('categories').limit(4).get();
                 
-                if (snapshot.empty) {
+                if (snap.empty) {
                     container.innerHTML = `
-                        <div class="category-card" onclick="window.location.href='products.html?category=Electronics'">
-                            <div class="category-icon"><i class="fas fa-laptop"></i></div>
-                            <h3 class="category-title">Electronics</h3>
+                        <div class="glass-card" onclick="window.location.href='products.html?category=Electronics'">
+                            <div class="card-icon"><i class="fas fa-laptop"></i></div>
+                            <h3 class="card-title">Electronics</h3>
+                            <p class="card-subtitle">Premium gadgets</p>
                         </div>
-                        <div class="category-card" onclick="window.location.href='products.html?category=Fashion'">
-                            <div class="category-icon"><i class="fas fa-tshirt"></i></div>
-                            <h3 class="category-title">Fashion</h3>
+                        <div class="glass-card" onclick="window.location.href='products.html?category=Fashion'">
+                            <div class="card-icon"><i class="fas fa-tshirt"></i></div>
+                            <h3 class="card-title">Fashion</h3>
+                            <p class="card-subtitle">Luxury wear</p>
                         </div>
-                        <div class="category-card" onclick="window.location.href='products.html?category=Home'">
-                            <div class="category-icon"><i class="fas fa-home"></i></div>
-                            <h3 class="category-title">Home</h3>
+                        <div class="glass-card" onclick="window.location.href='products.html?category=Watches'">
+                            <div class="card-icon"><i class="fas fa-clock"></i></div>
+                            <h3 class="card-title">Watches</h3>
+                            <p class="card-subtitle">Timeless pieces</p>
                         </div>
-                        <div class="category-card" onclick="window.location.href='products.html?category=Beauty'">
-                            <div class="category-icon"><i class="fas fa-magic"></i></div>
-                            <h3 class="category-title">Beauty</h3>
+                        <div class="glass-card" onclick="window.location.href='products.html?category=Accessories'">
+                            <div class="card-icon"><i class="fas fa-gem"></i></div>
+                            <h3 class="card-title">Accessories</h3>
+                            <p class="card-subtitle">Fine details</p>
                         </div>
                     `;
                     return;
                 }
                 
                 container.innerHTML = '';
-                snapshot.forEach(doc => {
+                snap.forEach(doc => {
                     const cat = doc.data();
                     container.innerHTML += `
-                        <div class="category-card" onclick="window.location.href='products.html?category=${cat.name}'">
-                            <div class="category-icon"><i class="fas ${cat.icon || 'fa-tag'}"></i></div>
-                            <h3 class="category-title">${cat.name}</h3>
+                        <div class="glass-card" onclick="window.location.href='products.html?category=${cat.name}'">
+                            <div class="card-icon"><i class="fas ${cat.icon || 'fa-tag'}"></i></div>
+                            <h3 class="card-title">${cat.name}</h3>
+                            <p class="card-subtitle">${cat.count || 0} products</p>
                         </div>
                     `;
                 });
-            }, (error) => {
-                console.error('Categories error:', error);
-            });
+            } catch (error) {
+                console.error('Error:', error);
+            }
         }
 
-        // ===== LOAD PRODUCTS =====
-        function loadProducts() {
-            const featuredContainer = document.getElementById('featuredProducts');
-            const newContainer = document.getElementById('newArrivals');
+        // Load Products
+        async function loadProducts() {
+            const featured = document.getElementById('featuredProducts');
+            const newArrivals = document.getElementById('newArrivals');
             
-            collections.products.orderBy('createdAt', 'desc').limit(8).onSnapshot((snapshot) => {
-                if (snapshot.empty) {
-                    showSampleProducts(featuredContainer, newContainer);
+            try {
+                const snap = await db.collection('products').limit(8).get();
+                
+                if (snap.empty) {
+                    showSampleProducts();
                     return;
                 }
                 
-                const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                const products = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 
-                featuredContainer.innerHTML = '';
-                newContainer.innerHTML = '';
+                featured.innerHTML = '';
+                newArrivals.innerHTML = '';
                 
-                const featured = products.filter(p => p.featured).slice(0, 4);
-                const newest = products.slice(0, 4);
-                
-                (featured.length ? featured : products.slice(0, 4)).forEach(product => {
-                    featuredContainer.innerHTML += createProductCard(product);
+                products.slice(0, 4).forEach(product => {
+                    featured.innerHTML += createProductCard(product);
                 });
                 
-                newest.forEach(product => {
-                    newContainer.innerHTML += createProductCard(product);
+                products.slice(4, 8).forEach(product => {
+                    newArrivals.innerHTML += createProductCard(product);
                 });
                 
-                updateProductButtons();
-                
-            }, (error) => {
-                console.error('Products error:', error);
-                showSampleProducts(featuredContainer, newContainer);
-            });
-        }
-
-        function showSampleProducts(container1, container2) {
-            const sampleProducts = [
-                {
-                    id: 'sample1',
-                    name: 'Wireless Headphones',
-                    category: 'Electronics',
-                    price: 5499,
-                    rating: 4.5,
-                    reviews: 128,
-                    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400',
-                    badge: 'NEW'
-                },
-                {
-                    id: 'sample2',
-                    name: 'Premium Watch',
-                    category: 'Fashion',
-                    price: 3299,
-                    rating: 4,
-                    reviews: 89,
-                    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400'
-                },
-                {
-                    id: 'sample3',
-                    name: 'Running Shoes',
-                    category: 'Fashion',
-                    price: 4599,
-                    rating: 4.5,
-                    reviews: 210,
-                    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400',
-                    badge: 'SALE'
-                },
-                {
-                    id: 'sample4',
-                    name: 'Smart Watch',
-                    category: 'Electronics',
-                    price: 8999,
-                    rating: 5,
-                    reviews: 56,
-                    image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400'
-                }
-            ];
-            
-            container1.innerHTML = sampleProducts.map(p => createProductCard(p)).join('');
-            container2.innerHTML = sampleProducts.map(p => createProductCard(p)).join('');
-            updateProductButtons();
+            } catch (error) {
+                showSampleProducts();
+            }
         }
 
         function createProductCard(product) {
-            const isInWishlist = wishlist.includes(product.id);
-            
+            const inWishlist = wishlist.includes(product.id);
             return `
                 <div class="product-card" onclick="viewProduct('${product.id}')">
                     ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-                    <div class="product-actions">
-                        <div class="product-action-btn wishlist-btn ${isInWishlist ? 'active' : ''}" 
-                             data-product-id="${product.id}" 
-                             onclick="toggleWishlist('${product.id}', event)">
-                            <i class="${isInWishlist ? 'fas' : 'far'} fa-heart"></i>
-                        </div>
+                    <div class="product-wishlist ${inWishlist ? 'active' : ''}" onclick="toggleWishlist('${product.id}', event)">
+                        <i class="fa${inWishlist ? 's' : 'r'} fa-heart"></i>
                     </div>
                     <div class="product-image">
-                        <img src="${product.images?.[0] || product.image || 'https://via.placeholder.com/300'}" alt="${product.name}" loading="lazy">
+                        <img src="${product.images?.[0] || 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400'}" alt="${product.name}" loading="lazy">
                     </div>
                     <div class="product-info">
-                        <div class="product-category">${product.category || 'General'}</div>
+                        <div class="product-category">${product.category || 'Luxury'}</div>
                         <h3 class="product-title">${product.name}</h3>
-                        <div class="product-price">Rs ${product.price?.toLocaleString() || '0'}</div>
+                        <div class="product-price">Rs ${product.price?.toLocaleString()}</div>
                         <div class="product-rating">
                             ${generateStars(product.rating || 4.5)}
                             <span>(${product.reviews || 0})</span>
@@ -1017,27 +1018,33 @@
         function generateStars(rating) {
             let stars = '';
             for (let i = 1; i <= 5; i++) {
-                if (i <= Math.floor(rating)) {
-                    stars += '<i class="fas fa-star"></i>';
-                } else if (i - rating < 1) {
-                    stars += '<i class="fas fa-star-half-alt"></i>';
-                } else {
-                    stars += '<i class="far fa-star"></i>';
-                }
+                stars += i <= rating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
             }
             return stars;
+        }
+
+        function showSampleProducts() {
+            const sample = [
+                { id: '1', name: 'Patek Philippe', category: 'Watches', price: 54999, image: 'https://images.unsplash.com/photo-1523170335258-f5ed11844a49?w=400', rating: 5, reviews: 128, badge: 'LIMITED' },
+                { id: '2', name: 'Raymond Weil', category: 'Watches', price: 32999, image: 'https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=400', rating: 4.5, reviews: 89 },
+                { id: '3', name: 'Balenciaga', category: 'Fashion', price: 45999, image: 'https://images.unsplash.com/photo-1543087903-1ac2ec7aa8c5?w=400', rating: 4.5, reviews: 210, badge: 'NEW' },
+                { id: '4', name: 'Audemars Piguet', category: 'Watches', price: 89999, image: 'https://images.unsplash.com/photo-1548171915-e5a8a23a6b5a?w=400', rating: 5, reviews: 56 }
+            ];
+            
+            document.getElementById('featuredProducts').innerHTML = sample.map(p => createProductCard(p)).join('');
+            document.getElementById('newArrivals').innerHTML = sample.map(p => createProductCard(p)).join('');
         }
 
         window.viewProduct = function(id) {
             window.location.href = `product-detail.html?id=${id}`;
         };
 
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            setTimeout(() => notification.remove(), 2000);
+        function showNotification(msg) {
+            const notif = document.createElement('div');
+            notif.className = 'notification';
+            notif.textContent = msg;
+            document.body.appendChild(notif);
+            setTimeout(() => notif.remove(), 2000);
         }
 
         // Initialize
@@ -1048,5 +1055,3 @@
     </script>
 </body>
 </html>
-
-
