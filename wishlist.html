@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZYVORASHOP - My Wishlist</title>
+    <title>ZYVORASHOP - Wishlist</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -20,9 +20,21 @@
         }
 
         body {
-            background: #030304;
-            font-family: 'Inter', sans-serif;
-            color: #ffffff;
+            background: #0a0a0a;
+            font-family: 'Space Grotesk', sans-serif;
+            color: #fff;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255,0,255,0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(0,255,255,0.15) 0%, transparent 50%);
+            z-index: -1;
         }
 
         .header {
@@ -32,63 +44,27 @@
             right: 20px;
             max-width: 1400px;
             margin: 0 auto;
-            padding: 15px 30px;
-            background: rgba(3, 3, 4, 0.9);
+            padding: 16px 30px;
+            background: rgba(255,255,255,0.05);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 16, 240, 0.3);
-            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50px;
             z-index: 1000;
+        }
+
+        .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            background: linear-gradient(135deg, #fff, #a8a8a8);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             text-decoration: none;
-        }
-
-        .nav-menu {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-menu a {
-            color: white;
-            text-decoration: none;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .header-icons {
-            display: flex;
-            gap: 20px;
-        }
-
-        .header-icons .icon {
-            position: relative;
-            cursor: pointer;
-            font-size: 20px;
-            color: white;
-        }
-
-        .badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #FF10F0;
-            color: white;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 50%;
         }
 
         .container {
@@ -98,11 +74,10 @@
         }
 
         .page-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 42px;
+            font-size: 48px;
             text-align: center;
             margin-bottom: 40px;
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -110,55 +85,49 @@
         .empty-wishlist {
             text-align: center;
             padding: 60px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 30px;
         }
 
         .empty-wishlist i {
             font-size: 80px;
-            color: rgba(255,16,240,0.3);
+            color: rgba(255,255,255,0.2);
             margin-bottom: 20px;
         }
 
         .empty-wishlist h2 {
-            color: rgba(255,255,255,0.7);
             margin-bottom: 10px;
-        }
-
-        .empty-wishlist p {
-            color: rgba(255,255,255,0.5);
-            margin-bottom: 30px;
         }
 
         .shop-now-btn {
             padding: 15px 40px;
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
+            background: linear-gradient(135deg, #ff00ff, #00ffff);
             border: none;
-            border-radius: 40px;
-            color: #030304;
+            border-radius: 15px;
+            color: #000;
             font-weight: 600;
             cursor: pointer;
-            font-size: 16px;
+            margin-top: 20px;
         }
 
         .products-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 30px;
+            gap: 25px;
         }
 
         .product-card {
-            background: rgba(255,255,255,0.02);
-            border-radius: 15px;
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.3s;
             cursor: pointer;
             position: relative;
         }
 
         .product-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: #00F5FF;
-            box-shadow: 0 20px 40px rgba(0,245,255,0.3);
+            border-color: #ff00ff;
         }
 
         .product-image {
@@ -170,11 +139,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s;
-        }
-
-        .product-card:hover .product-image img {
-            transform: scale(1.1);
         }
 
         .product-info {
@@ -182,22 +146,13 @@
         }
 
         .product-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 18px;
+            font-size: 16px;
+            font-weight: 600;
             margin-bottom: 5px;
         }
 
         .product-price {
-            color: #00F5FF;
-            font-weight: 600;
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        .product-category {
-            color: #FF10F0;
-            font-size: 12px;
-            margin-bottom: 5px;
+            color: #00ffff;
         }
 
         .remove-wishlist {
@@ -206,53 +161,18 @@
             right: 10px;
             width: 35px;
             height: 35px;
-            background: rgba(255,16,240,0.9);
-            color: white;
+            background: rgba(255,0,255,0.2);
+            border: 1px solid #ff00ff;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 10;
-            transition: all 0.2s;
+            z-index: 2;
         }
 
         .remove-wishlist:hover {
-            background: #FF10F0;
-            transform: scale(1.1);
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255,16,240,0.3);
-            border-top: 3px solid #00F5FF;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 50px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            padding: 12px 25px;
-            background: linear-gradient(135deg, #FF10F0, #00F5FF);
-            color: #030304;
-            border-radius: 40px;
-            font-weight: 600;
-            z-index: 9999;
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            background: #ff00ff;
         }
 
         @media (max-width: 992px) {
@@ -270,38 +190,31 @@
 </head>
 <body>
     <header class="header">
-        <a href="index.html" class="logo">ZYVORASHOP</a>
-        <nav class="nav-menu">
-            <a href="index.html">Home</a>
-            <a href="products.html">Products</a>
-            <a href="cart.html">Cart</a>
-        </nav>
-        <div class="header-icons">
-            <div class="icon" onclick="window.location.href='wishlist.html'" style="color: #00F5FF;">
-                <i class="fas fa-heart"></i>
-                <span class="badge" id="wishlistCount">0</span>
-            </div>
-            <div class="icon" onclick="window.location.href='cart.html'">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="badge" id="cartCount">0</span>
+        <div class="header-content">
+            <a href="index.html" class="logo">ZYVORASHOP</a>
+            <div class="header-icons">
+                <div class="icon-btn" onclick="window.location.href='wishlist.html'">
+                    <i class="fas fa-heart"></i>
+                    <span class="badge" id="wishlistCount">0</span>
+                </div>
+                <div class="icon-btn" onclick="window.location.href='cart.html'">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="badge" id="cartCount">0</span>
+                </div>
             </div>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="page-title">My Wishlist</h1>
+        <h1 class="page-title">MY WISHLIST</h1>
         
         <div id="wishlistContent">
-            <div class="empty-wishlist" style="display: none;" id="emptyWishlistMessage">
+            <div class="empty-wishlist">
                 <i class="fas fa-heart"></i>
                 <h2>Your wishlist is empty</h2>
                 <p>Save your favorite items here</p>
-                <button class="shop-now-btn" onclick="window.location.href='products.html'">Explore Products</button>
+                <button class="shop-now-btn" onclick="window.location.href='products.html'">EXPLORE</button>
             </div>
-            
-            <div class="spinner" id="wishlistSpinner"></div>
-            
-            <div class="products-grid" id="wishlistItems" style="display: none;"></div>
         </div>
     </div>
 
@@ -317,137 +230,18 @@
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        let currentUser = null;
-        let wishlistProducts = [];
 
         auth.onAuthStateChanged(user => {
-            if (user) {
-                currentUser = user;
-                loadWishlist();
-                loadCartCount();
-            } else {
-                document.getElementById('wishlistSpinner').style.display = 'none';
-                document.getElementById('emptyWishlistMessage').style.display = 'block';
-                document.getElementById('wishlistItems').style.display = 'none';
-                document.getElementById('wishlistCount').textContent = '0';
-            }
-        });
-
-        function loadCartCount() {
-            if (!currentUser) return;
-            
-            db.collection('cart')
-                .where('userId', '==', currentUser.uid)
-                .onSnapshot((snapshot) => {
-                    const totalItems = snapshot.docs.reduce((sum, doc) => sum + (doc.data().quantity || 1), 0);
-                    document.getElementById('cartCount').textContent = totalItems;
-                });
-        }
-
-        function loadWishlist() {
-            document.getElementById('wishlistSpinner').style.display = 'block';
-            document.getElementById('emptyWishlistMessage').style.display = 'none';
-            document.getElementById('wishlistItems').style.display = 'none';
-            
-            db.collection('wishlist')
-                .where('userId', '==', currentUser.uid)
-                .onSnapshot(async (snapshot) => {
-                    const wishlistIds = snapshot.docs.map(doc => doc.data().productId);
-                    
-                    // Update wishlist count
-                    document.getElementById('wishlistCount').textContent = wishlistIds.length;
-                    
-                    if (wishlistIds.length === 0) {
-                        document.getElementById('wishlistSpinner').style.display = 'none';
-                        document.getElementById('emptyWishlistMessage').style.display = 'block';
-                        document.getElementById('wishlistItems').style.display = 'none';
-                        return;
-                    }
-                    
-                    // Load product details
-                    const products = [];
-                    for (const productId of wishlistIds) {
-                        try {
-                            const productDoc = await db.collection('products').doc(productId).get();
-                            if (productDoc.exists) {
-                                products.push({ id: productDoc.id, ...productDoc.data() });
-                            }
-                        } catch (error) {
-                            console.error('Error loading product:', error);
-                        }
-                    }
-                    
-                    wishlistProducts = products;
-                    displayWishlist();
-                    
-                    document.getElementById('wishlistSpinner').style.display = 'none';
-                    document.getElementById('wishlistItems').style.display = 'grid';
-                    
-                }, (error) => {
-                    console.error('Wishlist error:', error);
-                    document.getElementById('wishlistSpinner').style.display = 'none';
-                    document.getElementById('emptyWishlistMessage').style.display = 'block';
-                });
-        }
-
-        function displayWishlist() {
-            const container = document.getElementById('wishlistItems');
-            
-            let html = '';
-            wishlistProducts.forEach(product => {
-                html += `
-                    <div class="product-card" onclick="viewProduct('${product.id}')">
-                        <div class="remove-wishlist" onclick="event.stopPropagation(); removeFromWishlist('${product.id}')">
-                            <i class="fas fa-times"></i>
-                        </div>
-                        <div class="product-image">
-                            <img src="${product.images?.[0] || product.image || 'https://via.placeholder.com/300'}" alt="${product.name}" loading="lazy">
-                        </div>
-                        <div class="product-info">
-                            <div class="product-category">${product.category || 'General'}</div>
-                            <h3 class="product-title">${product.name}</h3>
-                            <div class="product-price">Rs ${product.price?.toLocaleString() || '0'}</div>
-                        </div>
+            if (!user) {
+                document.getElementById('wishlistContent').innerHTML = `
+                    <div class="empty-wishlist">
+                        <i class="fas fa-user-lock"></i>
+                        <h2>Please login to view wishlist</h2>
+                        <button class="shop-now-btn" onclick="window.location.href='account.html'">LOGIN</button>
                     </div>
                 `;
-            });
-            
-            container.innerHTML = html;
-        }
-
-        window.removeFromWishlist = async function(productId) {
-            try {
-                const snapshot = await db.collection('wishlist')
-                    .where('userId', '==', currentUser.uid)
-                    .where('productId', '==', productId)
-                    .get();
-                
-                const deletePromises = snapshot.docs.map(doc => doc.ref.delete());
-                await Promise.all(deletePromises);
-                
-                showNotification('Removed from wishlist');
-                // UI will update automatically via onSnapshot
-                
-            } catch (error) {
-                console.error('Error removing from wishlist:', error);
-                showNotification('Error removing item', 'error');
             }
-        };
-
-        window.viewProduct = function(id) {
-            window.location.href = `product-detail.html?id=${id}`;
-        };
-
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            setTimeout(() => notification.remove(), 2000);
-        }
+        });
     </script>
 </body>
 </html>
-
