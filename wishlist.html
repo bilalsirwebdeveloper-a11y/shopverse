@@ -4,244 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZYVORASHOP - Wishlist</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #232f3e; --secondary: #37475a; --accent: #ff9900; --background: #ffffff;
+            --text: #0f1111; --text-light: #565959; --border: #dddddd; --card-bg: #ffffff;
         }
-
+        .dark-mode {
+            --primary: #131921; --secondary: #232f3e; --accent: #ff9900; --background: #0f171e;
+            --text: #ffffff; --text-light: #a0a0a0; --border: #3a3a3a; --card-bg: #1a242b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: #0a0a0a;
-            font-family: 'Space Grotesk', sans-serif;
-            color: #fff;
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            transition: background 0.3s;
         }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(255,0,255,0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(0,255,255,0.15) 0%, transparent 50%);
-            z-index: -1;
-        }
-
         .header {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            right: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 16px 30px;
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 50px;
-            z-index: 1000;
+            background: var(--primary); padding: 12px 20px; position: sticky; top: 0; z-index: 1000;
         }
-
         .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            max-width: 1500px; margin: 0 auto; display: flex;
+            justify-content: space-between; align-items: center;
         }
-
         .logo {
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #fff, #a8a8a8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
+            font-size: 24px; font-weight: 700; color: white; text-decoration: none;
         }
-
+        .logo span { color: var(--accent); }
+        .header-icons {
+            display: flex; gap: 25px; align-items: center;
+        }
+        .icon-btn {
+            position: relative; color: white; font-size: 20px; cursor: pointer;
+        }
+        .badge {
+            position: absolute; top: -8px; right: -8px;
+            background: var(--accent); color: #000; font-size: 11px; padding: 2px 6px; border-radius: 20px;
+        }
+        .theme-toggle {
+            width: 40px; height: 40px; background: rgba(255,255,255,0.1);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: white;
+        }
         .container {
-            max-width: 1400px;
-            margin: 120px auto 40px;
-            padding: 20px;
+            max-width: 1200px; margin: 40px auto; padding: 0 20px;
         }
-
         .page-title {
-            font-size: 48px;
-            text-align: center;
-            margin-bottom: 40px;
-            background: linear-gradient(135deg, #ff00ff, #00ffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 32px; margin-bottom: 30px;
         }
-
         .empty-wishlist {
-            text-align: center;
-            padding: 60px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 30px;
+            text-align: center; padding: 60px;
         }
-
         .empty-wishlist i {
-            font-size: 80px;
-            color: rgba(255,255,255,0.2);
-            margin-bottom: 20px;
+            font-size: 80px; color: var(--text-light); margin-bottom: 20px;
         }
-
-        .empty-wishlist h2 {
-            margin-bottom: 10px;
-        }
-
         .shop-now-btn {
-            padding: 15px 40px;
-            background: linear-gradient(135deg, #ff00ff, #00ffff);
-            border: none;
-            border-radius: 15px;
-            color: #000;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 20px;
+            padding: 15px 40px; background: var(--accent); border: none;
+            border-radius: 8px; color: #000; font-weight: 600; cursor: pointer; margin-top: 20px;
         }
-
         .products-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 25px;
         }
-
         .product-card {
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 20px;
-            overflow: hidden;
-            cursor: pointer;
-            position: relative;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 10px; overflow: hidden; cursor: pointer; position: relative;
         }
-
-        .product-card:hover {
-            border-color: #ff00ff;
-        }
-
         .product-image {
-            height: 250px;
-            overflow: hidden;
+            height: 200px; display: flex; align-items: center; justify-content: center; padding: 20px;
         }
-
         .product-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            max-width: 100%; max-height: 100%; object-fit: contain;
         }
-
-        .product-info {
-            padding: 20px;
-        }
-
-        .product-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .product-price {
-            color: #00ffff;
-        }
-
-        .remove-wishlist {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 35px;
-            height: 35px;
-            background: rgba(255,0,255,0.2);
-            border: 1px solid #ff00ff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 2;
-        }
-
-        .remove-wishlist:hover {
-            background: #ff00ff;
-        }
-
-        @media (max-width: 992px) {
-            .products-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header class="header">
-        <div class="header-content">
-            <a href="index.html" class="logo">ZYVORASHOP</a>
-            <div class="header-icons">
-                <div class="icon-btn" onclick="window.location.href='wishlist.html'">
-                    <i class="fas fa-heart"></i>
-                    <span class="badge" id="wishlistCount">0</span>
-                </div>
-                <div class="icon-btn" onclick="window.location.href='cart.html'">
-                    <i class="fas fa-shopping-bag"></i>
-                    <span class="badge" id="cartCount">0</span>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <div class="container">
-        <h1 class="page-title">MY WISHLIST</h1>
-        
-        <div id="wishlistContent">
-            <div class="empty-wishlist">
-                <i class="fas fa-heart"></i>
-                <h2>Your wishlist is empty</h2>
-                <p>Save your favorite items here</p>
-                <button class="shop-now-btn" onclick="window.location.href='products.html'">EXPLORE</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        const firebaseConfig = {
-            apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
-            authDomain: "shopverse-c2642.firebaseapp.com",
-            projectId: "shopverse-c2642",
-            storageBucket: "shopverse-c2642.firebasestorage.app",
-            messagingSenderId: "281981664356",
-            appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
-        };
-
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-
-        auth.onAuthStateChanged(user => {
-            if (!user) {
-                document.getElementById('wishlistContent').innerHTML = `
-                    <div class="empty-wishlist">
-                        <i class="fas fa-user-lock"></i>
-                        <h2>Please login to view wishlist</h2>
-                        <button class="shop-now-btn" onclick="window.location.href='account.html'">LOGIN</button>
-                    </div>
-                `;
-            }
-        });
-    </script>
-</body>
-</html>
+        .product-info { padding: 15px; }
+        .product-title { font-size: 16px; font-weight: 600; margin
