@@ -3,440 +3,1094 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZYVORASHOP · Amazon style</title>
-    <!-- Font Awesome 5 (free) for icons, to get closer to Amazon look -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+    <title>ZYVORASHOP - Premium Shopping</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
     <style>
+        :root {
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --background: #f9f9f9;
+            --text: #0f1111;
+            --text-light: #666;
+            --border: #e0e0e0;
+            --card-bg: #ffffff;
+            --hover: #f5f5f5;
+            --success: #0f0;
+            --gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+
+        .dark-mode {
+            --primary: #0f0f0f;
+            --secondary: #1a1a1a;
+            --accent: #e94560;
+            --background: #121212;
+            --text: #ffffff;
+            --text-light: #b0b0b0;
+            --border: #2d2d2d;
+            --card-bg: #1e1e1e;
+            --hover: #2a2a2a;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Amazon Ember', Arial, sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         body {
-            background-color: #e3e6e6;  /* Amazon's light grey background */
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
         }
 
-        /* main wrapper to mimic amazon layout */
-        .container {
-            max-width: 1500px;
+        /* Header */
+        .header {
+            background: var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1400px;
             margin: 0 auto;
-        }
-
-        /* header 1 – top navbar (amazon dark) */
-        .nav-top {
-            background-color: #131921;
-            color: white;
+            padding: 15px 20px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 10px 20px;
-            flex-wrap: wrap;
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 28px;
             font-weight: 700;
-            margin-right: 25px;
+            color: white;
+            text-decoration: none;
             letter-spacing: -0.5px;
-            color: #fff;
-        }
-        .logo span {
-            color: #ff9900;  /* amazon orange */
         }
 
-        .deliver-info {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 0.9rem;
-            margin-right: 25px;
-        }
-        .deliver-info i {
-            font-size: 1.2rem;
+        .logo span {
+            color: var(--accent);
+            font-weight: 800;
         }
 
         .search-bar {
-            display: flex;
             flex: 1;
-            margin: 0 10px;
-            border-radius: 8px;
-            overflow: hidden;
-            max-width: 700px;
+            max-width: 600px;
+            margin: 0 30px;
+            display: flex;
+            position: relative;
         }
-        .search-bar select {
-            background: #f3f3f3;
-            border: none;
-            padding: 10px 5px;
-            font-size: 0.9rem;
-            border-right: 1px solid #cdcdcd;
-            cursor: pointer;
-        }
+
         .search-bar input {
-            flex: 1;
-            padding: 10px 15px;
-            border: none;
-            font-size: 1rem;
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid transparent;
+            border-radius: 30px;
+            font-size: 15px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .search-bar input:focus {
             outline: none;
+            background: white;
+            color: var(--text);
+            border-color: var(--accent);
         }
+
         .search-bar button {
-            background: #febd69;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            padding: 9px 25px;
+            background: var(--accent);
             border: none;
-            width: 50px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: 0.2s;
-        }
-        .search-bar button:hover {
-            background: #f3a847;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-        .nav-right div {
-            display: flex;
-            flex-direction: column;
-        }
-        .nav-right span:first-child {
-            font-size: 0.75rem;
-            color: #ccc;
-        }
-        .nav-right i {
-            font-size: 1.5rem;
-            margin-right: 5px;
-        }
-        .cart {
-            display: flex;
-            align-items: center;
-            font-size: 1rem;
-            font-weight: 700;
-        }
-        .cart i {
-            font-size: 1.8rem;
-        }
-
-        /* header 2 – secondary nav (light) */
-        .nav-secondary {
-            background-color: #232f3e;
+            border-radius: 30px;
             color: white;
-            padding: 8px 20px;
-            display: flex;
-            align-items: center;
-            gap: 25px;
-            font-size: 0.9rem;
             font-weight: 600;
-            flex-wrap: wrap;
-        }
-        .nav-secondary i {
-            font-size: 1.2rem;
-        }
-        .nav-secondary a {
-            color: white;
-            text-decoration: none;
-        }
-        .nav-secondary a:hover {
-            text-decoration: underline;
-        }
-
-        /* main content area – background white usually, but amazon uses cards */
-        .main-content {
-            background-color: #fff;
-            max-width: 1500px;
-            margin: 20px auto;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            padding: 20px 25px;
-        }
-
-        /* welcome banner (exactly as in the image description) */
-        .welcome-banner {
-            background: linear-gradient(to right, #f7f7f7, #ffffff);
-            border-left: 5px solid #ff9900;
-            padding: 25px 30px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-        }
-        .welcome-banner h1 {
-            font-size: 2.3rem;
-            font-weight: 500;
-            color: #111;
-        }
-        .welcome-banner p {
-            font-size: 1.2rem;
-            color: #444;
-            margin-top: 8px;
-        }
-
-        /* category section – amazon grid style */
-        .category-heading {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 8px;
-            margin: 30px 0 20px 0;
-        }
-        .category-heading h2 {
-            font-size: 1.8rem;
-            font-weight: 500;
-            color: #0f1111;
-        }
-        .category-heading a {
-            color: #007185;
-            text-decoration: none;
-            font-size: 0.95rem;
-        }
-        .category-heading a:hover {
-            color: #c7511f;
-            text-decoration: underline;
-        }
-
-        /* category boxes – amazon product grid look */
-        .category-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: flex-start;
-        }
-
-        .cat-card {
-            background-color: #ffffff;
-            border: 1px solid #e7e7e7;
-            border-radius: 8px;
-            padding: 15px 20px;
-            flex: 1 1 160px;
-            max-width: 180px;
-            min-width: 140px;
-            text-align: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.02);
-            transition: transform 0.15s, box-shadow 0.15s;
             cursor: pointer;
-        }
-        .cat-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            border-color: #ff9900;
+            transition: all 0.3s;
         }
 
-        .cat-icon {
-            font-size: 3rem;
-            color: #ff9900;
-            margin-bottom: 12px;
+        .search-bar button:hover {
+            transform: translateX(-2px);
+            box-shadow: 0 5px 15px rgba(233,69,96,0.3);
         }
-        .cat-card h3 {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #0f1111;
+
+        .header-icons {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            position: relative;
+            color: white;
+            font-size: 22px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .icon-btn:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent);
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 20px;
+            min-width: 18px;
+            text-align: center;
+        }
+
+        .theme-toggle {
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: white;
+            font-size: 20px;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent);
+            transform: rotate(180deg);
+        }
+
+        /* Categories Bar - IMPROVED */
+        .categories-section {
+            background: var(--secondary);
+            padding: 20px 20px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .categories-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(233,69,96,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .section-title {
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            padding: 0 20px;
+            color: white;
+            font-size: 24px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title span {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 5px;
+        }
+
+        .categories-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(233,69,96,0.3);
+        }
+
+        .category-card:hover::before {
+            left: 100%;
+        }
+
+        .category-card.active {
+            border-color: var(--accent);
+            background: rgba(233,69,96,0.2);
+            box-shadow: 0 0 30px rgba(233,69,96,0.3);
+        }
+
+        .category-icon {
+            font-size: 40px;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .category-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
             margin-bottom: 5px;
         }
-        .cat-card p {
-            color: #007185;
-            font-size: 0.9rem;
-            font-weight: 400;
+
+        .category-count {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
         }
 
-        /* decorative line to separate other amazon-like blocks */
-        .spacer {
-            margin: 40px 0 10px;
-            border-top: 1px solid #e7e7e7;
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
         }
 
-        /* small note to keep pure amazon vibe */
-        .footer-note {
-            background-color: #232f3e;
-            color: #dddddd;
+        /* Hero Banner */
+        .hero {
+            background: var(--gradient);
+            border-radius: 30px;
+            padding: 60px 40px;
+            margin-bottom: 50px;
             text-align: center;
-            padding: 25px 20px;
-            font-size: 0.9rem;
-            margin-top: 40px;
-        }
-        .footer-note a {
-            color: #ff9900;
-            text-decoration: none;
+            position: relative;
+            overflow: hidden;
         }
 
-        /* keep everything responsive */
-        @media (max-width: 700px) {
-            .nav-top {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            color: white;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.9);
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Section Header */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0 20px;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .section-header h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 30px;
+            background: var(--accent);
+            border-radius: 5px;
+        }
+
+        .view-all {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .view-all:hover {
+            gap: 10px;
+        }
+
+        /* Products Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: var(--accent);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(233,69,96,0.3);
+        }
+
+        .wishlist-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s;
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .wishlist-btn:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .wishlist-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .product-image {
+            height: 250px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--hover);
+            position: relative;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.6s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1) rotate(3deg);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .product-rating {
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        .product-rating span {
+            color: var(--text-light);
+            margin-left: 5px;
+        }
+
+        .product-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-add, .btn-buy {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+        }
+
+        .btn-add {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-add:hover {
+            background: #d43b56;
+            transform: translateY(-2px);
+        }
+
+        .btn-buy {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-buy:hover {
+            border-color: var(--accent);
+            background: rgba(233,69,96,0.1);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary);
+            color: white;
+            padding: 60px 20px 30px;
+            margin-top: 60px;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 40px;
+        }
+
+        .footer-section h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .footer-section h3 span {
+            color: var(--accent);
+        }
+
+        .footer-section p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 40px auto 0;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 30px;
+            background: var(--card-bg);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            color: var(--text);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-light);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
             }
             .search-bar {
-                margin: 10px 0;
-            }
-            .category-grid {
-                justify-content: center;
+                display: none;
             }
         }
 
-        /* specific category names exactly as provided: 
-           Fashion, Home & Kitchen, Beauty, Watches, Accessories, Sports, Toys */
+        @media (max-width: 768px) {
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">ZYVORA<span>SHOP</span></a>
+            
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search products...">
+                <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+            </div>
+            
+            <div class="header-icons">
+                <div class="icon-btn" onclick="window.location.href='account.html'">
+                    <i class="far fa-user"></i>
+                </div>
+                <div class="icon-btn" onclick="window.location.href='wishlist.html'">
+                    <i class="far fa-heart"></i>
+                    <span class="badge" id="wishlistCount">0</span>
+                </div>
+                <div class="icon-btn" onclick="window.location.href='cart.html'">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="badge" id="cartCount">0</span>
+                </div>
+                <div class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-sun" id="themeIcon"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Categories Section - IMPROVED -->
+    <section class="categories-section">
+        <div class="section-title">
+            <span>Shop by Category</span>
+        </div>
+        <div class="categories-grid" id="categoriesGrid"></div>
+    </section>
+
+    <!-- Hero Banner -->
     <div class="container">
-        <!-- top header – pure amazon style -->
-        <header>
-            <div class="nav-top">
-                <div class="logo">ZYVORA<span>SHOP</span></div>
-                <div class="deliver-info">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <div>
-                        <span style="color:#ccc;">Deliver to</span><br>
-                        <strong>Pakistan</strong>
-                    </div>
-                </div>
-                <!-- search bar with "Search for products, brands and more..." -->
-                <div class="search-bar">
-                    <select>
-                        <option>All Departments</option>
-                        <option>Electronics</option>
-                        <option>Fashion</option>
-                        <option>Home & Kitchen</option>
-                        <option>Beauty</option>
-                        <option>Watches</option>
-                        <option>Accessories</option>
-                        <option>Sports</option>
-                        <option>Toys</option>
-                    </select>
-                    <input type="text" placeholder="Search for products, brands and more...">
-                    <button><i class="fas fa-search"></i></button>
-                </div>
-                <div class="nav-right">
-                    <div>
-                        <span>Hello, sign in</span>
-                        <span>Account & Lists</span>
-                    </div>
-                    <div>
-                        <span>Returns</span>
-                        <span>& Orders</span>
-                    </div>
-                    <div class="cart">
-                        <i class="fas fa-shopping-cart"></i>
-                        <span>Cart</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- secondary navigation (Electronics, Fashion, etc. – just as category links) -->
-            <div class="nav-secondary">
-                <i class="fas fa-bars"></i> All
-                <a href="#">Electronics</a>
-                <a href="#">Fashion</a>
-                <a href="#">Home & Kitchen</a>
-                <a href="#">Beauty</a>
-                <a href="#">Watches</a>
-                <a href="#">Accessories</a>
-                <a href="#">Sports</a>
-                <a href="#">Toys</a>
-                <span style="flex:1; text-align:right; font-size:0.8rem; opacity:0.8;">quality you can trust</span>
-            </div>
-        </header>
-
-        <!-- main content area – exactly as the image plus category boxes -->
-        <div class="main-content">
-            <!-- welcome banner: same text from the PNG -->
-            <div class="welcome-banner">
-                <h1>Welcome to ZYVORASHOP</h1>
-                <p>Quality you can trust, prices you'll love — delivered fast anywhere in Pakistan.</p>
-            </div>
-
-            <!-- category section heading (like Amazon's "Shop by Category") -->
-            <div class="category-heading">
-                <h2>Shop by Category</h2>
-                <a href="#">see all <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i></a>
-            </div>
-
-            <!-- category grid displaying exactly: Fashion, Home & Kitchen, Beauty, Watches, Accessories, Sports, Toys. No extra categories. -->
-            <div class="category-grid">
-                <!-- 1. Fashion -->
-                <div class="cat-card">
-                    <div class="cat-icon"><i class="fas fa-tshirt"></i></div>
-                    <h3>Fashion</h3>
-                    <p>Shop now</p>
-                </div>
-                <!-- 2. Home & Kitchen -->
-                <div class="cat-card">
-                    <div class="cat-icon"><i class="fas fa-utensils"></i></div>
-                    <h3>Home & Kitchen</h3>
-                    <p>Shop now</p>
-                </div>
-                <!-- 3. Beauty -->
-                <div class="cat-card">
-                    <div class="cat-icon"><i class="fas fa-spa"></i></div>
-                    <h3>Beauty</h3>
-                    <p>Shop now</p>
-                </div>
-                <!-- 4. Watches -->
-                <div class="cat-card">
-                    <div class="cat-icon"><i class="fas fa-clock"></i></div>
-                    <h3>Watches</h3>
-                    <p>Shop now</p>
-                </div>
-                <!-- 5. Accessories -->
-                <div class="cat-card">
-                    <div class="cat-icon"><i class="fas fa-glasses"></i></div>
-                    <h3>Accessories</h3>
-                    <p>Shop now</p>
-                </div>
-                <!-- 6. Sports -->
-                <div class="cat-card">
-                    <div class="cat-icon"><i class="fas fa-bicycle"></i></div>
-                    <h3>Sports</h3>
-                    <p>Shop now</p>
-                </div>
-                <!-- 7. Toys -->
-                <div class="cat-card">
-                    <div class="cat-icon"><i class="fas fa-puzzle-piece"></i></div>
-                    <h3>Toys</h3>
-                    <p>Shop now</p>
-                </div>
-            </div>
-
-            <!-- additional amazon style block: just to show "Electronics" & other categories not written, but we keep layout clean -->
-            <div class="spacer"></div>
-            <!-- mini deal row (pure amazon inspired) but does not introduce any new category names. Only "Electronics" as a headline is present in top nav, but not as extra cat box. This block is generic deals -->
-            <div style="display: flex; gap: 20px; flex-wrap: wrap; margin: 20px 0;">
-                <div style="background: #f5f6f6; flex: 1; padding: 20px; border-radius: 8px; min-width: 240px;">
-                    <h3 style="font-weight: 500;">Top deals in Electronics</h3>
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='120' viewBox='0 0 200 100'%3E%3Crect width='200' height='100' fill='%23333'/%3E%3Ctext x='20' y='55' fill='%23ff9900' font-size='14' font-family='Arial'%3Eheadphones%3C/text%3E%3C/svg%3E" style="width:100%; border-radius: 8px;" alt="deal">
-                    <p style="color:#007185;">see more</p>
-                </div>
-                <div style="background: #f5f6f6; flex: 1; padding: 20px; border-radius: 8px; min-width: 240px;">
-                    <h3 style="font-weight: 500;">Home essentials</h3>
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='120' viewBox='0 0 200 100'%3E%3Crect width='200' height='100' fill='%23455'/%3E%3Ctext x='20' y='55' fill='%23fff' font-size='14'%3Ekitchen%3C/text%3E%3C/svg%3E" style="width:100%; border-radius: 8px;" alt="deal">
-                    <p style="color:#007185;">shop now</p>
-                </div>
-                <div style="background: #f5f6f6; flex: 1; padding: 20px; border-radius: 8px; min-width: 240px;">
-                    <h3 style="font-weight: 500;">Fashion deals</h3>
-                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='120' viewBox='0 0 200 100'%3E%3Crect width='200' height='100' fill='%23677'/%3E%3Ctext x='20' y='55' fill='%23febd69' font-size='14'%3Efashion%3C/text%3E%3C/svg%3E" style="width:100%; border-radius: 8px;" alt="deal">
-                    <p style="color:#007185;">see more</p>
-                </div>
-            </div>
-            <!-- note: no extra category name cards, only the 7 required categories are displayed above as cat-card. Everything else is generic deals without listing new category names. -->
+        <div class="hero">
+            <h1>Welcome to ZYVORASHOP</h1>
+            <p>Discover premium products at amazing prices. Free shipping on orders over Rs 2000!</p>
         </div>
 
-        <!-- footer amazon style -->
-        <footer class="footer-note">
-            <div style="max-width: 1200px; margin: 0 auto;">
-                <p>© 2025 ZYVORASHOP — Quality you can trust, delivered fast in Pakistan.</p>
-                <p style="margin-top: 10px; font-size:0.8rem;">
-                    <a href="#">Electronics</a> · <a href="#">Fashion</a> · <a href="#">Home & Kitchen</a> · 
-                    <a href="#">Beauty</a> · <a href="#">Watches</a> · <a href="#">Accessories</a> · 
-                    <a href="#">Sports</a> · <a href="#">Toys</a>
-                </p>
-                <p style="font-size:0.75rem; color:#888;"><i class="fas fa-store"></i> ZYVORASHOP: inspired by Amazon design</p>
-            </div>
-        </footer>
+        <!-- Featured Products -->
+        <div class="section-header">
+            <h2>Featured Products</h2>
+            <a href="products.html" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="products-grid" id="featuredProducts"></div>
+
+        <!-- New Arrivals -->
+        <div class="section-header">
+            <h2>New Arrivals</h2>
+            <a href="products.html" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="products-grid" id="newArrivals"></div>
     </div>
-    <!-- small explanation: exactly 7 categories in the grid: Fashion, Home & Kitchen, Beauty, Watches, Accessories, Sports, Toys. No extra ones. -->
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>ZYVORA<span>SHOP</span></h3>
+                <p>Your premium shopping destination since 2024. Quality products, amazing prices, fast delivery.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="cart.html">Cart</a>
+                <a href="account.html">Account</a>
+            </div>
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <a href="products.html?category=Electronics">Electronics</a>
+                <a href="products.html?category=Fashion">Fashion</a>
+                <a href="products.html?category=Home">Home</a>
+                <a href="products.html?category=Watches">Watches</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-phone"></i> +92 300 1234567</p>
+                <p><i class="fas fa-envelope"></i> support@zyvorashop.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Lahore, Pakistan</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 ZYVORASHOP. All rights reserved. | Designed for premium experience</p>
+        </div>
+    </footer>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
+            authDomain: "shopverse-c2642.firebaseapp.com",
+            projectId: "shopverse-c2642",
+            storageBucket: "shopverse-c2642.firebasestorage.app",
+            messagingSenderId: "281981664356",
+            appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUser = null;
+        let wishlist = [];
+        let categories = [];
+        let allProducts = [];
+
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('themeIcon');
+            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-moon' : 'fas fa-sun';
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('themeIcon').className = 'fas fa-moon';
+        }
+
+        // Auth State
+        auth.onAuthStateChanged(user => {
+            currentUser = user;
+            if (user) {
+                loadUserData();
+            } else {
+                document.getElementById('wishlistCount').textContent = '0';
+                document.getElementById('cartCount').textContent = '0';
+            }
+            loadCategories();
+            loadProducts();
+        });
+
+        async function loadUserData() {
+            if (!currentUser) return;
+            
+            try {
+                const wishlistSnap = await db.collection('wishlist').where('userId', '==', currentUser.uid).get();
+                wishlist = wishlistSnap.docs.map(doc => doc.data().productId);
+                document.getElementById('wishlistCount').textContent = wishlist.length;
+                
+                const cartSnap = await db.collection('cart').where('userId', '==', currentUser.uid).get();
+                const cartCount = cartSnap.docs.reduce((sum, doc) => sum + (doc.data().quantity || 1), 0);
+                document.getElementById('cartCount').textContent = cartCount;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Load Categories
+        async function loadCategories() {
+            try {
+                const snap = await db.collection('categories').get();
+                categories = snap.docs.map(doc => doc.data().name);
+                
+                // Get product counts for each category
+                const productsSnap = await db.collection('products').get();
+                allProducts = productsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                const categoryCounts = {};
+                allProducts.forEach(p => {
+                    if (p.category) {
+                        categoryCounts[p.category] = (categoryCounts[p.category] || 0) + 1;
+                    }
+                });
+                
+                const categoriesGrid = document.getElementById('categoriesGrid');
+                categoriesGrid.innerHTML = categories.map(cat => `
+                    <div class="category-card" onclick="window.location.href='products.html?category=${encodeURIComponent(cat)}'">
+                        <div class="category-icon"><i class="fas ${getCategoryIcon(cat)}"></i></div>
+                        <div class="category-name">${cat}</div>
+                        <div class="category-count">${categoryCounts[cat] || 0} Products</div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading categories:', error);
+                showSampleCategories();
+            }
+        }
+
+        function getCategoryIcon(category) {
+            const icons = {
+                'Electronics': 'fa-laptop',
+                'Fashion': 'fa-tshirt',
+                'Home': 'fa-home',
+                'Watches': 'fa-clock',
+                'Beauty': 'fa-magic',
+                'Sports': 'fa-futbol',
+                'Toys': 'fa-gamepad',
+                'Books': 'fa-book'
+            };
+            return icons[category] || 'fa-tag';
+        }
+
+        function showSampleCategories() {
+            const categoriesGrid = document.getElementById('categoriesGrid');
+            categoriesGrid.innerHTML = `
+                <div class="category-card" onclick="window.location.href='products.html?category=Electronics'">
+                    <div class="category-icon"><i class="fas fa-laptop"></i></div>
+                    <div class="category-name">Electronics</div>
+                    <div class="category-count">4 Products</div>
+                </div>
+                <div class="category-card" onclick="window.location.href='products.html?category=Fashion'">
+                    <div class="category-icon"><i class="fas fa-tshirt"></i></div>
+                    <div class="category-name">Fashion</div>
+                    <div class="category-count">2 Products</div>
+                </div>
+                <div class="category-card" onclick="window.location.href='products.html?category=Watches'">
+                    <div class="category-icon"><i class="fas fa-clock"></i></div>
+                    <div class="category-name">Watches</div>
+                    <div class="category-count">3 Products</div>
+                </div>
+                <div class="category-card" onclick="window.location.href='products.html?category=Home'">
+                    <div class="category-icon"><i class="fas fa-home"></i></div>
+                    <div class="category-name">Home</div>
+                    <div class="category-count">1 Products</div>
+                </div>
+            `;
+        }
+
+        // Load Products
+        async function loadProducts() {
+            try {
+                const snapshot = await db.collection('products').limit(8).get();
+                
+                if (snapshot.empty) {
+                    showSampleProducts();
+                    return;
+                }
+                
+                const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                document.getElementById('featuredProducts').innerHTML = products.slice(0,4).map(p => createProductCard(p)).join('');
+                document.getElementById('newArrivals').innerHTML = products.slice(4,8).map(p => createProductCard(p)).join('');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showSampleProducts();
+            }
+        }
+
+        function createProductCard(product) {
+            const inWishlist = wishlist.includes(product.id);
+            return `
+                <div class="product-card" onclick="viewProduct('${product.id}')">
+                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                    <div class="wishlist-btn ${inWishlist ? 'active' : ''}" onclick="toggleWishlist('${product.id}', event)">
+                        <i class="fa${inWishlist ? 's' : 'r'} fa-heart"></i>
+                    </div>
+                    <div class="product-image">
+                        <img src="${product.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" alt="${product.name}">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${product.category || 'General'}</div>
+                        <div class="product-title">${product.name}</div>
+                        <div class="product-rating">
+                            ${generateStars(product.rating || 4.5)}
+                            <span>(${product.reviews || 0})</span>
+                        </div>
+                        <div class="product-price">Rs ${product.price?.toLocaleString()}</div>
+                        <div class="product-actions">
+                            <button class="btn-add" onclick="addToCart('${product.id}', event)">Add to Cart</button>
+                            <button class="btn-buy" onclick="buyNow('${product.id}', event)">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<i class="fas fa-star"></i>';
+                } else if (i - rating < 1) {
+                    stars += '<i class="fas fa-star-half-alt"></i>';
+                } else {
+                    stars += '<i class="far fa-star"></i>';
+                }
+            }
+            return stars;
+        }
+
+        function showSampleProducts() {
+            const sample = [
+                { id: '1', name: 'Wireless Headphones', category: 'Electronics', price: 5499, rating: 4.5, reviews: 128, images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'], badge: 'NEW' },
+                { id: '2', name: 'Premium Watch', category: 'Watches', price: 3299, rating: 4, reviews: 89, images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400'] },
+                { id: '3', name: 'Running Shoes', category: 'Fashion', price: 4599, rating: 4.5, reviews: 210, images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'], badge: 'SALE' },
+                { id: '4', name: 'Smart Watch', category: 'Electronics', price: 8999, rating: 5, reviews: 56, images: ['https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400'] }
+            ];
+            document.getElementById('featuredProducts').innerHTML = sample.map(p => createProductCard(p)).join('');
+            document.getElementById('newArrivals').innerHTML = sample.map(p => createProductCard(p)).join('');
+        }
+
+        // Toggle Wishlist
+        window.toggleWishlist = async function(productId, event) {
+            event.stopPropagation();
+            if (!currentUser) {
+                window.location.href = 'account.html';
+                return;
+            }
+            
+            try {
+                if (wishlist.includes(productId)) {
+                    const snap = await db.collection('wishlist')
+                        .where('userId', '==', currentUser.uid)
+                        .where('productId', '==', productId)
+                        .get();
+                    snap.forEach(doc => doc.ref.delete());
+                    wishlist = wishlist.filter(id => id !== productId);
+                    showNotification('Removed from wishlist');
+                } else {
+                    await db.collection('wishlist').add({
+                        userId: currentUser.uid,
+                        productId: productId,
+                        addedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    wishlist.push(productId);
+                    showNotification('Added to wishlist');
+                }
+                document.getElementById('wishlistCount').textContent = wishlist.length;
+            } catch (error) {
+                showNotification('Error', 'error');
+            }
+        };
+
+        // Add to Cart
+        window.addToCart = async function(productId, event) {
+            event.stopPropagation();
+            if (!currentUser) {
+                window.location.href = 'account.html';
+                return;
+            }
+            
+            try {
+                const existing = await db.collection('cart')
+                    .where('userId', '==', currentUser.uid)
+                    .where('productId', '==', productId)
+                    .get();
+                
+                if (!existing.empty) {
+                    const cartItem = existing.docs[0];
+                    await cartItem.ref.update({ quantity: cartItem.data().quantity + 1 });
+                } else {
+                    await db.collection('cart').add({
+                        userId: currentUser.uid,
+                        productId: productId,
+                        quantity: 1,
+                        addedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                showNotification('Added to cart!');
+                loadUserData();
+            } catch (error) {
+                showNotification('Error', 'error');
+            }
+        };
+
+        // Buy Now
+        window.buyNow = function(productId, event) {
+            event.stopPropagation();
+            if (!currentUser) {
+                window.location.href = 'account.html';
+                return;
+            }
+            window.location.href = `product-detail.html?id=${productId}&buynow=true`;
+        };
+
+        window.viewProduct = (id) => window.location.href = `product-detail.html?id=${id}`;
+        
+        window.searchProducts = () => {
+            const term = document.getElementById('searchInput').value;
+            if (term) window.location.href = `products.html?search=${encodeURIComponent(term)}`;
+        };
+
+        function showNotification(msg) {
+            const n = document.createElement('div');
+            n.className = 'notification';
+            n.textContent = msg;
+            document.body.appendChild(n);
+            setTimeout(() => n.remove(), 2000);
+        }
+    </script>
 </body>
 </html>
