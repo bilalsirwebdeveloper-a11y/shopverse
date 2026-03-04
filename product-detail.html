@@ -14,61 +14,67 @@
     
     <style>
         :root {
-            --primary: #232f3e;
-            --secondary: #37475a;
-            --accent: #ff9900;
-            --background: #ffffff;
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --background: #f9f9f9;
             --text: #0f1111;
-            --text-light: #565959;
-            --border: #dddddd;
+            --text-light: #666;
+            --border: #e0e0e0;
             --card-bg: #ffffff;
+            --gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
         }
 
         .dark-mode {
-            --primary: #131921;
-            --secondary: #232f3e;
-            --accent: #ff9900;
-            --background: #0f171e;
+            --primary: #0f0f0f;
+            --secondary: #1a1a1a;
+            --accent: #e94560;
+            --background: #121212;
             --text: #ffffff;
-            --text-light: #a0a0a0;
-            --border: #3a3a3a;
-            --card-bg: #1a242b;
+            --text-light: #b0b0b0;
+            --border: #2d2d2d;
+            --card-bg: #1e1e1e;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: var(--background);
             color: var(--text);
-            transition: background 0.3s ease;
         }
 
-        /* Header */
         .header {
             background: var(--primary);
-            padding: 12px 20px;
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
         .header-content {
-            max-width: 1500px;
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
             color: white;
             text-decoration: none;
         }
 
-        .logo span { color: var(--accent); }
+        .logo span {
+            color: var(--accent);
+        }
 
         .header-icons {
             display: flex;
@@ -79,7 +85,7 @@
         .icon-btn {
             position: relative;
             color: white;
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
         }
 
@@ -88,15 +94,15 @@
             top: -8px;
             right: -8px;
             background: var(--accent);
-            color: #000;
+            color: white;
             font-size: 11px;
             padding: 2px 6px;
             border-radius: 20px;
         }
 
         .theme-toggle {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: rgba(255,255,255,0.1);
             border-radius: 50%;
             display: flex;
@@ -106,7 +112,11 @@
             color: white;
         }
 
-        /* Container */
+        .theme-toggle:hover {
+            background: var(--accent);
+            transform: rotate(180deg);
+        }
+
         .container {
             max-width: 1400px;
             margin: 40px auto;
@@ -118,8 +128,8 @@
             grid-template-columns: 1fr 1fr;
             gap: 50px;
             background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 15px;
+            border: 2px solid var(--border);
+            border-radius: 30px;
             padding: 40px;
         }
 
@@ -133,9 +143,9 @@
         .main-image {
             width: 100%;
             height: 400px;
-            border-radius: 10px;
+            border-radius: 20px;
             overflow: hidden;
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
             background: var(--background);
             display: flex;
             align-items: center;
@@ -157,7 +167,7 @@
         .thumbnail {
             width: 80px;
             height: 80px;
-            border-radius: 6px;
+            border-radius: 10px;
             overflow: hidden;
             border: 2px solid transparent;
             cursor: pointer;
@@ -165,7 +175,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s;
         }
 
         .thumbnail:hover {
@@ -184,31 +193,21 @@
 
         /* Product Info */
         .product-category {
-            color: var(--text-light);
+            color: var(--accent);
             font-size: 14px;
-            margin-bottom: 10px;
             text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
         }
 
         .product-title {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .product-rating {
-            color: #ffc107;
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
-
-        .product-rating span {
-            color: var(--text-light);
-            margin-left: 5px;
+            margin-bottom: 20px;
         }
 
         .product-price {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
             color: var(--accent);
             margin-bottom: 20px;
@@ -220,6 +219,17 @@
             margin-bottom: 30px;
         }
 
+        .product-rating {
+            color: #ffd700;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .product-rating span {
+            color: var(--text-light);
+            margin-left: 5px;
+        }
+
         .quantity {
             display: flex;
             align-items: center;
@@ -228,23 +238,32 @@
         }
 
         .quantity-btn {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: var(--background);
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .quantity-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
         .quantity-input {
-            width: 60px;
-            height: 40px;
+            width: 70px;
+            height: 45px;
             text-align: center;
             background: var(--background);
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
             color: var(--text);
+            font-size: 18px;
+            font-weight: 600;
         }
 
         .product-actions {
@@ -257,63 +276,75 @@
             flex: 1;
             padding: 15px;
             border: none;
-            border-radius: 8px;
+            border-radius: 15px;
             font-weight: 600;
             cursor: pointer;
             font-size: 16px;
-            transition: all 0.3s;
         }
 
         .btn-primary {
             background: var(--accent);
-            color: #000;
-        }
-
-        .btn-secondary {
-            background: var(--primary);
             color: white;
         }
 
-        .btn-primary:hover { background: #ffaa33; }
-        .btn-secondary:hover { background: var(--secondary); }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(233,69,96,0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
 
         /* Order Form */
         .order-form {
             margin-top: 30px;
-            padding: 25px;
+            padding: 30px;
             background: var(--background);
-            border: 1px solid var(--border);
-            border-radius: 10px;
+            border: 2px solid var(--border);
+            border-radius: 20px;
             display: none;
         }
 
         .order-form h3 {
-            font-size: 20px;
+            font-size: 24px;
             margin-bottom: 20px;
             color: var(--accent);
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             color: var(--text-light);
-            font-size: 13px;
             font-weight: 500;
         }
 
         .form-group input,
-        .form-group textarea,
-        .form-group select {
+        .form-group textarea {
             width: 100%;
-            padding: 12px;
-            background: var(--background);
-            border: 1px solid var(--border);
-            border-radius: 6px;
+            padding: 15px;
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
             color: var(--text);
+            font-size: 15px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
         }
 
         .form-row {
@@ -331,17 +362,21 @@
         .payment-method {
             flex: 1;
             padding: 15px;
-            background: var(--background);
+            background: var(--card-bg);
             border: 2px solid var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s;
         }
 
+        .payment-method:hover {
+            border-color: var(--accent);
+        }
+
         .payment-method.selected {
             border-color: var(--accent);
-            background: rgba(255,153,0,0.1);
+            background: rgba(233,69,96,0.1);
         }
 
         .payment-method i {
@@ -350,11 +385,19 @@
             display: block;
         }
 
+        .payment-method.easypaisa i {
+            color: #6f2c91;
+        }
+
+        .payment-method.jazzcash i {
+            color: #d62b27;
+        }
+
         .payment-details {
-            padding: 15px;
-            background: rgba(255,153,0,0.1);
-            border-radius: 8px;
-            margin: 15px 0;
+            padding: 20px;
+            background: rgba(233,69,96,0.1);
+            border-radius: 12px;
+            margin: 20px 0;
         }
 
         .store-account {
@@ -363,18 +406,18 @@
             color: var(--accent);
             text-align: center;
             padding: 10px;
-            background: var(--background);
-            border: 1px solid var(--border);
-            border-radius: 6px;
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 10px;
             margin: 10px 0;
         }
 
         .order-summary {
             margin-top: 20px;
             padding: 20px;
-            background: var(--background);
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
         }
 
         .summary-row {
@@ -384,10 +427,10 @@
         }
 
         .summary-total {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: 700;
             color: var(--accent);
-            border-top: 1px solid var(--border);
+            border-top: 2px solid var(--border);
             padding-top: 15px;
             margin-top: 10px;
         }
@@ -399,17 +442,20 @@
             text-decoration: none;
         }
 
-        .back-link:hover { color: var(--accent); }
+        .back-link:hover {
+            color: var(--accent);
+        }
 
         .notification {
             position: fixed;
             top: 100px;
             right: 20px;
-            padding: 12px 24px;
+            padding: 15px 30px;
             background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
+            border-left: 4px solid var(--accent);
+            border-radius: 15px;
             color: var(--text);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             z-index: 9999;
             animation: slideIn 0.3s ease;
         }
@@ -419,10 +465,18 @@
             to { transform: translateX(0); opacity: 1; }
         }
 
+        .loading {
+            text-align: center;
+            padding: 50px;
+        }
+
         @media (max-width: 768px) {
-            .product-container { grid-template-columns: 1fr; }
-            .form-row { grid-template-columns: 1fr; }
-            .payment-methods { flex-direction: column; }
+            .product-container {
+                grid-template-columns: 1fr;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -440,7 +494,9 @@
     </header>
 
     <div class="container">
-        <div class="product-container" id="productContainer"></div>
+        <div class="product-container" id="productContainer">
+            <div class="loading">Loading product...</div>
+        </div>
     </div>
 
     <script>
@@ -475,7 +531,8 @@
         // Theme Toggle
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
-            document.getElementById('themeIcon').className = document.body.classList.contains('dark-mode') ? 'fas fa-moon' : 'fas fa-sun';
+            const icon = document.getElementById('themeIcon');
+            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-moon' : 'fas fa-sun';
             localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
         }
         if (localStorage.getItem('theme') === 'dark') {
@@ -483,7 +540,6 @@
             document.getElementById('themeIcon').className = 'fas fa-moon';
         }
 
-        // Auth State
         auth.onAuthStateChanged(user => {
             currentUser = user;
             if (user) loadCounts();
@@ -498,9 +554,11 @@
             document.getElementById('cartCount').textContent = cartSnap.docs.reduce((s, d) => s + (d.data().quantity || 1), 0);
         }
 
-        // Load Product
         async function loadProduct() {
-            if (!productId) return window.location.href = 'products.html';
+            if (!productId) {
+                window.location.href = 'products.html';
+                return;
+            }
             
             try {
                 const doc = await db.collection('products').doc(productId).get();
@@ -512,7 +570,7 @@
                         name: 'Wireless Headphones',
                         price: 5499,
                         category: 'Electronics',
-                        description: 'Premium quality wireless headphones with noise cancellation.',
+                        description: 'Premium quality wireless headphones with noise cancellation and 30-hour battery life.',
                         images: [
                             'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400',
                             'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=400',
@@ -548,11 +606,11 @@
                 <div>
                     <div class="product-category">${currentProduct.category || 'General'}</div>
                     <h1 class="product-title">${currentProduct.name}</h1>
+                    <div class="product-price">Rs ${currentProduct.price?.toLocaleString()}</div>
                     <div class="product-rating">
                         ${generateStars(currentProduct.rating || 4.5)}
                         <span>(${currentProduct.reviews || 0} reviews)</span>
                     </div>
-                    <div class="product-price">Rs ${currentProduct.price?.toLocaleString()}</div>
                     <p class="product-description">${currentProduct.description || 'No description available.'}</p>
                     
                     <div class="quantity">
@@ -606,7 +664,6 @@
                             <div class="store-account">Rs ${(currentProduct.price * quantity).toLocaleString()}</div>
                             <div class="store-account">${STORE_ACCOUNT.easypaisa.number}</div>
                             <p style="text-align: center;">Account Title: <strong>${STORE_ACCOUNT.easypaisa.title}</strong></p>
-                            <p style="margin-top: 15px;">After payment, enter Transaction ID:</p>
                         </div>
                         
                         <div class="form-group">
@@ -629,8 +686,7 @@
                             </div>
                         </div>
                         
-                        <button class="btn btn-primary" onclick="placeOrder()">Place Order</button>
-                        <button class="btn btn-secondary" onclick="hideOrderForm()" style="margin-top: 10px;">Cancel</button>
+                        <button class="btn btn-primary" onclick="placeOrder()" style="width: 100%;">Place Order</button>
                     </div>
                     
                     <a href="products.html" class="back-link">← Back to Products</a>
@@ -641,7 +697,9 @@
         function generateStars(rating) {
             let stars = '';
             for (let i = 1; i <= 5; i++) {
-                stars += i <= rating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
+                if (i <= rating) stars += '<i class="fas fa-star"></i>';
+                else if (i - rating < 1) stars += '<i class="fas fa-star-half-alt"></i>';
+                else stars += '<i class="far fa-star"></i>';
             }
             return stars;
         }
@@ -649,9 +707,6 @@
         window.changeImage = (index) => {
             currentImageIndex = index;
             document.getElementById('mainImage').src = currentProduct.images[index];
-            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
-                thumb.classList.toggle('active', i === index);
-            });
         };
 
         window.changeQty = (change) => {
@@ -659,12 +714,14 @@
             document.getElementById('qty').value = quantity;
             if (document.getElementById('summaryQty')) {
                 document.getElementById('summaryQty').textContent = quantity;
-                document.querySelector('.summary-total span:last-child').textContent = 'Rs ' + (currentProduct.price * quantity).toLocaleString();
             }
         };
 
         window.addToCart = async () => {
-            if (!currentUser) return window.location.href = 'account.html';
+            if (!currentUser) {
+                window.location.href = 'account.html';
+                return;
+            }
             
             try {
                 const existing = await db.collection('cart')
@@ -686,18 +743,17 @@
                 showNotification('Added to cart!');
                 loadCounts();
             } catch (error) {
-                showNotification('Error', 'error');
+                showNotification('Error adding to cart', 'error');
             }
         };
 
         window.showOrderForm = () => {
-            if (!currentUser) return window.location.href = 'account.html';
+            if (!currentUser) {
+                window.location.href = 'account.html';
+                return;
+            }
             document.getElementById('orderForm').style.display = 'block';
             window.scrollTo({ top: document.getElementById('orderForm').offsetTop, behavior: 'smooth' });
-        };
-
-        window.hideOrderForm = () => {
-            document.getElementById('orderForm').style.display = 'none';
         };
 
         window.selectPayment = (method) => {
@@ -711,7 +767,6 @@
                 <div class="store-account">Rs ${(currentProduct.price * quantity).toLocaleString()}</div>
                 <div class="store-account">${STORE_ACCOUNT[method].number}</div>
                 <p style="text-align: center;">Account Title: <strong>${STORE_ACCOUNT[method].title}</strong></p>
-                <p style="margin-top: 15px;">After payment, enter Transaction ID:</p>
             `;
         };
 
