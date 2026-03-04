@@ -59,6 +59,7 @@
         }
         .empty-wishlist {
             text-align: center; padding: 60px;
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
         }
         .empty-wishlist i {
             font-size: 80px; color: var(--text-light); margin-bottom: 20px;
@@ -85,10 +86,11 @@
         .product-price { color: var(--accent); font-weight: 700; }
         .remove-btn {
             position: absolute; top: 10px; right: 10px;
-            width: 30px; height: 30px; background: rgba(255,0,0,0.2);
+            width: 30px; height: 30px; background: var(--danger);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; color: #ff0000;
+            cursor: pointer; color: white; opacity: 0.8;
         }
+        .remove-btn:hover { opacity: 1; }
         .notification {
             position: fixed; top: 100px; right: 20px; padding: 12px 24px;
             background: var(--card-bg); border: 1px solid var(--border);
@@ -134,6 +136,9 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        let currentUser = null;
+        let wishlistItems = [];
+
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             document.getElementById('themeIcon').className = document.body.classList.contains('dark-mode') ? 'fas fa-moon' : 'fas fa-sun';
@@ -145,6 +150,7 @@
         }
 
         auth.onAuthStateChanged(user => {
+            currentUser = user;
             if (!user) {
                 document.getElementById('wishlistContent').innerHTML = `
                     <div class="empty-wishlist">
@@ -153,21 +159,22 @@
                         <button class="shop-now-btn" onclick="window.location.href='account.html'">Login</button>
                     </div>
                 `;
+                document.getElementById('wishlistCount').textContent = '0';
             } else {
-                loadWishlist(user);
-                loadCounts(user);
+                loadWishlist();
+                loadCounts();
             }
         });
 
-        async function loadCounts(user) {
-            const wish = await db.collection('wishlist').where('userId', '==', user.uid).get();
-            document.getElementById('wishlistCount').textContent = wish.size;
-            const cart = await db.collection('cart').where('userId', '==', user.uid).get();
+        async function loadCounts() {
+            const cart = await db.collection('cart').where('userId', '==', currentUser.uid).get();
             document.getElementById('cartCount').textContent = cart.docs.reduce((s, d) => s + (d.data().quantity || 1), 0);
         }
 
-        async function loadWishlist(user) {
-            const wishSnap = await db.collection('wishlist').where('userId', '==', user.uid).get();
+        async function loadWishlist() {
+            const wishSnap = await db.collection('wishlist').where('userId', '==', currentUser.uid).get();
+            document.getElementById('wishlistCount').textContent = wishSnap.size;
+            
             if (wishSnap.empty) {
                 document.getElementById('wishlistContent').innerHTML = `
                     <div class="empty-wishlist">
@@ -178,14 +185,54 @@
                 `;
                 return;
             }
-            // Simplified - show empty for demo
-            document.getElementById('wishlistContent').innerHTML = `
-                <div class="empty-wishlist">
-                    <i class="fas fa-heart"></i>
-                    <h2>Your wishlist has items</h2>
-                    <button class="shop-now-btn" onclick="window.location.href='products.html'">Continue Shopping</button>
+            
+            const products = [];
+            for (const doc of wishSnap.docs) {
+                const productId = doc.data().productId;
+                const productDoc = await db.collection('products').doc(productId).get();
+                if (productDoc.exists) {
+                    products.push({ id: productDoc.id, ...productDoc.data(), wishlistId: doc.id });
+                }
+            }
+            
+            displayWishlist(products);
+        }
+
+        function displayWishlist(products) {
+            const container = document.getElementById('wishlistContent');
+            container.innerHTML = `
+                <div class="products-grid">
+                    ${products.map(p => `
+                        <div class="product-card" onclick="viewProduct('${p.id}')">
+                            <div class="remove-btn" onclick="removeFromWishlist('${p.wishlistId}', event)"><i class="fas fa-times"></i></div>
+                            <div class="product-image">
+                                <img src="${p.images?.[0] || 'https://via.placeholder.com/200'}" alt="${p.name}">
+                            </div>
+                            <div class="product-info">
+                                <div class="product-title">${p.name}</div>
+                                <div class="product-price">Rs ${p.price?.toLocaleString()}</div>
+                            </div>
+                        </div>
+                    `).join('')}
                 </div>
             `;
+        }
+
+        window.removeFromWishlist = async (wishlistId, event) => {
+            event.stopPropagation();
+            await db.collection('wishlist').doc(wishlistId).delete();
+            showNotification('Removed from wishlist');
+            loadWishlist();
+        };
+
+        window.viewProduct = (id) => window.location.href = `product-detail.html?id=${id}`;
+
+        function showNotification(msg) {
+            const n = document.createElement('div');
+            n.className = 'notification';
+            n.textContent = msg;
+            document.body.appendChild(n);
+            setTimeout(() => n.remove(), 2000);
         }
     </script>
 </body>
