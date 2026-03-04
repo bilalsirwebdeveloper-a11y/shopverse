@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZYVORASHOP - Your Shopping Destination</title>
+    <title>ZYVORASHOP - Premium Shopping</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -14,85 +14,123 @@
     
     <style>
         :root {
-            --primary: #232f3e;
-            --secondary: #37475a;
-            --accent: #ff9900;
-            --background: #ffffff;
+            --primary: #1a1a2e;
+            --secondary: #16213e;
+            --accent: #e94560;
+            --background: #f9f9f9;
             --text: #0f1111;
-            --text-light: #565959;
-            --border: #dddddd;
+            --text-light: #666;
+            --border: #e0e0e0;
             --card-bg: #ffffff;
-            --hover: #f3f3f3;
+            --hover: #f5f5f5;
+            --success: #0f0;
+            --gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
         }
 
         .dark-mode {
-            --primary: #131921;
-            --secondary: #232f3e;
-            --accent: #ff9900;
-            --background: #0f171e;
+            --primary: #0f0f0f;
+            --secondary: #1a1a1a;
+            --accent: #e94560;
+            --background: #121212;
             --text: #ffffff;
-            --text-light: #a0a0a0;
-            --border: #3a3a3a;
-            --card-bg: #1a242b;
+            --text-light: #b0b0b0;
+            --border: #2d2d2d;
+            --card-bg: #1e1e1e;
             --hover: #2a2a2a;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background: var(--background);
             color: var(--text);
-            transition: background 0.3s ease;
+            line-height: 1.6;
         }
 
         /* Header */
         .header {
             background: var(--primary);
-            padding: 12px 20px;
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
         .header-content {
-            max-width: 1500px;
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 20px;
         }
 
         .logo {
-            font-size: 24px;
+            font-size: 28px;
             font-weight: 700;
             color: white;
             text-decoration: none;
+            letter-spacing: -0.5px;
         }
 
-        .logo span { color: var(--accent); }
+        .logo span {
+            color: var(--accent);
+            font-weight: 800;
+        }
 
         .search-bar {
             flex: 1;
-            max-width: 800px;
+            max-width: 600px;
+            margin: 0 30px;
             display: flex;
+            position: relative;
         }
 
         .search-bar input {
             width: 100%;
-            padding: 12px 15px;
-            border: none;
-            border-radius: 8px 0 0 8px;
+            padding: 14px 20px;
+            border: 2px solid transparent;
+            border-radius: 30px;
             font-size: 15px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            background: white;
+            color: var(--text);
+            border-color: var(--accent);
         }
 
         .search-bar button {
-            padding: 12px 25px;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            padding: 9px 25px;
             background: var(--accent);
             border: none;
-            border-radius: 0 8px 8px 0;
+            border-radius: 30px;
+            color: white;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-bar button:hover {
+            transform: translateX(-2px);
+            box-shadow: 0 5px 15px rgba(233,69,96,0.3);
         }
 
         .header-icons {
@@ -104,30 +142,33 @@
         .icon-btn {
             position: relative;
             color: white;
-            font-size: 20px;
+            font-size: 22px;
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
+            transition: all 0.3s;
         }
 
-        .icon-btn span { font-size: 11px; }
+        .icon-btn:hover {
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
 
         .badge {
             position: absolute;
             top: -8px;
             right: -8px;
             background: var(--accent);
-            color: #000;
+            color: white;
             font-size: 11px;
+            font-weight: 600;
             padding: 2px 6px;
             border-radius: 20px;
+            min-width: 18px;
+            text-align: center;
         }
 
         .theme-toggle {
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             background: rgba(255,255,255,0.1);
             border-radius: 50%;
             display: flex;
@@ -135,57 +176,213 @@
             justify-content: center;
             cursor: pointer;
             color: white;
+            font-size: 20px;
+            transition: all 0.3s;
         }
 
-        /* Categories */
-        .categories {
+        .theme-toggle:hover {
+            background: var(--accent);
+            transform: rotate(180deg);
+        }
+
+        /* Categories Bar - IMPROVED */
+        .categories-section {
             background: var(--secondary);
-            padding: 10px 20px;
+            padding: 20px 20px 30px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .categories-list {
-            max-width: 1500px;
-            margin: 0 auto;
-            display: flex;
-            gap: 30px;
-            overflow-x: auto;
+        .categories-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(233,69,96,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
         }
 
-        .categories-list a {
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .section-title {
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            padding: 0 20px;
             color: white;
-            text-decoration: none;
-            font-size: 14px;
-            white-space: nowrap;
+            font-size: 24px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
         }
 
-        .categories-list a:hover { color: var(--accent); }
+        .section-title span {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 5px;
+        }
 
-        /* Container */
+        .categories-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-card {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(233,69,96,0.3);
+        }
+
+        .category-card:hover::before {
+            left: 100%;
+        }
+
+        .category-card.active {
+            border-color: var(--accent);
+            background: rgba(233,69,96,0.2);
+            box-shadow: 0 0 30px rgba(233,69,96,0.3);
+        }
+
+        .category-icon {
+            font-size: 40px;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .category-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .category-count {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Main Container */
         .container {
-            max-width: 1500px;
-            margin: 30px auto;
+            max-width: 1400px;
+            margin: 40px auto;
             padding: 0 20px;
         }
 
+        /* Hero Banner */
         .hero {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+            background: var(--gradient);
+            border-radius: 30px;
             padding: 60px 40px;
-            border-radius: 12px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .hero h1 { font-size: 42px; margin-bottom: 15px; }
-        .hero p { font-size: 18px; max-width: 600px; margin: 0 auto; opacity: 0.9; }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            animation: shine 3s infinite;
+        }
 
-        .section-title {
-            font-size: 24px;
-            font-weight: 600;
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            color: white;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: rgba(255,255,255,0.9);
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Section Header */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin: 40px 0 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid var(--accent);
-            display: inline-block;
+        }
+
+        .section-header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .section-header h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 5px;
+            height: 30px;
+            background: var(--accent);
+            border-radius: 5px;
+        }
+
+        .view-all {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s;
+        }
+
+        .view-all:hover {
+            gap: 10px;
         }
 
         /* Products Grid */
@@ -193,52 +390,44 @@
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 25px;
-            margin-bottom: 40px;
         }
 
         .product-card {
             background: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 20px;
             overflow: hidden;
-            transition: all 0.3s;
+            transition: all 0.4s;
             cursor: pointer;
             position: relative;
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
             border-color: var(--accent);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
 
-        .product-image {
-            height: 220px;
-            background: var(--hover);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            position: relative;
-        }
-
-        .product-image img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            transition: transform 0.3s;
-        }
-
-        .product-card:hover .product-image img {
-            transform: scale(1.05);
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 25px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(233,69,96,0.3);
         }
 
         .wishlist-btn {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 35px;
-            height: 35px;
+            top: 15px;
+            left: 15px;
+            width: 40px;
+            height: 40px;
             background: rgba(255,255,255,0.9);
             border-radius: 50%;
             display: flex;
@@ -247,55 +436,65 @@
             cursor: pointer;
             color: #666;
             transition: all 0.3s;
-            z-index: 10;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            z-index: 2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .wishlist-btn:hover {
+            background: var(--accent);
+            color: white;
             transform: scale(1.1);
-            background: #ffeaa7;
-            color: #e17055;
         }
 
         .wishlist-btn.active {
-            background: #ffeaa7;
-            color: #e17055;
-        }
-
-        .product-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
             background: var(--accent);
-            color: #000;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            z-index: 10;
+            color: white;
         }
 
-        .product-info { padding: 15px; }
+        .product-image {
+            height: 250px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--hover);
+            position: relative;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.6s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1) rotate(3deg);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
 
         .product-category {
-            font-size: 11px;
-            color: var(--text-light);
+            font-size: 12px;
+            color: var(--accent);
             text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 5px;
         }
 
         .product-title {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             margin-bottom: 8px;
-            height: 44px;
-            overflow: hidden;
+            line-height: 1.4;
         }
 
         .product-rating {
-            color: #ffc107;
-            margin-bottom: 8px;
-            font-size: 12px;
+            color: #ffd700;
+            margin-bottom: 10px;
+            font-size: 13px;
         }
 
         .product-rating span {
@@ -304,51 +503,59 @@
         }
 
         .product-price {
-            font-size: 18px;
+            font-size: 22px;
             font-weight: 700;
             color: var(--accent);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .product-actions {
             display: flex;
-            gap: 8px;
+            gap: 10px;
         }
 
         .btn-add, .btn-buy {
             flex: 1;
-            padding: 8px;
+            padding: 10px;
             border: none;
-            border-radius: 6px;
-            font-size: 12px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
+            font-size: 13px;
         }
 
         .btn-add {
             background: var(--accent);
-            color: #000;
-        }
-
-        .btn-buy {
-            background: var(--primary);
             color: white;
         }
 
-        .btn-add:hover { background: #ffaa33; }
-        .btn-buy:hover { background: var(--secondary); }
+        .btn-add:hover {
+            background: #d43b56;
+            transform: translateY(-2px);
+        }
+
+        .btn-buy {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text);
+        }
+
+        .btn-buy:hover {
+            border-color: var(--accent);
+            background: rgba(233,69,96,0.1);
+        }
 
         /* Footer */
         .footer {
             background: var(--primary);
             color: white;
-            padding: 50px 20px 20px;
+            padding: 60px 20px 30px;
             margin-top: 60px;
         }
 
         .footer-content {
-            max-width: 1500px;
+            max-width: 1400px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -356,29 +563,57 @@
         }
 
         .footer-section h3 {
-            font-size: 18px;
+            font-size: 20px;
             margin-bottom: 20px;
             color: white;
         }
 
-        .footer-section p, .footer-section a {
-            color: #a0a0a0;
-            font-size: 14px;
+        .footer-section h3 span {
+            color: var(--accent);
+        }
+
+        .footer-section p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.7);
             text-decoration: none;
             display: block;
             margin-bottom: 8px;
+            transition: all 0.3s;
         }
 
-        .footer-section a:hover { color: var(--accent); }
+        .footer-section a:hover {
+            color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
 
         .footer-bottom {
-            max-width: 1500px;
+            max-width: 1400px;
             margin: 40px auto 0;
-            padding-top: 20px;
+            padding-top: 30px;
             border-top: 1px solid rgba(255,255,255,0.1);
             text-align: center;
-            color: #a0a0a0;
-            font-size: 13px;
+            color: rgba(255,255,255,0.5);
         }
 
         /* Notification */
@@ -386,61 +621,105 @@
             position: fixed;
             top: 100px;
             right: 20px;
-            padding: 12px 24px;
+            padding: 15px 30px;
             background: var(--card-bg);
-            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
             border-radius: 8px;
             color: var(--text);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             z-index: 9999;
             animation: slideIn 0.3s ease;
         }
 
         @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
+        /* Loading */
         .loading {
             text-align: center;
             padding: 50px;
             color: var(--text-light);
         }
 
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Responsive */
         @media (max-width: 1200px) {
-            .products-grid { grid-template-columns: repeat(3, 1fr); }
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
+
         @media (max-width: 992px) {
-            .products-grid { grid-template-columns: repeat(2, 1fr); }
-            .footer-content { grid-template-columns: repeat(2, 1fr); }
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .search-bar {
+                display: none;
+            }
         }
+
         @media (max-width: 768px) {
-            .search-bar { display: none; }
-            .products-grid { grid-template-columns: 1fr; }
-            .footer-content { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 28px; }
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header class="header">
         <div class="header-content">
             <a href="index.html" class="logo">ZYVORA<span>SHOP</span></a>
+            
             <div class="search-bar">
                 <input type="text" id="searchInput" placeholder="Search products...">
                 <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
             </div>
+            
             <div class="header-icons">
                 <div class="icon-btn" onclick="window.location.href='account.html'">
-                    <i class="far fa-user"></i><span>Account</span>
+                    <i class="far fa-user"></i>
                 </div>
                 <div class="icon-btn" onclick="window.location.href='wishlist.html'">
-                    <i class="far fa-heart"></i><span>Wishlist</span>
+                    <i class="far fa-heart"></i>
                     <span class="badge" id="wishlistCount">0</span>
                 </div>
                 <div class="icon-btn" onclick="window.location.href='cart.html'">
-                    <i class="fas fa-shopping-cart"></i><span>Cart</span>
+                    <i class="fas fa-shopping-cart"></i>
                     <span class="badge" id="cartCount">0</span>
                 </div>
                 <div class="theme-toggle" onclick="toggleTheme()">
@@ -450,36 +729,72 @@
         </div>
     </header>
 
-    <div class="categories">
-        <div class="categories-list">
-            <a href="products.html?category=Electronics">Electronics</a>
-            <a href="products.html?category=Fashion">Fashion</a>
-            <a href="products.html?category=Home">Home</a>
-            <a href="products.html?category=Watches">Watches</a>
+    <!-- Categories Section - IMPROVED -->
+    <section class="categories-section">
+        <div class="section-title">
+            <span>Shop by Category</span>
         </div>
-    </div>
+        <div class="categories-grid" id="categoriesGrid"></div>
+    </section>
 
+    <!-- Hero Banner -->
     <div class="container">
         <div class="hero">
             <h1>Welcome to ZYVORASHOP</h1>
-            <p>Discover amazing products at great prices!</p>
+            <p>Discover premium products at amazing prices. Free shipping on orders over Rs 2000!</p>
         </div>
 
-        <h2 class="section-title">Featured Products</h2>
+        <!-- Featured Products -->
+        <div class="section-header">
+            <h2>Featured Products</h2>
+            <a href="products.html" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+        </div>
         <div class="products-grid" id="featuredProducts"></div>
 
-        <h2 class="section-title">New Arrivals</h2>
+        <!-- New Arrivals -->
+        <div class="section-header">
+            <h2>New Arrivals</h2>
+            <a href="products.html" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+        </div>
         <div class="products-grid" id="newArrivals"></div>
     </div>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <div><h3>About</h3><p>Your trusted online store</p></div>
-            <div><h3>Quick Links</h3><a href="index.html">Home</a><a href="products.html">Products</a></div>
-            <div><h3>Contact</h3><p>support@zyvorashop.com</p></div>
-            <div><h3>Follow</h3><a href="#">Facebook</a><a href="#">Instagram</a></div>
+            <div class="footer-section">
+                <h3>ZYVORA<span>SHOP</span></h3>
+                <p>Your premium shopping destination since 2024. Quality products, amazing prices, fast delivery.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="index.html">Home</a>
+                <a href="products.html">Products</a>
+                <a href="cart.html">Cart</a>
+                <a href="account.html">Account</a>
+            </div>
+            <div class="footer-section">
+                <h3>Categories</h3>
+                <a href="products.html?category=Electronics">Electronics</a>
+                <a href="products.html?category=Fashion">Fashion</a>
+                <a href="products.html?category=Home">Home</a>
+                <a href="products.html?category=Watches">Watches</a>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p><i class="fas fa-phone"></i> +92 300 1234567</p>
+                <p><i class="fas fa-envelope"></i> support@zyvorashop.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> Lahore, Pakistan</p>
+            </div>
         </div>
-        <div class="footer-bottom"><p>© 2024 ZYVORASHOP</p></div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 ZYVORASHOP. All rights reserved. | Designed for premium experience</p>
+        </div>
     </footer>
 
     <script>
@@ -498,6 +813,8 @@
 
         let currentUser = null;
         let wishlist = [];
+        let categories = [];
+        let allProducts = [];
 
         // Theme Toggle
         function toggleTheme() {
@@ -514,11 +831,13 @@
         // Auth State
         auth.onAuthStateChanged(user => {
             currentUser = user;
-            if (user) loadUserData();
-            else {
+            if (user) {
+                loadUserData();
+            } else {
                 document.getElementById('wishlistCount').textContent = '0';
                 document.getElementById('cartCount').textContent = '0';
             }
+            loadCategories();
             loadProducts();
         });
 
@@ -538,10 +857,159 @@
             }
         }
 
+        // Load Categories
+        async function loadCategories() {
+            try {
+                const snap = await db.collection('categories').get();
+                categories = snap.docs.map(doc => doc.data().name);
+                
+                // Get product counts for each category
+                const productsSnap = await db.collection('products').get();
+                allProducts = productsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                const categoryCounts = {};
+                allProducts.forEach(p => {
+                    if (p.category) {
+                        categoryCounts[p.category] = (categoryCounts[p.category] || 0) + 1;
+                    }
+                });
+                
+                const categoriesGrid = document.getElementById('categoriesGrid');
+                categoriesGrid.innerHTML = categories.map(cat => `
+                    <div class="category-card" onclick="window.location.href='products.html?category=${encodeURIComponent(cat)}'">
+                        <div class="category-icon"><i class="fas ${getCategoryIcon(cat)}"></i></div>
+                        <div class="category-name">${cat}</div>
+                        <div class="category-count">${categoryCounts[cat] || 0} Products</div>
+                    </div>
+                `).join('');
+                
+            } catch (error) {
+                console.error('Error loading categories:', error);
+                showSampleCategories();
+            }
+        }
+
+        function getCategoryIcon(category) {
+            const icons = {
+                'Electronics': 'fa-laptop',
+                'Fashion': 'fa-tshirt',
+                'Home': 'fa-home',
+                'Watches': 'fa-clock',
+                'Beauty': 'fa-magic',
+                'Sports': 'fa-futbol',
+                'Toys': 'fa-gamepad',
+                'Books': 'fa-book'
+            };
+            return icons[category] || 'fa-tag';
+        }
+
+        function showSampleCategories() {
+            const categoriesGrid = document.getElementById('categoriesGrid');
+            categoriesGrid.innerHTML = `
+                <div class="category-card" onclick="window.location.href='products.html?category=Electronics'">
+                    <div class="category-icon"><i class="fas fa-laptop"></i></div>
+                    <div class="category-name">Electronics</div>
+                    <div class="category-count">4 Products</div>
+                </div>
+                <div class="category-card" onclick="window.location.href='products.html?category=Fashion'">
+                    <div class="category-icon"><i class="fas fa-tshirt"></i></div>
+                    <div class="category-name">Fashion</div>
+                    <div class="category-count">2 Products</div>
+                </div>
+                <div class="category-card" onclick="window.location.href='products.html?category=Watches'">
+                    <div class="category-icon"><i class="fas fa-clock"></i></div>
+                    <div class="category-name">Watches</div>
+                    <div class="category-count">3 Products</div>
+                </div>
+                <div class="category-card" onclick="window.location.href='products.html?category=Home'">
+                    <div class="category-icon"><i class="fas fa-home"></i></div>
+                    <div class="category-name">Home</div>
+                    <div class="category-count">1 Products</div>
+                </div>
+            `;
+        }
+
+        // Load Products
+        async function loadProducts() {
+            try {
+                const snapshot = await db.collection('products').limit(8).get();
+                
+                if (snapshot.empty) {
+                    showSampleProducts();
+                    return;
+                }
+                
+                const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                
+                document.getElementById('featuredProducts').innerHTML = products.slice(0,4).map(p => createProductCard(p)).join('');
+                document.getElementById('newArrivals').innerHTML = products.slice(4,8).map(p => createProductCard(p)).join('');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showSampleProducts();
+            }
+        }
+
+        function createProductCard(product) {
+            const inWishlist = wishlist.includes(product.id);
+            return `
+                <div class="product-card" onclick="viewProduct('${product.id}')">
+                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
+                    <div class="wishlist-btn ${inWishlist ? 'active' : ''}" onclick="toggleWishlist('${product.id}', event)">
+                        <i class="fa${inWishlist ? 's' : 'r'} fa-heart"></i>
+                    </div>
+                    <div class="product-image">
+                        <img src="${product.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" alt="${product.name}">
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">${product.category || 'General'}</div>
+                        <div class="product-title">${product.name}</div>
+                        <div class="product-rating">
+                            ${generateStars(product.rating || 4.5)}
+                            <span>(${product.reviews || 0})</span>
+                        </div>
+                        <div class="product-price">Rs ${product.price?.toLocaleString()}</div>
+                        <div class="product-actions">
+                            <button class="btn-add" onclick="addToCart('${product.id}', event)">Add to Cart</button>
+                            <button class="btn-buy" onclick="buyNow('${product.id}', event)">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<i class="fas fa-star"></i>';
+                } else if (i - rating < 1) {
+                    stars += '<i class="fas fa-star-half-alt"></i>';
+                } else {
+                    stars += '<i class="far fa-star"></i>';
+                }
+            }
+            return stars;
+        }
+
+        function showSampleProducts() {
+            const sample = [
+                { id: '1', name: 'Wireless Headphones', category: 'Electronics', price: 5499, rating: 4.5, reviews: 128, images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'], badge: 'NEW' },
+                { id: '2', name: 'Premium Watch', category: 'Watches', price: 3299, rating: 4, reviews: 89, images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400'] },
+                { id: '3', name: 'Running Shoes', category: 'Fashion', price: 4599, rating: 4.5, reviews: 210, images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'], badge: 'SALE' },
+                { id: '4', name: 'Smart Watch', category: 'Electronics', price: 8999, rating: 5, reviews: 56, images: ['https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400'] }
+            ];
+            document.getElementById('featuredProducts').innerHTML = sample.map(p => createProductCard(p)).join('');
+            document.getElementById('newArrivals').innerHTML = sample.map(p => createProductCard(p)).join('');
+        }
+
         // Toggle Wishlist
         window.toggleWishlist = async function(productId, event) {
             event.stopPropagation();
-            if (!currentUser) return window.location.href = 'account.html';
+            if (!currentUser) {
+                window.location.href = 'account.html';
+                return;
+            }
             
             try {
                 if (wishlist.includes(productId)) {
@@ -570,7 +1038,10 @@
         // Add to Cart
         window.addToCart = async function(productId, event) {
             event.stopPropagation();
-            if (!currentUser) return window.location.href = 'account.html';
+            if (!currentUser) {
+                window.location.href = 'account.html';
+                return;
+            }
             
             try {
                 const existing = await db.collection('cart')
@@ -599,73 +1070,15 @@
         // Buy Now
         window.buyNow = function(productId, event) {
             event.stopPropagation();
-            if (!currentUser) return window.location.href = 'account.html';
+            if (!currentUser) {
+                window.location.href = 'account.html';
+                return;
+            }
             window.location.href = `product-detail.html?id=${productId}&buynow=true`;
         };
 
-        // Load Products
-        async function loadProducts() {
-            try {
-                const snapshot = await db.collection('products').limit(8).get();
-                if (snapshot.empty) return showSampleProducts();
-                
-                const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                
-                document.getElementById('featuredProducts').innerHTML = products.slice(0,4).map(p => createCard(p)).join('');
-                document.getElementById('newArrivals').innerHTML = products.slice(4,8).map(p => createCard(p)).join('');
-            } catch (error) {
-                showSampleProducts();
-            }
-        }
-
-        function createCard(product) {
-            const inWishlist = wishlist.includes(product.id);
-            return `
-                <div class="product-card" onclick="viewProduct('${product.id}')">
-                    <div class="wishlist-btn ${inWishlist ? 'active' : ''}" onclick="toggleWishlist('${product.id}', event)">
-                        <i class="fa${inWishlist ? 's' : 'r'} fa-heart"></i>
-                    </div>
-                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
-                    <div class="product-image">
-                        <img src="${product.images?.[0] || 'https://via.placeholder.com/200'}" alt="${product.name}">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">${product.category || 'General'}</div>
-                        <div class="product-title">${product.name}</div>
-                        <div class="product-rating">
-                            ${generateStars(product.rating || 4.5)}
-                            <span>(${product.reviews || 0})</span>
-                        </div>
-                        <div class="product-price">Rs ${product.price?.toLocaleString()}</div>
-                        <div class="product-actions">
-                            <button class="btn-add" onclick="addToCart('${product.id}', event)">Add to Cart</button>
-                            <button class="btn-buy" onclick="buyNow('${product.id}', event)">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        function generateStars(rating) {
-            let stars = '';
-            for (let i = 1; i <= 5; i++) {
-                stars += i <= rating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
-            }
-            return stars;
-        }
-
-        function showSampleProducts() {
-            const sample = [
-                { id: '1', name: 'Wireless Headphones', category: 'Electronics', price: 5499, rating: 4.5, reviews: 128, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400', badge: 'NEW' },
-                { id: '2', name: 'Premium Watch', category: 'Watches', price: 3299, rating: 4, reviews: 89, image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400' },
-                { id: '3', name: 'Running Shoes', category: 'Fashion', price: 4599, rating: 4.5, reviews: 210, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400', badge: 'SALE' },
-                { id: '4', name: 'Smart Watch', category: 'Electronics', price: 8999, rating: 5, reviews: 56, image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400' }
-            ];
-            document.getElementById('featuredProducts').innerHTML = sample.map(p => createCard(p)).join('');
-            document.getElementById('newArrivals').innerHTML = sample.map(p => createCard(p)).join('');
-        }
-
         window.viewProduct = (id) => window.location.href = `product-detail.html?id=${id}`;
+        
         window.searchProducts = () => {
             const term = document.getElementById('searchInput').value;
             if (term) window.location.href = `products.html?search=${encodeURIComponent(term)}`;
