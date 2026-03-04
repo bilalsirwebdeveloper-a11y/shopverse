@@ -5,13 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZYVORASHOP - Your Shopping Destination</title>
     
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
@@ -27,9 +23,6 @@
             --border: #dddddd;
             --card-bg: #ffffff;
             --hover: #f3f3f3;
-            --header-text: #ffffff;
-            --footer-bg: #232f3e;
-            --footer-text: #ffffff;
         }
 
         .dark-mode {
@@ -42,34 +35,24 @@
             --border: #3a3a3a;
             --card-bg: #1a242b;
             --hover: #2a2a2a;
-            --header-text: #ffffff;
-            --footer-bg: #0f171e;
-            --footer-text: #ffffff;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Inter', sans-serif;
             background: var(--background);
             color: var(--text);
-            transition: background 0.3s ease, color 0.3s ease;
-            min-height: 100vh;
+            transition: background 0.3s ease;
         }
 
         /* Header */
         .header {
             background: var(--primary);
-            color: var(--header-text);
             padding: 12px 20px;
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .header-content {
@@ -86,12 +69,9 @@
             font-weight: 700;
             color: white;
             text-decoration: none;
-            white-space: nowrap;
         }
 
-        .logo span {
-            color: var(--accent);
-        }
+        .logo span { color: var(--accent); }
 
         .search-bar {
             flex: 1;
@@ -105,7 +85,6 @@
             border: none;
             border-radius: 8px 0 0 8px;
             font-size: 15px;
-            outline: none;
         }
 
         .search-bar button {
@@ -114,14 +93,6 @@
             border: none;
             border-radius: 0 8px 8px 0;
             cursor: pointer;
-            font-size: 16px;
-            color: #000;
-            font-weight: 500;
-            transition: background 0.3s;
-        }
-
-        .search-bar button:hover {
-            background: #ffaa33;
         }
 
         .header-icons {
@@ -141,10 +112,7 @@
             gap: 4px;
         }
 
-        .icon-btn span {
-            font-size: 11px;
-            font-weight: 500;
-        }
+        .icon-btn span { font-size: 11px; }
 
         .badge {
             position: absolute;
@@ -153,11 +121,8 @@
             background: var(--accent);
             color: #000;
             font-size: 11px;
-            font-weight: 600;
             padding: 2px 6px;
             border-radius: 20px;
-            min-width: 18px;
-            text-align: center;
         }
 
         .theme-toggle {
@@ -169,19 +134,13 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: background 0.3s;
-            font-size: 18px;
+            color: white;
         }
 
-        .theme-toggle:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        /* Categories Bar */
+        /* Categories */
         .categories {
             background: var(--secondary);
             padding: 10px 20px;
-            border-bottom: 1px solid var(--border);
         }
 
         .categories-list {
@@ -190,45 +149,24 @@
             display: flex;
             gap: 30px;
             overflow-x: auto;
-            white-space: nowrap;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent) var(--secondary);
-        }
-
-        .categories-list::-webkit-scrollbar {
-            height: 4px;
-        }
-
-        .categories-list::-webkit-scrollbar-track {
-            background: var(--secondary);
-        }
-
-        .categories-list::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 10px;
         }
 
         .categories-list a {
             color: white;
             text-decoration: none;
             font-size: 14px;
-            font-weight: 500;
-            padding: 5px 0;
-            transition: color 0.3s;
+            white-space: nowrap;
         }
 
-        .categories-list a:hover {
-            color: var(--accent);
-        }
+        .categories-list a:hover { color: var(--accent); }
 
-        /* Main Container */
+        /* Container */
         .container {
             max-width: 1500px;
             margin: 30px auto;
             padding: 0 20px;
         }
 
-        /* Hero Banner */
         .hero {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             color: white;
@@ -236,41 +174,11 @@
             border-radius: 12px;
             margin-bottom: 40px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
-            animation: shine 3s infinite;
-        }
+        .hero h1 { font-size: 42px; margin-bottom: 15px; }
+        .hero p { font-size: 18px; max-width: 600px; margin: 0 auto; opacity: 0.9; }
 
-        @keyframes shine {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 15px;
-            position: relative;
-        }
-
-        .hero p {
-            font-size: 18px;
-            max-width: 600px;
-            margin: 0 auto;
-            opacity: 0.9;
-            position: relative;
-        }
-
-        /* Section Title */
         .section-title {
             font-size: 24px;
             font-weight: 600;
@@ -293,14 +201,15 @@
             border: 1px solid var(--border);
             border-radius: 10px;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             cursor: pointer;
+            position: relative;
         }
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
             border-color: var(--accent);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
 
         .product-image {
@@ -310,6 +219,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
         }
 
         .product-image img {
@@ -323,33 +233,69 @@
             transform: scale(1.05);
         }
 
-        .product-info {
-            padding: 15px;
+        .wishlist-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #666;
+            transition: all 0.3s;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
+        .wishlist-btn:hover {
+            transform: scale(1.1);
+            background: #ffeaa7;
+            color: #e17055;
+        }
+
+        .wishlist-btn.active {
+            background: #ffeaa7;
+            color: #e17055;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 10;
+        }
+
+        .product-info { padding: 15px; }
+
         .product-category {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-light);
-            margin-bottom: 5px;
             text-transform: uppercase;
+            margin-bottom: 5px;
         }
 
         .product-title {
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 8px;
-            line-height: 1.4;
             height: 44px;
             overflow: hidden;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
         }
 
         .product-rating {
             color: #ffc107;
             margin-bottom: 8px;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .product-rating span {
@@ -358,65 +304,45 @@
         }
 
         .product-price {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--accent);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
-        .product-price small {
-            font-size: 13px;
-            font-weight: normal;
-            color: var(--text-light);
-            text-decoration: line-through;
-            margin-left: 8px;
+        .product-actions {
+            display: flex;
+            gap: 8px;
         }
 
-        .btn-add {
-            width: 100%;
-            padding: 10px;
-            background: var(--accent);
+        .btn-add, .btn-buy {
+            flex: 1;
+            padding: 8px;
             border: none;
             border-radius: 6px;
-            color: #000;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
-            font-size: 14px;
         }
 
-        .btn-add:hover {
-            background: #ffaa33;
-            transform: scale(1.02);
+        .btn-add {
+            background: var(--accent);
+            color: #000;
         }
 
-        /* Loading */
-        .loading {
-            text-align: center;
-            padding: 50px;
-            color: var(--text-light);
-            font-size: 16px;
+        .btn-buy {
+            background: var(--primary);
+            color: white;
         }
 
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top: 3px solid var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+        .btn-add:hover { background: #ffaa33; }
+        .btn-buy:hover { background: var(--secondary); }
 
         /* Footer */
         .footer {
-            background: var(--footer-bg);
-            color: var(--footer-text);
+            background: var(--primary);
+            color: white;
             padding: 50px 20px 20px;
             margin-top: 60px;
         }
@@ -435,25 +361,15 @@
             color: white;
         }
 
-        .footer-section p {
+        .footer-section p, .footer-section a {
             color: #a0a0a0;
             font-size: 14px;
-            line-height: 1.8;
-            margin-bottom: 10px;
-        }
-
-        .footer-section a {
-            color: #a0a0a0;
             text-decoration: none;
             display: block;
             margin-bottom: 8px;
-            font-size: 14px;
-            transition: color 0.3s;
         }
 
-        .footer-section a:hover {
-            color: var(--accent);
-        }
+        .footer-section a:hover { color: var(--accent); }
 
         .footer-bottom {
             max-width: 1500px;
@@ -481,91 +397,50 @@
         }
 
         @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: var(--text-light);
         }
 
         /* Responsive */
         @media (max-width: 1200px) {
-            .products-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+            .products-grid { grid-template-columns: repeat(3, 1fr); }
         }
-
         @media (max-width: 992px) {
-            .products-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .products-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-content { grid-template-columns: repeat(2, 1fr); }
         }
-
         @media (max-width: 768px) {
-            .search-bar {
-                display: none;
-            }
-            
-            .header-content {
-                flex-wrap: wrap;
-            }
-            
-            .logo {
-                font-size: 20px;
-            }
-            
-            .hero h1 {
-                font-size: 28px;
-            }
-            
-            .hero p {
-                font-size: 16px;
-            }
-            
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            
-            .icon-btn span {
-                display: none;
-            }
+            .search-bar { display: none; }
+            .products-grid { grid-template-columns: 1fr; }
+            .footer-content { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 28px; }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header class="header">
         <div class="header-content">
             <a href="index.html" class="logo">ZYVORA<span>SHOP</span></a>
-            
             <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search for products, brands and more...">
-                <button onclick="searchProducts()"><i class="fas fa-search"></i> Search</button>
+                <input type="text" id="searchInput" placeholder="Search products...">
+                <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
             </div>
-            
             <div class="header-icons">
                 <div class="icon-btn" onclick="window.location.href='account.html'">
-                    <i class="far fa-user"></i>
-                    <span>Account</span>
+                    <i class="far fa-user"></i><span>Account</span>
                 </div>
                 <div class="icon-btn" onclick="window.location.href='wishlist.html'">
-                    <i class="far fa-heart"></i>
-                    <span>Wishlist</span>
+                    <i class="far fa-heart"></i><span>Wishlist</span>
                     <span class="badge" id="wishlistCount">0</span>
                 </div>
                 <div class="icon-btn" onclick="window.location.href='cart.html'">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Cart</span>
+                    <i class="fas fa-shopping-cart"></i><span>Cart</span>
                     <span class="badge" id="cartCount">0</span>
                 </div>
                 <div class="theme-toggle" onclick="toggleTheme()">
@@ -575,83 +450,39 @@
         </div>
     </header>
 
-    <!-- Categories Bar -->
     <div class="categories">
-        <div class="categories-list" id="categoriesList">
+        <div class="categories-list">
             <a href="products.html?category=Electronics">Electronics</a>
             <a href="products.html?category=Fashion">Fashion</a>
-            <a href="products.html?category=Home">Home & Kitchen</a>
-            <a href="products.html?category=Beauty">Beauty</a>
+            <a href="products.html?category=Home">Home</a>
             <a href="products.html?category=Watches">Watches</a>
-            <a href="products.html?category=Accessories">Accessories</a>
-            <a href="products.html?category=Sports">Sports</a>
-            <a href="products.html?category=Toys">Toys</a>
         </div>
     </div>
 
-    <!-- Main Container -->
     <div class="container">
-        <!-- Hero Banner -->
         <div class="hero">
             <h1>Welcome to ZYVORASHOP</h1>
-            <p>Discover amazing products at great prices.Quality products, secure payments, and fast delivery across Pakistan. Because you deserve the best</p>
+            <p>Discover amazing products at great prices!</p>
         </div>
 
-        <!-- Featured Products -->
         <h2 class="section-title">Featured Products</h2>
-        <div class="products-grid" id="featuredProducts">
-            <div class="loading">Loading products...</div>
-        </div>
+        <div class="products-grid" id="featuredProducts"></div>
 
-        <!-- New Arrivals -->
         <h2 class="section-title">New Arrivals</h2>
-        <div class="products-grid" id="newArrivals">
-            <div class="loading">Loading products...</div>
-        </div>
+        <div class="products-grid" id="newArrivals"></div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-section">
-                <h3>About ZYVORASHOP</h3>
-                <p>Your trusted online shopping destination since 2024. We offer quality products at the best prices with fast delivery across Pakistan.</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <a href="index.html">Home</a>
-                <a href="products.html">All Products</a>
-                <a href="cart.html">Cart</a>
-                <a href="account.html">My Account</a>
-                <a href="orders.html">Track Order</a>
-            </div>
-            <div class="footer-section">
-                <h3>Categories</h3>
-                <a href="products.html?category=Electronics">Electronics</a>
-                <a href="products.html?category=Fashion">Fashion</a>
-                <a href="products.html?category=Home">Home & Kitchen</a>
-                <a href="products.html?category=Beauty">Beauty</a>
-                <a href="products.html?category=Watches">Watches</a>
-            </div>
-            <div class="footer-section">
-                <h3>Contact Us</h3>
-                <p><i class="fas fa-phone"></i> +92 300 1234567</p>
-                <p><i class="fas fa-envelope"></i> support@zyvorashop.com</p>
-                <p><i class="fas fa-map-marker-alt"></i> Lahore, Pakistan</p>
-                <div style="margin-top: 15px;">
-                    <a href="#" style="display: inline; margin-right: 15px;"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" style="display: inline; margin-right: 15px;"><i class="fab fa-instagram"></i></a>
-                    <a href="#" style="display: inline; margin-right: 15px;"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
+            <div><h3>About</h3><p>Your trusted online store</p></div>
+            <div><h3>Quick Links</h3><a href="index.html">Home</a><a href="products.html">Products</a></div>
+            <div><h3>Contact</h3><p>support@zyvorashop.com</p></div>
+            <div><h3>Follow</h3><a href="#">Facebook</a><a href="#">Instagram</a></div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 ZYVORASHOP. All rights reserved. Designed for the best shopping experience.</p>
-        </div>
+        <div class="footer-bottom"><p>© 2024 ZYVORASHOP</p></div>
     </footer>
 
     <script>
-        // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
             authDomain: "shopverse-c2642.firebaseapp.com",
@@ -668,31 +499,23 @@
         let currentUser = null;
         let wishlist = [];
 
-        // ===== THEME TOGGLE =====
+        // Theme Toggle
         function toggleTheme() {
             document.body.classList.toggle('dark-mode');
             const icon = document.getElementById('themeIcon');
-            if (document.body.classList.contains('dark-mode')) {
-                icon.className = 'fas fa-moon';
-                localStorage.setItem('theme', 'dark');
-            } else {
-                icon.className = 'fas fa-sun';
-                localStorage.setItem('theme', 'light');
-            }
+            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-moon' : 'fas fa-sun';
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
         }
-
-        // Load saved theme
         if (localStorage.getItem('theme') === 'dark') {
             document.body.classList.add('dark-mode');
             document.getElementById('themeIcon').className = 'fas fa-moon';
         }
 
-        // ===== AUTH STATE =====
+        // Auth State
         auth.onAuthStateChanged(user => {
             currentUser = user;
-            if (user) {
-                loadUserData();
-            } else {
+            if (user) loadUserData();
+            else {
                 document.getElementById('wishlistCount').textContent = '0';
                 document.getElementById('cartCount').textContent = '0';
             }
@@ -703,66 +526,108 @@
             if (!currentUser) return;
             
             try {
-                // Load wishlist
-                const wishlistSnap = await db.collection('wishlist')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
+                const wishlistSnap = await db.collection('wishlist').where('userId', '==', currentUser.uid).get();
                 wishlist = wishlistSnap.docs.map(doc => doc.data().productId);
                 document.getElementById('wishlistCount').textContent = wishlist.length;
                 
-                // Load cart
-                const cartSnap = await db.collection('cart')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
+                const cartSnap = await db.collection('cart').where('userId', '==', currentUser.uid).get();
                 const cartCount = cartSnap.docs.reduce((sum, doc) => sum + (doc.data().quantity || 1), 0);
                 document.getElementById('cartCount').textContent = cartCount;
             } catch (error) {
-                console.error('Error loading user data:', error);
+                console.error('Error:', error);
             }
         }
 
-        // ===== LOAD PRODUCTS =====
-        async function loadProducts() {
-            const featuredContainer = document.getElementById('featuredProducts');
-            const newContainer = document.getElementById('newArrivals');
+        // Toggle Wishlist
+        window.toggleWishlist = async function(productId, event) {
+            event.stopPropagation();
+            if (!currentUser) return window.location.href = 'account.html';
             
             try {
-                const snapshot = await db.collection('products').limit(8).get();
-                
-                if (snapshot.empty) {
-                    showSampleProducts();
-                    return;
+                if (wishlist.includes(productId)) {
+                    const snap = await db.collection('wishlist')
+                        .where('userId', '==', currentUser.uid)
+                        .where('productId', '==', productId)
+                        .get();
+                    snap.forEach(doc => doc.ref.delete());
+                    wishlist = wishlist.filter(id => id !== productId);
+                    showNotification('Removed from wishlist');
+                } else {
+                    await db.collection('wishlist').add({
+                        userId: currentUser.uid,
+                        productId: productId,
+                        addedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    wishlist.push(productId);
+                    showNotification('Added to wishlist');
                 }
+                document.getElementById('wishlistCount').textContent = wishlist.length;
+            } catch (error) {
+                showNotification('Error', 'error');
+            }
+        };
+
+        // Add to Cart
+        window.addToCart = async function(productId, event) {
+            event.stopPropagation();
+            if (!currentUser) return window.location.href = 'account.html';
+            
+            try {
+                const existing = await db.collection('cart')
+                    .where('userId', '==', currentUser.uid)
+                    .where('productId', '==', productId)
+                    .get();
+                
+                if (!existing.empty) {
+                    const cartItem = existing.docs[0];
+                    await cartItem.ref.update({ quantity: cartItem.data().quantity + 1 });
+                } else {
+                    await db.collection('cart').add({
+                        userId: currentUser.uid,
+                        productId: productId,
+                        quantity: 1,
+                        addedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                showNotification('Added to cart!');
+                loadUserData();
+            } catch (error) {
+                showNotification('Error', 'error');
+            }
+        };
+
+        // Buy Now
+        window.buyNow = function(productId, event) {
+            event.stopPropagation();
+            if (!currentUser) return window.location.href = 'account.html';
+            window.location.href = `product-detail.html?id=${productId}&buynow=true`;
+        };
+
+        // Load Products
+        async function loadProducts() {
+            try {
+                const snapshot = await db.collection('products').limit(8).get();
+                if (snapshot.empty) return showSampleProducts();
                 
                 const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 
-                featuredContainer.innerHTML = '';
-                newContainer.innerHTML = '';
-                
-                // Show first 4 as featured
-                products.slice(0, 4).forEach(product => {
-                    featuredContainer.innerHTML += createProductCard(product);
-                });
-                
-                // Show next 4 as new arrivals
-                products.slice(4, 8).forEach(product => {
-                    newContainer.innerHTML += createProductCard(product);
-                });
-                
+                document.getElementById('featuredProducts').innerHTML = products.slice(0,4).map(p => createCard(p)).join('');
+                document.getElementById('newArrivals').innerHTML = products.slice(4,8).map(p => createCard(p)).join('');
             } catch (error) {
-                console.error('Error loading products:', error);
                 showSampleProducts();
             }
         }
 
-        function createProductCard(product) {
+        function createCard(product) {
             const inWishlist = wishlist.includes(product.id);
-            const originalPrice = product.originalPrice ? product.originalPrice : null;
-            
             return `
                 <div class="product-card" onclick="viewProduct('${product.id}')">
+                    <div class="wishlist-btn ${inWishlist ? 'active' : ''}" onclick="toggleWishlist('${product.id}', event)">
+                        <i class="fa${inWishlist ? 's' : 'r'} fa-heart"></i>
+                    </div>
+                    ${product.badge ? `<span class="product-badge">${product.badge}</span>` : ''}
                     <div class="product-image">
-                        <img src="${product.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" alt="${product.name}">
+                        <img src="${product.images?.[0] || 'https://via.placeholder.com/200'}" alt="${product.name}">
                     </div>
                     <div class="product-info">
                         <div class="product-category">${product.category || 'General'}</div>
@@ -771,13 +636,11 @@
                             ${generateStars(product.rating || 4.5)}
                             <span>(${product.reviews || 0})</span>
                         </div>
-                        <div class="product-price">
-                            Rs ${product.price?.toLocaleString()}
-                            ${originalPrice ? `<small>Rs ${originalPrice.toLocaleString()}</small>` : ''}
+                        <div class="product-price">Rs ${product.price?.toLocaleString()}</div>
+                        <div class="product-actions">
+                            <button class="btn-add" onclick="addToCart('${product.id}', event)">Add to Cart</button>
+                            <button class="btn-buy" onclick="buyNow('${product.id}', event)">Buy Now</button>
                         </div>
-                        <button class="btn-add" onclick="addToCart('${product.id}', event)">
-                            <i class="fas fa-shopping-cart"></i> Add to Cart
-                        </button>
                     </div>
                 </div>
             `;
@@ -786,112 +649,35 @@
         function generateStars(rating) {
             let stars = '';
             for (let i = 1; i <= 5; i++) {
-                if (i <= rating) {
-                    stars += '<i class="fas fa-star"></i>';
-                } else if (i - rating < 1) {
-                    stars += '<i class="fas fa-star-half-alt"></i>';
-                } else {
-                    stars += '<i class="far fa-star"></i>';
-                }
+                stars += i <= rating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
             }
             return stars;
         }
 
         function showSampleProducts() {
             const sample = [
-                {
-                    id: '1',
-                    name: 'Wireless Headphones with Noise Cancellation',
-                    category: 'Electronics',
-                    price: 5499,
-                    originalPrice: 6999,
-                    rating: 4.5,
-                    reviews: 128,
-                    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'
-                },
-                {
-                    id: '2',
-                    name: 'Premium Analog Watch for Men',
-                    category: 'Watches',
-                    price: 3299,
-                    originalPrice: 4999,
-                    rating: 4,
-                    reviews: 89,
-                    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400'
-                },
-                {
-                    id: '3',
-                    name: 'Running Shoes Lightweight Comfort',
-                    category: 'Fashion',
-                    price: 4599,
-                    rating: 4.5,
-                    reviews: 210,
-                    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'
-                },
-                {
-                    id: '4',
-                    name: 'Smart Watch with Fitness Tracker',
-                    category: 'Electronics',
-                    price: 8999,
-                    originalPrice: 10999,
-                    rating: 5,
-                    reviews: 56,
-                    image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400'
-                }
+                { id: '1', name: 'Wireless Headphones', category: 'Electronics', price: 5499, rating: 4.5, reviews: 128, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400', badge: 'NEW' },
+                { id: '2', name: 'Premium Watch', category: 'Watches', price: 3299, rating: 4, reviews: 89, image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400' },
+                { id: '3', name: 'Running Shoes', category: 'Fashion', price: 4599, rating: 4.5, reviews: 210, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400', badge: 'SALE' },
+                { id: '4', name: 'Smart Watch', category: 'Electronics', price: 8999, rating: 5, reviews: 56, image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400' }
             ];
-            
-            document.getElementById('featuredProducts').innerHTML = sample.map(p => createProductCard(p)).join('');
-            document.getElementById('newArrivals').innerHTML = sample.map(p => createProductCard(p)).join('');
+            document.getElementById('featuredProducts').innerHTML = sample.map(p => createCard(p)).join('');
+            document.getElementById('newArrivals').innerHTML = sample.map(p => createCard(p)).join('');
         }
 
-        // ===== PRODUCT FUNCTIONS =====
-        window.viewProduct = function(id) {
-            window.location.href = `product-detail.html?id=${id}`;
+        window.viewProduct = (id) => window.location.href = `product-detail.html?id=${id}`;
+        window.searchProducts = () => {
+            const term = document.getElementById('searchInput').value;
+            if (term) window.location.href = `products.html?search=${encodeURIComponent(term)}`;
         };
 
-        window.addToCart = async function(id, event) {
-            event.stopPropagation();
-            
-            if (!currentUser) {
-                window.location.href = 'account.html';
-                return;
-            }
-            
-            try {
-                await db.collection('cart').add({
-                    userId: currentUser.uid,
-                    productId: id,
-                    quantity: 1,
-                    addedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                showNotification('Added to cart!');
-                loadUserData(); // Refresh cart count
-            } catch (error) {
-                showNotification('Error adding to cart', 'error');
-            }
-        };
-
-        window.searchProducts = function() {
-            const searchTerm = document.getElementById('searchInput').value;
-            if (searchTerm.trim()) {
-                window.location.href = `products.html?search=${encodeURIComponent(searchTerm)}`;
-            }
-        };
-
-        // ===== NOTIFICATION =====
-        function showNotification(message, type = 'success') {
-            const notif = document.createElement('div');
-            notif.className = 'notification';
-            notif.textContent = message;
-            document.body.appendChild(notif);
-            setTimeout(() => notif.remove(), 2000);
+        function showNotification(msg) {
+            const n = document.createElement('div');
+            n.className = 'notification';
+            n.textContent = msg;
+            document.body.appendChild(n);
+            setTimeout(() => n.remove(), 2000);
         }
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            loadProducts();
-        });
     </script>
 </body>
 </html>
-
