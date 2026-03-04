@@ -3,321 +3,140 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZYVORASHOP - Sign In</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>ZYVORASHOP - Account</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary: #232f3e; --secondary: #37475a; --accent: #ff9900; --background: #ffffff;
+            --text: #0f1111; --text-light: #565959; --border: #dddddd; --card-bg: #ffffff;
         }
-
+        .dark-mode {
+            --primary: #131921; --secondary: #232f3e; --accent: #ff9900; --background: #0f171e;
+            --text: #ffffff; --text-light: #a0a0a0; --border: #3a3a3a; --card-bg: #1a242b;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: #0a0a0a;
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
+            transition: background 0.3s;
         }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 20% 50%, rgba(255, 0, 255, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.15) 0%, transparent 50%);
-            animation: gradientMove 15s ease infinite;
-            z-index: -1;
-        }
-
-        @keyframes gradientMove {
-            0% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.1) rotate(2deg); }
-            100% { transform: scale(1) rotate(0deg); }
-        }
-
-        .auth-container {
-            width: 100%;
-            max-width: 420px;
-            padding: 20px;
-        }
-
-        .glass-box {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
+        .auth-container { width: 100%; max-width: 400px; padding: 20px; }
+        .auth-box {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
             padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
         }
-
         .logo {
-            font-size: 32px;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, #fff, #a8a8a8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-decoration: none;
-            display: block;
-            letter-spacing: 2px;
+            font-size: 28px; font-weight: 700; text-align: center; margin-bottom: 30px;
+            color: var(--primary); text-decoration: none; display: block;
         }
-
-        h2 {
-            font-size: 28px;
-            text-align: center;
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, #ff00ff, #00ffff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
+        .logo span { color: var(--accent); }
+        h2 { text-align: center; margin-bottom: 30px; color: var(--text); }
+        .form-group { margin-bottom: 20px; }
         .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 12px;
-            letter-spacing: 1px;
+            display: block; margin-bottom: 8px; color: var(--text-light);
+            font-size: 13px; font-weight: 500;
         }
-
         .form-group input {
-            width: 100%;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            color: white;
-            font-size: 14px;
-            transition: all 0.3s;
+            width: 100%; padding: 14px; background: var(--background);
+            border: 1px solid var(--border); border-radius: 8px;
+            color: var(--text); font-size: 14px;
         }
-
-        .form-group input:focus {
-            outline: none;
-            border-color: #ff00ff;
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
-        }
-
         .btn {
-            width: 100%;
-            padding: 16px;
-            border: none;
-            border-radius: 15px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin: 10px 0;
-            position: relative;
-            overflow: hidden;
+            width: 100%; padding: 14px; border: none; border-radius: 8px;
+            font-weight: 600; cursor: pointer; margin: 10px 0;
         }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #ff00ff, #00ffff);
-            color: #000;
-        }
-
+        .btn-primary { background: var(--accent); color: #000; }
         .btn-google {
-            background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            background: transparent; border: 2px solid var(--border); color: var(--text);
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-
-        .btn-google:hover {
-            border-color: #ff00ff;
-            background: rgba(255, 0, 255, 0.1);
-        }
-
-        .btn-google i {
-            color: #ff00ff;
-        }
-
+        .btn-google i { color: #4285f4; }
         .toggle {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            font-size: 14px;
-            margin-top: 15px;
+            text-align: center; color: var(--text-light); cursor: pointer;
+            font-size: 14px; margin-top: 15px;
         }
-
-        .toggle:hover {
-            color: #00ffff;
-        }
-
-        .error-message {
-            background: rgba(255, 0, 255, 0.1);
-            border: 1px solid #ff00ff;
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 20px;
-            color: #ff00ff;
-            text-align: center;
-            display: none;
-        }
-
         .divider {
-            position: relative;
-            text-align: center;
-            margin: 20px 0;
+            position: relative; text-align: center; margin: 20px 0;
         }
-
         .divider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-            z-index: 1;
+            content: ''; position: absolute; top: 50%; left: 0; right: 0;
+            height: 1px; background: var(--border); z-index: 1;
         }
-
         .divider span {
-            background: #0a0a0a;
-            padding: 0 10px;
-            color: rgba(255, 255, 255, 0.3);
-            position: relative;
-            z-index: 2;
-            font-size: 12px;
+            background: var(--card-bg); padding: 0 10px; color: var(--text-light);
+            position: relative; z-index: 2; font-size: 12px;
         }
-
-        .back-link {
-            text-align: center;
-            margin-top: 20px;
+        .back-link { text-align: center; margin-top: 20px; }
+        .back-link a { color: var(--text-light); text-decoration: none; }
+        .error-message {
+            background: rgba(255,0,0,0.1); border: 1px solid #ff0000;
+            border-radius: 8px; padding: 12px; margin-bottom: 20px;
+            color: #ff0000; text-align: center; display: none;
         }
-
-        .back-link a {
-            color: rgba(255, 255, 255, 0.5);
-            text-decoration: none;
-            font-size: 13px;
-            transition: color 0.3s;
+        .theme-toggle {
+            position: fixed; bottom: 30px; right: 30px;
+            width: 50px; height: 50px; background: var(--primary);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: white; z-index: 9999;
         }
-
-        .back-link a:hover {
-            color: #00ffff;
-        }
-
         .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            padding: 15px 30px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 50px;
-            color: white;
-            z-index: 9999;
+            position: fixed; top: 100px; right: 20px; padding: 12px 24px;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--text); z-index: 9999;
             animation: slideIn 0.3s ease;
         }
-
         @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
     <div class="auth-container">
-        <div class="glass-box">
-            <a href="index.html" class="logo">ZYVORASHOP</a>
-            
+        <div class="auth-box">
+            <a href="index.html" class="logo">ZYVORA<span>SHOP</span></a>
             <div id="errorMessage" class="error-message"></div>
-            
-            <!-- Login Form -->
+
             <div id="loginForm">
-                <h2>Welcome Back</h2>
-                <div class="form-group">
-                    <label>EMAIL</label>
-                    <input type="email" id="loginEmail" placeholder="your@email.com">
-                </div>
-                <div class="form-group">
-                    <label>PASSWORD</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••">
-                </div>
-                <button class="btn btn-primary" onclick="login()">LOGIN</button>
-                <p class="toggle" onclick="showSignup()">Don't have an account? Sign up</p>
+                <h2>Sign In</h2>
+                <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="your@email.com"></div>
+                <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"></div>
+                <button class="btn btn-primary" onclick="login()">Sign In</button>
+                <p class="toggle" onclick="showSignup()">Create new account</p>
             </div>
-            
-            <!-- Signup Form -->
-            <div id="signupForm" style="display: none;">
+
+            <div id="signupForm" style="display:none">
                 <h2>Create Account</h2>
-                <div class="form-group">
-                    <label>FULL NAME</label>
-                    <input type="text" id="signupName" placeholder="John Doe">
-                </div>
-                <div class="form-group">
-                    <label>EMAIL</label>
-                    <input type="email" id="signupEmail" placeholder="your@email.com">
-                </div>
-                <div class="form-group">
-                    <label>PASSWORD</label>
-                    <input type="password" id="signupPassword" placeholder="••••••••">
-                </div>
-                <div class="form-group">
-                    <label>CONFIRM PASSWORD</label>
-                    <input type="password" id="signupConfirmPassword" placeholder="••••••••">
-                </div>
-                <button class="btn btn-primary" onclick="signup()">SIGN UP</button>
-                <p class="toggle" onclick="showLogin()">Already have an account? Login</p>
+                <div class="form-group"><label>Full Name</label><input type="text" id="signupName" placeholder="John Doe"></div>
+                <div class="form-group"><label>Email</label><input type="email" id="signupEmail" placeholder="your@email.com"></div>
+                <div class="form-group"><label>Password</label><input type="password" id="signupPassword" placeholder="••••••••"></div>
+                <div class="form-group"><label>Confirm</label><input type="password" id="signupConfirm" placeholder="••••••••"></div>
+                <button class="btn btn-primary" onclick="signup()">Sign Up</button>
+                <p class="toggle" onclick="showLogin()">Back to Sign In</p>
             </div>
-            
-            <!-- Divider -->
-            <div class="divider">
-                <span>OR</span>
-            </div>
-            
-            <!-- Google Sign-In -->
+
+            <div class="divider"><span>OR</span></div>
             <button class="btn btn-google" onclick="googleSignIn()">
-                <i class="fab fa-google"></i> CONTINUE WITH GOOGLE
+                <i class="fab fa-google"></i> Continue with Google
             </button>
-            
-            <div class="back-link">
-                <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Shopping</a>
-            </div>
+            <div class="back-link"><a href="index.html"><i class="fas fa-arrow-left"></i> Back</a></div>
         </div>
+    </div>
+
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-sun" id="themeIcon"></i>
     </div>
 
     <script>
@@ -329,74 +148,61 @@
             messagingSenderId: "281981664356",
             appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
         };
-
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('themeIcon');
+            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-moon' : 'fas fa-sun';
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('themeIcon').className = 'fas fa-moon';
+        }
+
         function showError(msg) {
-            const errorDiv = document.getElementById('errorMessage');
-            errorDiv.style.display = 'block';
-            errorDiv.textContent = msg;
-            setTimeout(() => errorDiv.style.display = 'none', 3000);
+            const e = document.getElementById('errorMessage');
+            e.style.display = 'block';
+            e.textContent = msg;
+            setTimeout(() => e.style.display = 'none', 3000);
         }
-
         function showNotification(msg) {
-            const notif = document.createElement('div');
-            notif.className = 'notification';
-            notif.textContent = msg;
-            document.body.appendChild(notif);
-            setTimeout(() => notif.remove(), 2000);
+            const n = document.createElement('div');
+            n.className = 'notification';
+            n.textContent = msg;
+            document.body.appendChild(n);
+            setTimeout(() => n.remove(), 2000);
         }
 
-        // Google Sign-In
-        window.googleSignIn = function() {
+        window.googleSignIn = () => {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider)
-                .then(result => {
-                    const user = result.user;
-                    return db.collection('users').doc(user.uid).set({
-                        name: user.displayName,
-                        email: user.email,
-                        photoURL: user.photoURL,
-                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
-                })
-                .then(() => {
-                    window.location.href = 'index.html';
-                })
-                .catch(error => showError(error.message));
-        };
-
-        // Email Login
-        window.login = function() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            auth.signInWithEmailAndPassword(email, password)
                 .then(() => window.location.href = 'index.html')
                 .catch(error => showError(error.message));
         };
 
-        // Email Signup
-        window.signup = function() {
+        window.login = () => {
+            const email = document.getElementById('loginEmail').value;
+            const pass = document.getElementById('loginPassword').value;
+            auth.signInWithEmailAndPassword(email, pass)
+                .then(() => window.location.href = 'index.html')
+                .catch(error => showError(error.message));
+        };
+
+        window.signup = () => {
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const confirm = document.getElementById('signupConfirmPassword').value;
-            
-            if (password !== confirm) {
-                showError('Passwords do not match');
-                return;
-            }
-            
-            auth.createUserWithEmailAndPassword(email, password)
+            const pass = document.getElementById('signupPassword').value;
+            const confirm = document.getElementById('signupConfirm').value;
+            if (pass !== confirm) return showError('Passwords do not match');
+            auth.createUserWithEmailAndPassword(email, pass)
                 .then(result => {
                     return result.user.updateProfile({ displayName: name }).then(() => {
                         return db.collection('users').doc(result.user.uid).set({
-                            name: name,
-                            email: email,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                            name, email, createdAt: firebase.firestore.FieldValue.serverTimestamp()
                         });
                     });
                 })
@@ -404,12 +210,11 @@
                 .catch(error => showError(error.message));
         };
 
-        window.showSignup = function() {
+        window.showSignup = () => {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('signupForm').style.display = 'block';
         };
-
-        window.showLogin = function() {
+        window.showLogin = () => {
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('signupForm').style.display = 'none';
         };
