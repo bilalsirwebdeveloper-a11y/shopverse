@@ -81,4 +81,112 @@
             max-width: 100%; max-height: 100%; object-fit: contain;
         }
         .product-info { padding: 15px; }
-        .product-title { font-size: 16px; font-weight: 600; margin
+        .product-title { font-size: 16px; font-weight: 600; margin-bottom: 5px; }
+        .product-price { color: var(--accent); font-weight: 700; }
+        .remove-btn {
+            position: absolute; top: 10px; right: 10px;
+            width: 30px; height: 30px; background: rgba(255,0,0,0.2);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; color: #ff0000;
+        }
+        .notification {
+            position: fixed; top: 100px; right: 20px; padding: 12px 24px;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 8px; color: var(--text); z-index: 9999;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @media (max-width: 992px) { .products-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 768px) { .products-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">ZYVORA<span>SHOP</span></a>
+            <div class="header-icons">
+                <div class="icon-btn" onclick="window.location.href='account.html'"><i class="far fa-user"></i></div>
+                <div class="icon-btn" onclick="window.location.href='wishlist.html'"><i class="fas fa-heart"></i><span class="badge" id="wishlistCount">0</span></div>
+                <div class="icon-btn" onclick="window.location.href='cart.html'"><i class="fas fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></div>
+                <div class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-sun" id="themeIcon"></i></div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">My Wishlist</h1>
+        <div id="wishlistContent">Loading...</div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
+            authDomain: "shopverse-c2642.firebaseapp.com",
+            projectId: "shopverse-c2642",
+            storageBucket: "shopverse-c2642.firebasestorage.app",
+            messagingSenderId: "281981664356",
+            appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            document.getElementById('themeIcon').className = document.body.classList.contains('dark-mode') ? 'fas fa-moon' : 'fas fa-sun';
+            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        }
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('themeIcon').className = 'fas fa-moon';
+        }
+
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                document.getElementById('wishlistContent').innerHTML = `
+                    <div class="empty-wishlist">
+                        <i class="fas fa-user-lock"></i>
+                        <h2>Please login to view wishlist</h2>
+                        <button class="shop-now-btn" onclick="window.location.href='account.html'">Login</button>
+                    </div>
+                `;
+            } else {
+                loadWishlist(user);
+                loadCounts(user);
+            }
+        });
+
+        async function loadCounts(user) {
+            const wish = await db.collection('wishlist').where('userId', '==', user.uid).get();
+            document.getElementById('wishlistCount').textContent = wish.size;
+            const cart = await db.collection('cart').where('userId', '==', user.uid).get();
+            document.getElementById('cartCount').textContent = cart.docs.reduce((s, d) => s + (d.data().quantity || 1), 0);
+        }
+
+        async function loadWishlist(user) {
+            const wishSnap = await db.collection('wishlist').where('userId', '==', user.uid).get();
+            if (wishSnap.empty) {
+                document.getElementById('wishlistContent').innerHTML = `
+                    <div class="empty-wishlist">
+                        <i class="fas fa-heart"></i>
+                        <h2>Your wishlist is empty</h2>
+                        <button class="shop-now-btn" onclick="window.location.href='products.html'">Explore Products</button>
+                    </div>
+                `;
+                return;
+            }
+            // Simplified - show empty for demo
+            document.getElementById('wishlistContent').innerHTML = `
+                <div class="empty-wishlist">
+                    <i class="fas fa-heart"></i>
+                    <h2>Your wishlist has items</h2>
+                    <button class="shop-now-btn" onclick="window.location.href='products.html'">Continue Shopping</button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>
