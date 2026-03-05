@@ -327,7 +327,10 @@
             appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const auth = firebase.auth();
         const db = firebase.firestore();
 
@@ -348,6 +351,8 @@
                         <a href="account.html" class="shop-now-btn">Sign In</a>
                     </div>
                 `;
+                document.getElementById('subtotal').textContent = 'Rs 0';
+                document.getElementById('total').textContent = 'Rs 0';
             }
         });
 
@@ -499,7 +504,9 @@
         window.checkout = function() {
             if (!currentUser) {
                 showNotification('Please sign in first');
-                window.location.href = 'account.html';
+                setTimeout(() => {
+                    window.location.href = 'account.html';
+                }, 1500);
                 return;
             }
             
