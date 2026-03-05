@@ -3,153 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZYVORASHOP - Product Details</title>
-    
+    <title>Product Details - ZYVORASHOP</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     
     <style>
-        :root {
-            --primary: #1a1a2e;
-            --secondary: #16213e;
-            --accent: #e94560;
-            --background: #f9f9f9;
-            --text: #0f1111;
-            --text-light: #666;
-            --border: #e0e0e0;
-            --card-bg: #ffffff;
-            --gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        }
-
-        .dark-mode {
-            --primary: #0f0f0f;
-            --secondary: #1a1a1a;
-            --accent: #e94560;
-            --background: #121212;
-            --text: #ffffff;
-            --text-light: #b0b0b0;
-            --border: #2d2d2d;
-            --card-bg: #1e1e1e;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: all 0.3s;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--background);
-            color: var(--text);
+            background: #f3f3f3;
+            color: #0f1111;
         }
 
         .header {
-            background: var(--primary);
+            background: #131921;
             position: sticky;
             top: 0;
-            z-index: 1000;
+            z-index: 100;
         }
 
         .header-content {
-            max-width: 1400px;
+            max-width: 1500px;
             margin: 0 auto;
-            padding: 15px 20px;
+            padding: 10px 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
         }
 
         .logo {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
             color: white;
             text-decoration: none;
         }
 
         .logo span {
-            color: var(--accent);
+            color: #ff9900;
         }
 
-        .header-icons {
-            display: flex;
-            gap: 25px;
-            align-items: center;
-        }
-
-        .icon-btn {
-            position: relative;
+        .back-btn {
             color: white;
-            font-size: 22px;
-            cursor: pointer;
-        }
-
-        .badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: var(--accent);
-            color: white;
-            font-size: 11px;
-            padding: 2px 6px;
-            border-radius: 20px;
-        }
-
-        .theme-toggle {
-            width: 45px;
-            height: 45px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 50%;
+            text-decoration: none;
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: white;
+            gap: 8px;
+            font-size: 14px;
         }
 
-        .theme-toggle:hover {
-            background: var(--accent);
-            transform: rotate(180deg);
+        .back-btn:hover {
+            color: #ff9900;
         }
 
         .container {
-            max-width: 1400px;
-            margin: 40px auto;
+            max-width: 1200px;
+            margin: 30px auto;
             padding: 0 20px;
         }
 
-        .product-container {
+        .product-detail {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            background: var(--card-bg);
-            border: 2px solid var(--border);
-            border-radius: 30px;
-            padding: 40px;
+            gap: 40px;
         }
 
-        /* Gallery */
-        .gallery {
+        .product-images {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
         .main-image {
-            width: 100%;
-            height: 400px;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 2px solid var(--border);
-            background: var(--background);
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
+            height: 400px;
         }
 
         .main-image img {
@@ -158,292 +101,180 @@
             object-fit: contain;
         }
 
-        .thumbnails {
+        .thumbnail-images {
             display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
+            gap: 10px;
+            overflow-x: auto;
         }
 
         .thumbnail {
             width: 80px;
             height: 80px;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 2px solid transparent;
+            background: #f9f9f9;
+            border-radius: 4px;
+            padding: 10px;
             cursor: pointer;
-            background: var(--background);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .thumbnail:hover {
-            border-color: var(--accent);
+            border: 2px solid transparent;
         }
 
         .thumbnail.active {
-            border-color: var(--accent);
+            border-color: #ff9900;
         }
 
         .thumbnail img {
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
         }
 
-        /* Product Info */
+        .product-info h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #131921;
+        }
+
         .product-category {
-            color: var(--accent);
             font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: #007185;
             margin-bottom: 10px;
         }
 
-        .product-title {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .product-price {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 20px;
-        }
-
-        .product-description {
-            color: var(--text-light);
-            line-height: 1.8;
-            margin-bottom: 30px;
-        }
-
         .product-rating {
-            color: #ffd700;
-            margin-bottom: 20px;
+            color: #ff9900;
+            margin-bottom: 15px;
             font-size: 16px;
         }
 
         .product-rating span {
-            color: var(--text-light);
-            margin-left: 5px;
+            color: #007185;
+            margin-left: 10px;
+            font-size: 14px;
         }
 
-        .quantity {
-            display: flex;
-            align-items: center;
-            gap: 15px;
+        .product-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: #b12704;
+            margin-bottom: 20px;
+        }
+
+        .product-price small {
+            font-size: 14px;
+            font-weight: normal;
+            color: #565959;
+        }
+
+        .product-description {
             margin-bottom: 30px;
         }
 
-        .quantity-btn {
-            width: 45px;
-            height: 45px;
-            background: var(--background);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 20px;
-            font-weight: 600;
-            color: var(--text);
-        }
-
-        .quantity-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .quantity-input {
-            width: 70px;
-            height: 45px;
-            text-align: center;
-            background: var(--background);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            color: var(--text);
+        .product-description h3 {
             font-size: 18px;
-            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .product-description p {
+            color: #565959;
+            line-height: 1.6;
+        }
+
+        .product-meta {
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .meta-item {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .meta-label {
+            width: 100px;
+            color: #565959;
+        }
+
+        .meta-value {
+            color: #131921;
+            font-weight: 500;
+        }
+
+        .delivery-info {
+            background: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .delivery-info i {
+            color: #ff9900;
+            margin-right: 10px;
+        }
+
+        .delivery-info p {
+            margin-bottom: 5px;
+            font-size: 14px;
         }
 
         .product-actions {
             display: flex;
             gap: 15px;
-            margin-bottom: 30px;
         }
 
-        .btn {
-            flex: 1;
+        .btn-add {
+            flex: 2;
             padding: 15px;
+            background: #ffd814;
             border: none;
-            border-radius: 15px;
+            border-radius: 30px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            font-size: 16px;
+            transition: background 0.3s;
         }
 
-        .btn-primary {
-            background: var(--accent);
-            color: white;
+        .btn-add:hover {
+            background: #f7ca00;
         }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(233,69,96,0.3);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            border: 2px solid var(--border);
-            color: var(--text);
-        }
-
-        .btn-secondary:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        /* Order Form */
-        .order-form {
-            margin-top: 30px;
-            padding: 30px;
-            background: var(--background);
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            display: none;
-        }
-
-        .order-form h3 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: var(--accent);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-light);
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 15px;
-            background: var(--card-bg);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            color: var(--text);
-            font-size: 15px;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .payment-methods {
-            display: flex;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .payment-method {
+        .btn-buy {
             flex: 1;
             padding: 15px;
-            background: var(--card-bg);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            text-align: center;
+            background: #ffa41c;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 600;
             cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-buy:hover {
+            background: #ff8c00;
+        }
+
+        .btn-wishlist {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            color: #666;
             transition: all 0.3s;
         }
 
-        .payment-method:hover {
-            border-color: var(--accent);
+        .btn-wishlist:hover {
+            border-color: #ff9900;
+            color: #ff9900;
         }
 
-        .payment-method.selected {
-            border-color: var(--accent);
-            background: rgba(233,69,96,0.1);
-        }
-
-        .payment-method i {
-            font-size: 24px;
-            margin-bottom: 5px;
-            display: block;
-        }
-
-        .payment-method.easypaisa i {
-            color: #6f2c91;
-        }
-
-        .payment-method.jazzcash i {
-            color: #d62b27;
-        }
-
-        .payment-details {
-            padding: 20px;
-            background: rgba(233,69,96,0.1);
-            border-radius: 12px;
-            margin: 20px 0;
-        }
-
-        .store-account {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--accent);
-            text-align: center;
-            padding: 10px;
-            background: var(--card-bg);
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            margin: 10px 0;
-        }
-
-        .order-summary {
-            margin-top: 20px;
-            padding: 20px;
-            background: var(--card-bg);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-
-        .summary-total {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--accent);
-            border-top: 2px solid var(--border);
-            padding-top: 15px;
-            margin-top: 10px;
-        }
-
-        .back-link {
-            margin-top: 20px;
-            display: inline-block;
-            color: var(--text-light);
-            text-decoration: none;
-        }
-
-        .back-link:hover {
-            color: var(--accent);
+        .btn-wishlist.active {
+            background: #ff9900;
+            color: white;
+            border-color: #ff9900;
         }
 
         .notification {
@@ -451,18 +282,23 @@
             top: 100px;
             right: 20px;
             padding: 15px 30px;
-            background: var(--card-bg);
-            border-left: 4px solid var(--accent);
-            border-radius: 15px;
-            color: var(--text);
+            background: white;
+            border-left: 4px solid #ff9900;
+            border-radius: 8px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             z-index: 9999;
             animation: slideIn 0.3s ease;
         }
 
         @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         .loading {
@@ -470,11 +306,23 @@
             padding: 50px;
         }
 
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #ff9900;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         @media (max-width: 768px) {
-            .product-container {
-                grid-template-columns: 1fr;
-            }
-            .form-row {
+            .product-detail {
                 grid-template-columns: 1fr;
             }
         }
@@ -484,22 +332,21 @@
     <header class="header">
         <div class="header-content">
             <a href="index.html" class="logo">ZYVORA<span>SHOP</span></a>
-            <div class="header-icons">
-                <div class="icon-btn" onclick="window.location.href='account.html'"><i class="far fa-user"></i></div>
-                <div class="icon-btn" onclick="window.location.href='wishlist.html'"><i class="far fa-heart"></i><span class="badge" id="wishlistCount">0</span></div>
-                <div class="icon-btn" onclick="window.location.href='cart.html'"><i class="fas fa-shopping-cart"></i><span class="badge" id="cartCount">0</span></div>
-                <div class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-sun" id="themeIcon"></i></div>
-            </div>
+            <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
         </div>
     </header>
 
     <div class="container">
-        <div class="product-container" id="productContainer">
-            <div class="loading">Loading product...</div>
+        <div id="productDetailContainer">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading product details...</p>
+            </div>
         </div>
     </div>
 
     <script>
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
             authDomain: "shopverse-c2642.firebaseapp.com",
@@ -509,316 +356,350 @@
             appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
         };
 
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
         let currentUser = null;
         let currentProduct = null;
-        let quantity = 1;
-        let selectedPayment = 'easypaisa';
-        let currentImageIndex = 0;
+        let inWishlist = false;
 
-        const STORE_ACCOUNT = {
-            easypaisa: { number: "03001234567", title: "ZYVORA STORE" },
-            jazzcash: { number: "03001234567", title: "ZYVORA STORE" }
-        };
-
+        // Get product ID from URL
         const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('id');
-        const buyNow = urlParams.get('buynow') === 'true';
+        const productId = urlParams.get('id') || 'fashion1';
 
-        // Theme Toggle
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            const icon = document.getElementById('themeIcon');
-            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-moon' : 'fas fa-sun';
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-        }
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-            document.getElementById('themeIcon').className = 'fas fa-moon';
-        }
-
-        auth.onAuthStateChanged(user => {
+        // Auth State Observer
+        auth.onAuthStateChanged((user) => {
             currentUser = user;
-            if (user) loadCounts();
             loadProduct();
         });
 
-        async function loadCounts() {
-            if (!currentUser) return;
-            const wishSnap = await db.collection('wishlist').where('userId', '==', currentUser.uid).get();
-            document.getElementById('wishlistCount').textContent = wishSnap.size;
-            const cartSnap = await db.collection('cart').where('userId', '==', currentUser.uid).get();
-            document.getElementById('cartCount').textContent = cartSnap.docs.reduce((s, d) => s + (d.data().quantity || 1), 0);
+        // Load Product
+        async function loadProduct() {
+            try {
+                const productDoc = await db.collection('products').doc(productId).get();
+                
+                if (productDoc.exists) {
+                    currentProduct = { id: productDoc.id, ...productDoc.data() };
+                } else {
+                    // Use sample product
+                    currentProduct = getSampleProduct(productId);
+                }
+                
+                // Check if in wishlist
+                if (currentUser) {
+                    const wishlistSnap = await db.collection('wishlist')
+                        .where('userId', '==', currentUser.uid)
+                        .where('productId', '==', productId)
+                        .get();
+                    inWishlist = !wishlistSnap.empty;
+                }
+                
+                renderProduct();
+                
+            } catch (error) {
+                console.error('Error loading product:', error);
+                currentProduct = getSampleProduct(productId);
+                renderProduct();
+            }
         }
 
-        async function loadProduct() {
-            if (!productId) {
-                window.location.href = 'products.html';
+        // Get Sample Product
+        function getSampleProduct(id) {
+            const products = {
+                'fashion1': {
+                    name: 'new trending',
+                    category: 'FASHION',
+                    price: 1233,
+                    rating: 4.5,
+                    reviews: 1233,
+                    description: 'Stay ahead of the curve with our latest trending fashion piece. Perfect for any occasion, this item combines style and comfort effortlessly.',
+                    brand: 'ZYVORA',
+                    availability: 'In Stock',
+                    images: [
+                        'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400',
+                        'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400',
+                        'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400'
+                    ]
+                },
+                'fashion2': {
+                    name: 'life',
+                    category: 'FASHION',
+                    price: 12000,
+                    rating: 5,
+                    reviews: 12000,
+                    description: 'Embrace the essence of life with our premium collection. Designed for those who appreciate quality and style.',
+                    brand: 'ZYVORA',
+                    availability: 'In Stock',
+                    images: [
+                        'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400',
+                        'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400',
+                        'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400'
+                    ]
+                },
+                'fashion3': {
+                    name: 'Today Trending Dress',
+                    category: 'FASHION PREMIUM',
+                    price: 6999,
+                    rating: 5,
+                    reviews: 6999,
+                    description: 'Make a statement with today\'s most wanted dress. Premium quality fabric with exquisite design that turns heads.',
+                    brand: 'ZYVORA PREMIUM',
+                    availability: 'Limited Stock',
+                    images: [
+                        'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400',
+                        'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400',
+                        'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400'
+                    ]
+                }
+            };
+            return products[id] || products['fashion1'];
+        }
+
+        // Render Product
+        function renderProduct() {
+            const container = document.getElementById('productDetailContainer');
+            
+            if (!currentProduct) {
+                container.innerHTML = '<div class="loading">Product not found</div>';
                 return;
             }
-            
-            try {
-                const doc = await db.collection('products').doc(productId).get();
-                if (doc.exists) {
-                    currentProduct = { id: doc.id, ...doc.data() };
-                } else {
-                    currentProduct = {
-                        id: productId,
-                        name: 'Wireless Headphones',
-                        price: 5499,
-                        category: 'Electronics',
-                        description: 'Premium quality wireless headphones with noise cancellation and 30-hour battery life.',
-                        images: [
-                            'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400',
-                            'https://images.unsplash.com/photo-1484704849700-f032a568e944?w=400',
-                            'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400'
-                        ],
-                        rating: 4.5,
-                        reviews: 128
-                    };
-                }
-                displayProduct();
-                if (buyNow) showOrderForm();
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
 
-        function displayProduct() {
-            const images = currentProduct.images || [currentProduct.image || 'https://via.placeholder.com/400'];
+            const images = currentProduct.images || [currentProduct.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'];
             
-            document.getElementById('productContainer').innerHTML = `
-                <div class="gallery">
-                    <div class="main-image">
-                        <img src="${images[currentImageIndex]}" alt="${currentProduct.name}" id="mainImage">
+            let thumbnailsHtml = '';
+            images.forEach((img, index) => {
+                thumbnailsHtml += `
+                    <div class="thumbnail ${index === 0 ? 'active' : ''}" onclick="changeImage(${index})">
+                        <img src="${img}" alt="Thumbnail ${index + 1}">
                     </div>
-                    <div class="thumbnails">
-                        ${images.map((img, i) => `
-                            <div class="thumbnail ${i === currentImageIndex ? 'active' : ''}" onclick="changeImage(${i})">
-                                <img src="${img}" alt="Thumbnail ${i+1}">
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                <div>
-                    <div class="product-category">${currentProduct.category || 'General'}</div>
-                    <h1 class="product-title">${currentProduct.name}</h1>
-                    <div class="product-price">Rs ${currentProduct.price?.toLocaleString()}</div>
-                    <div class="product-rating">
-                        ${generateStars(currentProduct.rating || 4.5)}
-                        <span>(${currentProduct.reviews || 0} reviews)</span>
-                    </div>
-                    <p class="product-description">${currentProduct.description || 'No description available.'}</p>
-                    
-                    <div class="quantity">
-                        <button class="quantity-btn" onclick="changeQty(-1)">-</button>
-                        <input class="quantity-input" id="qty" value="1" readonly>
-                        <button class="quantity-btn" onclick="changeQty(1)">+</button>
+                `;
+            });
+
+            container.innerHTML = `
+                <div class="product-detail">
+                    <div class="product-images">
+                        <div class="main-image">
+                            <img src="${images[0]}" alt="${currentProduct.name}" id="mainImage">
+                        </div>
+                        <div class="thumbnail-images">
+                            ${thumbnailsHtml}
+                        </div>
                     </div>
                     
-                    <div class="product-actions">
-                        <button class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
-                        <button class="btn btn-secondary" onclick="showOrderForm()">Buy Now</button>
+                    <div class="product-info">
+                        <div class="product-category">${currentProduct.category || 'FASHION'}</div>
+                        <h1>${currentProduct.name}</h1>
+                        
+                        <div class="product-rating">
+                            ${generateStars(currentProduct.rating || 4.5)}
+                            <span>${(currentProduct.reviews || 0).toLocaleString()} ratings</span>
+                        </div>
+                        
+                        <div class="product-price">
+                            Rs ${currentProduct.price?.toLocaleString() || '1,233'}
+                            <small>inclusive of all taxes</small>
+                        </div>
+                        
+                        <div class="delivery-info">
+                            <p><i class="fas fa-truck"></i> Free Delivery to Pakistan</p>
+                            <p><i class="fas fa-clock"></i> Usually delivered in 3-5 business days</p>
+                            <p><i class="fas fa-undo-alt"></i> 7-day return policy</p>
+                        </div>
+                        
+                        <div class="product-description">
+                            <h3>About this item</h3>
+                            <p>${currentProduct.description || 'Premium quality product from ZYVORASHOP. Made with care and attention to detail to ensure customer satisfaction.'}</p>
+                        </div>
+                        
+                        <div class="product-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Brand</span>
+                                <span class="meta-value">${currentProduct.brand || 'ZYVORA'}</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Availability</span>
+                                <span class="meta-value" style="color: #067d62;">${currentProduct.availability || 'In Stock'}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="product-actions">
+                            <button class="btn-add" onclick="addToCart()">
+                                <i class="fas fa-shopping-cart"></i> Add to Cart
+                            </button>
+                            <button class="btn-buy" onclick="buyNow()">Buy Now</button>
+                            <button class="btn-wishlist ${inWishlist ? 'active' : ''}" onclick="toggleWishlist()">
+                                <i class="fa${inWishlist ? 's' : 'r'} fa-heart"></i>
+                            </button>
+                        </div>
                     </div>
-                    
-                    <div class="order-form" id="orderForm">
-                        <h3>Complete Your Order</h3>
-                        
-                        <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" id="fullName" placeholder="Enter your full name" value="${currentUser?.displayName || ''}">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Phone Number</label>
-                            <input type="text" id="phone" placeholder="03XXXXXXXXX">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" id="email" value="${currentUser?.email || ''}">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Delivery Address</label>
-                            <textarea id="address" rows="3" placeholder="Complete address"></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Payment Method</label>
-                            <div class="payment-methods">
-                                <div class="payment-method easypaisa selected" onclick="selectPayment('easypaisa')">
-                                    <i class="fas fa-mobile-alt"></i> EasyPaisa
-                                </div>
-                                <div class="payment-method jazzcash" onclick="selectPayment('jazzcash')">
-                                    <i class="fas fa-mobile-alt"></i> JazzCash
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="payment-details" id="paymentDetails">
-                            <p>Send exact amount to:</p>
-                            <div class="store-account">Rs ${(currentProduct.price * quantity).toLocaleString()}</div>
-                            <div class="store-account">${STORE_ACCOUNT.easypaisa.number}</div>
-                            <p style="text-align: center;">Account Title: <strong>${STORE_ACCOUNT.easypaisa.title}</strong></p>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label>Transaction ID</label>
-                            <input type="text" id="transactionId" placeholder="Enter transaction ID">
-                        </div>
-                        
-                        <div class="order-summary">
-                            <div class="summary-row">
-                                <span>Product:</span>
-                                <span>${currentProduct.name}</span>
-                            </div>
-                            <div class="summary-row">
-                                <span>Quantity:</span>
-                                <span id="summaryQty">${quantity}</span>
-                            </div>
-                            <div class="summary-total">
-                                <span>Total:</span>
-                                <span>Rs ${(currentProduct.price * quantity).toLocaleString()}</span>
-                            </div>
-                        </div>
-                        
-                        <button class="btn btn-primary" onclick="placeOrder()" style="width: 100%;">Place Order</button>
-                    </div>
-                    
-                    <a href="products.html" class="back-link">← Back to Products</a>
                 </div>
             `;
         }
 
+        // Generate Stars
         function generateStars(rating) {
             let stars = '';
             for (let i = 1; i <= 5; i++) {
-                if (i <= rating) stars += '<i class="fas fa-star"></i>';
-                else if (i - rating < 1) stars += '<i class="fas fa-star-half-alt"></i>';
-                else stars += '<i class="far fa-star"></i>';
+                if (i <= rating) {
+                    stars += '<i class="fas fa-star"></i>';
+                } else if (i - rating < 1) {
+                    stars += '<i class="fas fa-star-half-alt"></i>';
+                } else {
+                    stars += '<i class="far fa-star"></i>';
+                }
             }
             return stars;
         }
 
-        window.changeImage = (index) => {
-            currentImageIndex = index;
-            document.getElementById('mainImage').src = currentProduct.images[index];
-        };
+        // Change Image
+        window.changeImage = function(index) {
+            const mainImage = document.getElementById('mainImage');
+            const images = currentProduct.images || [currentProduct.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'];
+            mainImage.src = images[index];
+            
+            // Update active thumbnail
+            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                if (i === index) {
+                    thumb.classList.add('active');
+                } else {
+                    thumb.classList.remove('active');
+                }
+            });
+        }
 
-        window.changeQty = (change) => {
-            quantity = Math.max(1, quantity + change);
-            document.getElementById('qty').value = quantity;
-            if (document.getElementById('summaryQty')) {
-                document.getElementById('summaryQty').textContent = quantity;
-            }
-        };
-
-        window.addToCart = async () => {
+        // Add to Cart
+        window.addToCart = async function() {
             if (!currentUser) {
-                window.location.href = 'account.html';
+                showNotification('Please sign in first');
+                setTimeout(() => {
+                    window.location.href = 'account.html';
+                }, 1500);
                 return;
             }
-            
+
             try {
-                const existing = await db.collection('cart')
+                // Check if already in cart
+                const existingCart = await db.collection('cart')
                     .where('userId', '==', currentUser.uid)
-                    .where('productId', '==', currentProduct.id)
+                    .where('productId', '==', productId)
                     .get();
-                
-                if (!existing.empty) {
-                    const cartItem = existing.docs[0];
-                    await cartItem.ref.update({ quantity: cartItem.data().quantity + quantity });
+
+                if (!existingCart.empty) {
+                    // Update quantity
+                    const cartItem = existingCart.docs[0];
+                    await cartItem.ref.update({
+                        quantity: (cartItem.data().quantity || 1) + 1
+                    });
                 } else {
+                    // Add new item
                     await db.collection('cart').add({
                         userId: currentUser.uid,
-                        productId: currentProduct.id,
-                        quantity: quantity,
+                        productId: productId,
+                        quantity: 1,
                         addedAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 }
+
                 showNotification('Added to cart!');
-                loadCounts();
-            } catch (error) {
-                showNotification('Error adding to cart', 'error');
-            }
-        };
+                
+                // Update cart count if badge exists
+                const badge = document.querySelector('.badge');
+                if (badge) {
+                    const cartSnap = await db.collection('cart')
+                        .where('userId', '==', currentUser.uid)
+                        .get();
+                    const count = cartSnap.docs.reduce((sum, doc) => sum + (doc.data().quantity || 1), 0);
+                    badge.textContent = count;
+                }
 
-        window.showOrderForm = () => {
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                showNotification('Error adding to cart');
+            }
+        }
+
+        // Buy Now
+        window.buyNow = function() {
             if (!currentUser) {
-                window.location.href = 'account.html';
-                return;
-            }
-            document.getElementById('orderForm').style.display = 'block';
-            window.scrollTo({ top: document.getElementById('orderForm').offsetTop, behavior: 'smooth' });
-        };
-
-        window.selectPayment = (method) => {
-            selectedPayment = method;
-            document.querySelectorAll('.payment-method').forEach(opt => opt.classList.remove('selected'));
-            event.target.classList.add('selected');
-            
-            const details = document.getElementById('paymentDetails');
-            details.innerHTML = `
-                <p>Send exact amount to:</p>
-                <div class="store-account">Rs ${(currentProduct.price * quantity).toLocaleString()}</div>
-                <div class="store-account">${STORE_ACCOUNT[method].number}</div>
-                <p style="text-align: center;">Account Title: <strong>${STORE_ACCOUNT[method].title}</strong></p>
-            `;
-        };
-
-        window.placeOrder = async () => {
-            if (!currentUser) return;
-            
-            const fullName = document.getElementById('fullName')?.value;
-            const phone = document.getElementById('phone')?.value;
-            const address = document.getElementById('address')?.value;
-            const transactionId = document.getElementById('transactionId')?.value;
-            
-            if (!fullName || !phone || !address || !transactionId) {
-                showNotification('Please fill all fields', 'error');
+                showNotification('Please sign in first');
+                setTimeout(() => {
+                    window.location.href = 'account.html';
+                }, 1500);
                 return;
             }
             
-            const order = {
-                userId: currentUser.uid,
-                customerName: fullName,
-                customerPhone: phone,
-                customerEmail: document.getElementById('email').value || currentUser.email,
-                items: [{
-                    productId: currentProduct.id,
-                    productName: currentProduct.name,
-                    price: currentProduct.price,
-                    quantity: quantity,
-                    total: currentProduct.price * quantity
-                }],
-                totalAmount: currentProduct.price * quantity,
-                deliveryAddress: address,
-                paymentMethod: selectedPayment,
-                transactionId: transactionId,
-                status: 'pending',
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
-            
+            // Store product ID in session for checkout
+            sessionStorage.setItem('buyNowProduct', productId);
+            window.location.href = 'checkout.html?buynow=true';
+        }
+
+        // Toggle Wishlist
+        window.toggleWishlist = async function() {
+            if (!currentUser) {
+                showNotification('Please sign in first');
+                setTimeout(() => {
+                    window.location.href = 'account.html';
+                }, 1500);
+                return;
+            }
+
             try {
-                const orderRef = await db.collection('orders').add(order);
-                await orderRef.update({ orderId: orderRef.id });
-                showNotification('Order placed successfully!');
-                setTimeout(() => window.location.href = 'index.html', 2000);
+                if (inWishlist) {
+                    // Remove from wishlist
+                    const wishlistSnap = await db.collection('wishlist')
+                        .where('userId', '==', currentUser.uid)
+                        .where('productId', '==', productId)
+                        .get();
+                    
+                    wishlistSnap.forEach(doc => doc.ref.delete());
+                    inWishlist = false;
+                    showNotification('Removed from wishlist');
+                } else {
+                    // Add to wishlist
+                    await db.collection('wishlist').add({
+                        userId: currentUser.uid,
+                        productId: productId,
+                        addedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    inWishlist = true;
+                    showNotification('Added to wishlist');
+                }
+                
+                // Update button
+                const wishlistBtn = document.querySelector('.btn-wishlist');
+                if (wishlistBtn) {
+                    wishlistBtn.classList.toggle('active');
+                    const icon = wishlistBtn.querySelector('i');
+                    icon.className = inWishlist ? 'fas fa-heart' : 'far fa-heart';
+                }
+                
+                // Update wishlist count if badge exists
+                const wishlistBadge = document.getElementById('wishlistCount');
+                if (wishlistBadge) {
+                    const wishlistSnap = await db.collection('wishlist')
+                        .where('userId', '==', currentUser.uid)
+                        .get();
+                    wishlistBadge.textContent = wishlistSnap.size;
+                }
+                
             } catch (error) {
-                showNotification('Error placing order', 'error');
+                console.error('Error toggling wishlist:', error);
+                showNotification('Error updating wishlist');
             }
-        };
+        }
 
-        function showNotification(msg) {
-            const n = document.createElement('div');
-            n.className = 'notification';
-            n.textContent = msg;
-            document.body.appendChild(n);
-            setTimeout(() => n.remove(), 2000);
+        // Show Notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
         }
     </script>
 </body>
