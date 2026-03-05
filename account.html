@@ -3,100 +3,495 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Account - ZYVORASHOP</title>
+    <title>Account - ZYVORASHOP</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Inter', sans-serif; background: #f3f3f3; }
-        .header { background: #131921; padding: 15px 20px; }
-        .header-content { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 24px; font-weight: 700; color: white; text-decoration: none; }
-        .logo span { color: #ff9900; }
-        .back-btn { color: white; text-decoration: none; }
-        .back-btn:hover { color: #ff9900; }
-        .container { max-width: 1200px; margin: 50px auto; padding: 20px; }
-        .dashboard { background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .welcome { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #ddd; }
-        .welcome h1 { font-size: 28px; color: #131921; }
-        .logout-btn { padding: 10px 20px; background: #ffd814; border: none; border-radius: 20px; cursor: pointer; font-weight: 600; }
-        .logout-btn:hover { background: #f7ca00; }
-        .menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .menu-item { padding: 30px; border: 1px solid #eee; border-radius: 8px; text-align: center; cursor: pointer; transition: all 0.3s; }
-        .menu-item:hover { border-color: #ff9900; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .menu-item i { font-size: 40px; color: #ff9900; margin-bottom: 15px; }
-        .menu-item h3 { margin-bottom: 10px; }
-        .menu-item p { color: #666; font-size: 14px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f3f3f3;
+        }
+
+        .header {
+            background: #131921;
+            padding: 15px 20px;
+        }
+
+        .header-content {
+            max-width: 1500px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #ff9900;
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .back-btn i {
+            margin-right: 5px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .account-box {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .account-box h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #0f1111;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ff9900;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: #ffd814;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .btn:hover {
+            background: #f7ca00;
+        }
+
+        .btn-google {
+            background: white;
+            border: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-google:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-google img {
+            width: 20px;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 10px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .toggle-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .toggle-link a {
+            color: #007185;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .toggle-link a:hover {
+            color: #ff9900;
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #b12704;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .success-message {
+            color: #007600;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .user-info {
+            text-align: center;
+        }
+
+        .user-info i {
+            font-size: 60px;
+            color: #ff9900;
+            margin-bottom: 20px;
+        }
+
+        .user-info h2 {
+            margin-bottom: 10px;
+        }
+
+        .user-info p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 30px;
+            background: white;
+            border-left: 4px solid #ff9900;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .footer {
+            background: #232f3e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="header-content">
             <a href="index.html" class="logo">ZYVORA<span>SHOP</span></a>
-            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Store</a>
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Shopping</a>
         </div>
     </header>
 
     <div class="container">
-        <div class="dashboard">
-            <div class="welcome">
-                <h1>Welcome, <span id="userName">User</span>!</h1>
-                <button class="logout-btn" onclick="logout()">Sign Out</button>
-            </div>
-            
-            <div class="menu-grid">
-                <div class="menu-item" onclick="window.location.href='orders.html'">
-                    <i class="fas fa-box"></i>
-                    <h3>Your Orders</h3>
-                    <p>Track, return, or buy again</p>
-                </div>
-                <div class="menu-item" onclick="window.location.href='wishlist.html'">
-                    <i class="far fa-heart"></i>
-                    <h3>Your Wishlist</h3>
-                    <p>Items you've saved</p>
-                </div>
-                <div class="menu-item" onclick="window.location.href='cart.html'">
-                    <i class="fas fa-shopping-cart"></i>
-                    <h3>Your Cart</h3>
-                    <p>View and checkout items</p>
-                </div>
-                <div class="menu-item" onclick="window.location.href='profile.html'">
-                    <i class="fas fa-user-cog"></i>
-                    <h3>Profile Settings</h3>
-                    <p>Manage your information</p>
-                </div>
-                <div class="menu-item" onclick="window.location.href='address.html'">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <h3>Your Addresses</h3>
-                    <p>Edit shipping addresses</p>
-                </div>
-                <div class="menu-item" onclick="window.location.href='payment.html'">
-                    <i class="fas fa-credit-card"></i>
-                    <h3>Payment Methods</h3>
-                    <p>Manage payment options</p>
-                </div>
-            </div>
+        <div class="account-box" id="accountBox">
+            <!-- Dynamic content will be loaded here -->
         </div>
     </div>
 
+    <footer class="footer">
+        <p>© 2024 ZYVORASHOP.com. All rights reserved.</p>
+    </footer>
+
     <script>
-        firebase.initializeApp({
+        const firebaseConfig = {
             apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
-            authDomain: "shopverse-c2642.firebaseapp.com"
-        });
+            authDomain: "shopverse-c2642.firebaseapp.com",
+            projectId: "shopverse-c2642",
+            storageBucket: "shopverse-c2642.firebasestorage.app",
+            messagingSenderId: "281981664356",
+            appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
+        };
+
+        firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        auth.onAuthStateChanged(user => {
-            if (!user) window.location.href = 'account.html';
-            else document.getElementById('userName').textContent = user.displayName || 'User';
-        });
+        let isLogin = true;
 
-        window.logout = async function() {
-            await auth.signOut();
-            window.location.href = 'index.html';
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
+
+        function renderForm() {
+            const box = document.getElementById('accountBox');
+            
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    // User is signed in - show account info
+                    box.innerHTML = `
+                        <div class="user-info">
+                            <i class="fas fa-user-circle"></i>
+                            <h2>Welcome, ${user.email ? user.email.split('@')[0] : 'User'}!</h2>
+                            <p>${user.email || 'No email provided'}</p>
+                            <button class="btn" onclick="signOut()">Sign Out</button>
+                            <div class="toggle-link">
+                                <a href="index.html">Continue Shopping</a>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // User is signed out - show login/signup form
+                    if (isLogin) {
+                        box.innerHTML = `
+                            <h1>Sign In</h1>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="email" placeholder="Enter your email">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="password" placeholder="Enter your password">
+                            </div>
+                            <div id="errorMsg" class="error-message"></div>
+                            <button class="btn" onclick="login()">Sign In</button>
+                            
+                            <button class="btn btn-google" onclick="googleSignIn()">
+                                <i class="fab fa-google"></i> Continue with Google
+                            </button>
+                            
+                            <div class="divider">
+                                <span>New to ZYVORASHOP?</span>
+                            </div>
+                            
+                            <div class="toggle-link">
+                                <a onclick="toggleForm()">Create your account</a>
+                            </div>
+                        `;
+                    } else {
+                        box.innerHTML = `
+                            <h1>Create Account</h1>
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="name" placeholder="Enter your full name">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="email" placeholder="Enter your email">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="password" placeholder="Enter your password (min. 6 characters)">
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password</label>
+                                <input type="password" id="confirmPassword" placeholder="Confirm your password">
+                            </div>
+                            <div id="errorMsg" class="error-message"></div>
+                            <button class="btn" onclick="signup()">Create Account</button>
+                            
+                            <button class="btn btn-google" onclick="googleSignIn()">
+                                <i class="fab fa-google"></i> Continue with Google
+                            </button>
+                            
+                            <div class="divider">
+                                <span>Already have an account?</span>
+                            </div>
+                            
+                            <div class="toggle-link">
+                                <a onclick="toggleForm()">Sign In</a>
+                            </div>
+                        `;
+                    }
+                }
+            });
+        }
+
+        window.toggleForm = function() {
+            isLogin = !isLogin;
+            renderForm();
         };
+
+        window.login = async function() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (!email || !password) {
+                errorMsg.textContent = 'Please fill in all fields';
+                return;
+            }
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                showNotification('Login successful!');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } catch (error) {
+                console.error('Login error:', error);
+                switch(error.code) {
+                    case 'auth/user-not-found':
+                        errorMsg.textContent = 'No account found with this email';
+                        break;
+                    case 'auth/wrong-password':
+                        errorMsg.textContent = 'Incorrect password';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMsg.textContent = 'Invalid email format';
+                        break;
+                    default:
+                        errorMsg.textContent = 'Login failed. Please try again';
+                }
+            }
+        };
+
+        window.signup = async function() {
+            const name = document.getElementById('name')?.value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const errorMsg = document.getElementById('errorMsg');
+
+            if (!email || !password || !confirmPassword) {
+                errorMsg.textContent = 'Please fill in all fields';
+                return;
+            }
+
+            if (password.length < 6) {
+                errorMsg.textContent = 'Password must be at least 6 characters';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                errorMsg.textContent = 'Passwords do not match';
+                return;
+            }
+
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                if (name) {
+                    await userCredential.user.updateProfile({
+                        displayName: name
+                    });
+                }
+                
+                showNotification('Account created successfully!');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } catch (error) {
+                console.error('Signup error:', error);
+                switch(error.code) {
+                    case 'auth/email-already-in-use':
+                        errorMsg.textContent = 'Email already in use';
+                        break;
+                    case 'auth/invalid-email':
+                        errorMsg.textContent = 'Invalid email format';
+                        break;
+                    default:
+                        errorMsg.textContent = 'Signup failed. Please try again';
+                }
+            }
+        };
+
+        window.googleSignIn = async function() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            
+            try {
+                await auth.signInWithPopup(provider);
+                showNotification('Google sign in successful!');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } catch (error) {
+                console.error('Google sign in error:', error);
+                showNotification('Google sign in failed');
+            }
+        };
+
+        window.signOut = async function() {
+            try {
+                await auth.signOut();
+                showNotification('Signed out successfully');
+                renderForm();
+            } catch (error) {
+                console.error('Sign out error:', error);
+                showNotification('Error signing out');
+            }
+        };
+
+        // Initialize
+        renderForm();
     </script>
 </body>
 </html>
