@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Products - ZYVORASHOP</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
@@ -20,11 +22,11 @@
         body {
             font-family: 'Inter', sans-serif;
             background: #f3f3f3;
-            color: #0f1111;
         }
 
         .header {
             background: #131921;
+            padding: 15px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -33,10 +35,9 @@
         .header-content {
             max-width: 1500px;
             margin: 0 auto;
-            padding: 10px 20px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
 
         .logo {
@@ -53,14 +54,11 @@
         .back-btn {
             color: white;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
+            font-size: 16px;
         }
 
-        .back-btn:hover {
-            color: #ff9900;
+        .back-btn i {
+            margin-right: 5px;
         }
 
         .container {
@@ -72,20 +70,16 @@
             gap: 30px;
         }
 
-        /* Filters Sidebar */
         .filters {
             background: white;
             border-radius: 8px;
             padding: 20px;
-            height: fit-content;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            height: fit-content;
         }
 
         .filters h3 {
-            font-size: 18px;
             margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ddd;
         }
 
         .filter-section {
@@ -93,16 +87,14 @@
         }
 
         .filter-section h4 {
-            font-size: 14px;
-            margin-bottom: 15px;
-            color: #131921;
+            margin-bottom: 10px;
+            font-size: 16px;
         }
 
         .filter-option {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
-            cursor: pointer;
+            margin-bottom: 8px;
         }
 
         .filter-option input[type="checkbox"] {
@@ -111,55 +103,31 @@
         }
 
         .filter-option label {
-            font-size: 14px;
             cursor: pointer;
-            flex: 1;
-        }
-
-        .filter-option span {
-            color: #565959;
-            font-size: 12px;
+            font-size: 14px;
         }
 
         .price-range {
-            padding: 0 5px;
-        }
-
-        .price-inputs {
             display: flex;
             gap: 10px;
-            margin-bottom: 15px;
         }
 
-        .price-inputs input {
+        .price-range input {
             width: 100%;
             padding: 8px;
             border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 13px;
+            border-radius: 5px;
         }
 
         .apply-btn {
             width: 100%;
             padding: 10px;
-            background: #ffd814;
+            background: #ff9900;
+            color: white;
             border: none;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
+            border-radius: 5px;
             cursor: pointer;
-        }
-
-        .apply-btn:hover {
-            background: #f7ca00;
-        }
-
-        /* Products Section */
-        .products-section {
-            background: white;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 10px;
         }
 
         .products-header {
@@ -167,26 +135,16 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #ddd;
         }
 
         .products-header h1 {
-            font-size: 20px;
-            color: #131921;
-        }
-
-        .products-header span {
-            color: #565959;
-            font-size: 14px;
+            font-size: 24px;
         }
 
         .sort-select {
-            padding: 8px 15px;
+            padding: 8px;
             border: 1px solid #ddd;
-            border-radius: 20px;
-            font-size: 14px;
-            cursor: pointer;
+            border-radius: 5px;
         }
 
         .products-grid {
@@ -197,17 +155,16 @@
 
         .product-card {
             background: white;
-            border: 1px solid #f0f0f0;
             border-radius: 8px;
             overflow: hidden;
             transition: all 0.3s;
             cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            border-color: #ff9900;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
         .product-image {
@@ -236,7 +193,7 @@
         }
 
         .product-title {
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 600;
             margin-bottom: 5px;
             line-height: 1.4;
@@ -244,13 +201,13 @@
 
         .product-rating {
             color: #ff9900;
-            margin-bottom: 5px;
-            font-size: 12px;
+            margin-bottom: 8px;
+            font-size: 13px;
         }
 
         .product-rating span {
             color: #007185;
-            margin-left: 5px;
+            margin-left: 8px;
         }
 
         .product-price {
@@ -259,56 +216,36 @@
             color: #b12704;
         }
 
-        .no-products {
+        .no-results {
             grid-column: 1/-1;
             text-align: center;
-            padding: 50px;
-            color: #565959;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 30px;
-        }
-
-        .page-btn {
-            width: 40px;
-            height: 40px;
-            border: 1px solid #ddd;
+            padding: 60px;
             background: white;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.3s;
+            border-radius: 8px;
         }
 
-        .page-btn:hover,
-        .page-btn.active {
-            background: #ff9900;
-            color: white;
-            border-color: #ff9900;
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 30px;
+            background: white;
+            border-left: 4px solid #ff9900;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
         }
 
-        .loading {
-            grid-column: 1/-1;
-            text-align: center;
-            padding: 50px;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #ff9900;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         @media (max-width: 1200px) {
@@ -339,76 +276,88 @@
     </header>
 
     <div class="container">
-        <!-- Filters Sidebar -->
         <div class="filters">
             <h3>Filters</h3>
             
             <div class="filter-section">
                 <h4>Category</h4>
-                <div id="categoryFilters"></div>
+                <div class="filter-option">
+                    <input type="checkbox" id="catFashion" value="Fashion">
+                    <label for="catFashion">Fashion</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="catElectronics" value="Electronics">
+                    <label for="catElectronics">Electronics</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="catWatches" value="Watches">
+                    <label for="catWatches">Watches</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="catHome" value="Home">
+                    <label for="catHome">Home</label>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="catBeauty" value="Beauty">
+                    <label for="catBeauty">Beauty</label>
+                </div>
             </div>
             
             <div class="filter-section">
                 <h4>Price Range</h4>
                 <div class="price-range">
-                    <div class="price-inputs">
-                        <input type="number" id="minPrice" placeholder="Min" value="0">
-                        <input type="number" id="maxPrice" placeholder="Max" value="100000">
-                    </div>
-                    <button class="apply-btn" onclick="applyPriceFilter()">Apply</button>
+                    <input type="number" id="minPrice" placeholder="Min">
+                    <input type="number" id="maxPrice" placeholder="Max">
                 </div>
+                <button class="apply-btn" onclick="applyFilters()">Apply Filters</button>
             </div>
             
             <div class="filter-section">
                 <h4>Rating</h4>
                 <div class="filter-option">
-                    <input type="checkbox" id="rating4" onchange="applyRatingFilter()">
+                    <input type="checkbox" id="rating4" value="4">
                     <label for="rating4">4★ & above</label>
                 </div>
                 <div class="filter-option">
-                    <input type="checkbox" id="rating3" onchange="applyRatingFilter()">
+                    <input type="checkbox" id="rating3" value="3">
                     <label for="rating3">3★ & above</label>
                 </div>
                 <div class="filter-option">
-                    <input type="checkbox" id="rating2" onchange="applyRatingFilter()">
+                    <input type="checkbox" id="rating2" value="2">
                     <label for="rating2">2★ & above</label>
                 </div>
             </div>
-            
-            <button class="apply-btn" onclick="clearFilters()" style="background: #f0f2f2;">Clear All</button>
         </div>
-
-        <!-- Products Section -->
-        <div class="products-section">
+        
+        <div>
             <div class="products-header">
-                <div>
-                    <h1 id="pageTitle">All Products</h1>
-                    <span id="productCount">Loading products...</span>
-                </div>
-                <select class="sort-select" id="sortSelect" onchange="applySort()">
+                <h1 id="productsTitle">All Products</h1>
+                <select class="sort-select" id="sortSelect" onchange="sortProducts()">
                     <option value="default">Sort by: Featured</option>
-                    <option value="price-low">Price: Low to High</option>
-                    <option value="price-high">Price: High to Low</option>
+                    <option value="priceLow">Price: Low to High</option>
+                    <option value="priceHigh">Price: High to Low</option>
                     <option value="rating">Avg. Rating</option>
                     <option value="newest">Newest Arrivals</option>
                 </select>
             </div>
-
+            
             <div class="products-grid" id="productsGrid">
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <p>Loading products...</p>
+                <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                    <div class="spinner" style="width:50px;height:50px;border:3px solid #f3f3f3;border-top:3px solid #ff9900;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto;"></div>
+                    <p style="margin-top:20px;">Loading products...</p>
                 </div>
-            </div>
-
-            <div class="pagination" id="pagination">
-                <!-- Pagination will be loaded here -->
             </div>
         </div>
     </div>
 
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
             authDomain: "shopverse-c2642.firebaseapp.com",
@@ -418,33 +367,39 @@
             appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Get URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const searchTerm = urlParams.get('search');
-        const category = urlParams.get('category');
-        const sort = urlParams.get('sort');
-
         let allProducts = [];
         let filteredProducts = [];
-        let currentPage = 1;
-        const productsPerPage = 9;
+        let currentUser = null;
 
-        // Set page title based on params
-        if (searchTerm) {
-            document.getElementById('pageTitle').textContent = `Search Results for "${searchTerm}"`;
-        } else if (category) {
-            document.getElementById('pageTitle').textContent = category;
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+        });
+
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                category: params.get('category'),
+                search: params.get('search'),
+                deals: params.get('deals'),
+                sort: params.get('sort')
+            };
         }
 
-        // Load Products
         async function loadProducts() {
+            const params = getUrlParams();
+            
             try {
-                const snapshot = await db.collection('products').get();
+                let query = db.collection('products');
+                
+                if (params.category) {
+                    query = query.where('category', '==', params.category);
+                }
+                
+                const snapshot = await query.get();
                 
                 if (snapshot.empty) {
                     showSampleProducts();
@@ -452,7 +407,27 @@
                 }
                 
                 allProducts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                applyFilters();
+                
+                if (params.search) {
+                    const searchTerm = params.search.toLowerCase();
+                    allProducts = allProducts.filter(p => 
+                        p.name?.toLowerCase().includes(searchTerm) ||
+                        p.category?.toLowerCase().includes(searchTerm)
+                    );
+                }
+                
+                if (params.deals) {
+                    allProducts = allProducts.filter(p => p.badge === 'SALE' || p.discountedPrice);
+                }
+                
+                filteredProducts = [...allProducts];
+                
+                if (params.sort === 'new') {
+                    filteredProducts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                }
+                
+                updateTitle(params);
+                renderProducts();
                 
             } catch (error) {
                 console.error('Error loading products:', error);
@@ -460,264 +435,87 @@
             }
         }
 
-        // Show Sample Products
         function showSampleProducts() {
+            const params = getUrlParams();
+            
             allProducts = [
-                {
-                    id: 'fashion1',
-                    name: 'new trending',
-                    category: 'FASHION',
-                    price: 1233,
-                    rating: 4.5,
-                    reviews: 1233,
-                    images: ['https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400']
-                },
-                {
-                    id: 'fashion2',
-                    name: 'life',
-                    category: 'FASHION',
-                    price: 12000,
-                    rating: 5,
-                    reviews: 12000,
-                    images: ['https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400']
-                },
-                {
-                    id: 'fashion3',
-                    name: 'Today Trending Dress',
-                    category: 'FASHION PREMIUM',
-                    price: 6999,
-                    rating: 5,
-                    reviews: 6999,
-                    images: ['https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400']
-                },
-                {
-                    id: 'product4',
-                    name: 'Wireless Headphones',
-                    category: 'Electronics',
-                    price: 5499,
-                    rating: 4.5,
-                    reviews: 2500,
-                    images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400']
-                },
-                {
-                    id: 'product5',
-                    name: 'Premium Watch',
-                    category: 'Watches',
-                    price: 3299,
-                    rating: 4,
-                    reviews: 890,
-                    images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400']
-                },
-                {
-                    id: 'product6',
-                    name: 'Running Shoes',
-                    category: 'Fashion',
-                    price: 4599,
-                    rating: 4.5,
-                    reviews: 2100,
-                    images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400']
-                },
-                {
-                    id: 'product7',
-                    name: 'Smart Watch',
-                    category: 'Electronics',
-                    price: 8999,
-                    rating: 5,
-                    reviews: 560,
-                    images: ['https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400']
-                },
-                {
-                    id: 'product8',
-                    name: 'Designer Handbag',
-                    category: 'Fashion',
-                    price: 4299,
-                    rating: 4.5,
-                    reviews: 1340,
-                    images: ['https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400']
-                },
-                {
-                    id: 'product9',
-                    name: 'Sunglasses',
-                    category: 'Fashion',
-                    price: 1999,
-                    rating: 4,
-                    reviews: 780,
-                    images: ['https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400']
-                }
+                { id: 'fashion1', name: 'new trending', category: 'FASHION', price: 1233, rating: 4.5, reviews: 1233, image: 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400' },
+                { id: 'fashion2', name: 'life', category: 'FASHION', price: 12000, rating: 5, reviews: 12000, image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400' },
+                { id: 'fashion3', name: 'Today Trending Dress', category: 'FASHION PREMIUM', price: 6999, rating: 5, reviews: 6999, image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400' },
+                { id: 'elec1', name: 'Wireless Headphones', category: 'ELECTRONICS', price: 5499, rating: 4.5, reviews: 2500, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400' },
+                { id: 'watch1', name: 'Premium Watch', category: 'WATCHES', price: 3299, rating: 4, reviews: 89, image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400' },
+                { id: 'shoes1', name: 'Running Shoes', category: 'FASHION', price: 4599, rating: 4.5, reviews: 210, image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400' },
+                { id: 'smartwatch1', name: 'Smart Watch', category: 'ELECTRONICS', price: 8999, rating: 5, reviews: 56, image: 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400' },
+                { id: 'handbag1', name: 'Designer Handbag', category: 'FASHION', price: 4299, rating: 4.5, reviews: 134, image: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400' }
             ];
             
-            loadCategoryFilters();
-            applyFilters();
-        }
-
-        // Load Category Filters
-        function loadCategoryFilters() {
-            const categories = [...new Set(allProducts.map(p => p.category))];
-            const container = document.getElementById('categoryFilters');
-            
-            container.innerHTML = categories.map(cat => `
-                <div class="filter-option">
-                    <input type="checkbox" class="category-filter" value="${cat}" onchange="applyCategoryFilters()">
-                    <label>${cat}</label>
-                    <span>(${allProducts.filter(p => p.category === cat).length})</span>
-                </div>
-            `).join('');
-        }
-
-        // Apply Category Filters
-        window.applyCategoryFilters = function() {
-            const selectedCategories = Array.from(document.querySelectorAll('.category-filter:checked')).map(cb => cb.value);
-            
-            if (selectedCategories.length === 0) {
-                filteredProducts = [...allProducts];
+            if (params.category) {
+                filteredProducts = allProducts.filter(p => 
+                    p.category.toLowerCase().includes(params.category.toLowerCase())
+                );
+            } else if (params.search) {
+                const searchTerm = params.search.toLowerCase();
+                filteredProducts = allProducts.filter(p => 
+                    p.name.toLowerCase().includes(searchTerm) ||
+                    p.category.toLowerCase().includes(searchTerm)
+                );
             } else {
-                filteredProducts = allProducts.filter(p => selectedCategories.includes(p.category));
+                filteredProducts = [...allProducts];
             }
             
-            // Apply other filters
-            applyPriceFilter(false);
-            applyRatingFilter(false);
-            applySearchFilter();
-        }
-
-        // Apply Price Filter
-        window.applyPriceFilter = function(resetPage = true) {
-            const minPrice = parseInt(document.getElementById('minPrice').value) || 0;
-            const maxPrice = parseInt(document.getElementById('maxPrice').value) || 100000;
-            
-            filteredProducts = filteredProducts.filter(p => 
-                p.price >= minPrice && p.price <= maxPrice
-            );
-            
-            if (resetPage) {
-                applyRatingFilter(false);
-            }
-        }
-
-        // Apply Rating Filter
-        window.applyRatingFilter = function(resetPage = true) {
-            const rating4 = document.getElementById('rating4').checked;
-            const rating3 = document.getElementById('rating3').checked;
-            const rating2 = document.getElementById('rating2').checked;
-            
-            if (rating4 || rating3 || rating2) {
-                let minRating = 0;
-                if (rating4) minRating = 4;
-                else if (rating3) minRating = 3;
-                else if (rating2) minRating = 2;
-                
-                filteredProducts = filteredProducts.filter(p => (p.rating || 4) >= minRating);
+            if (filteredProducts.length === 0) {
+                filteredProducts = allProducts;
             }
             
-            if (resetPage) {
-                applySearchFilter();
-            }
-        }
-
-        // Apply Search Filter
-        function applySearchFilter() {
-            if (searchTerm) {
-                filteredProducts = filteredProducts.filter(p => 
-                    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    p.category.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-            }
-            
-            if (category && !searchTerm) {
-                filteredProducts = filteredProducts.filter(p => 
-                    p.category.toLowerCase() === category.toLowerCase()
-                );
-            }
-            
-            applySort();
-        }
-
-        // Apply Sort
-        window.applySort = function() {
-            const sortValue = document.getElementById('sortSelect').value;
-            
-            switch(sortValue) {
-                case 'price-low':
-                    filteredProducts.sort((a, b) => a.price - b.price);
-                    break;
-                case 'price-high':
-                    filteredProducts.sort((a, b) => b.price - a.price);
-                    break;
-                case 'rating':
-                    filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-                    break;
-                case 'newest':
-                    // For demo, just reverse
-                    filteredProducts.reverse();
-                    break;
-                default:
-                    // Keep as is
-                    break;
-            }
-            
+            updateTitle(params);
             renderProducts();
         }
 
-        // Apply all filters
-        function applyFilters() {
-            filteredProducts = [...allProducts];
-            applyCategoryFilters();
+        function updateTitle(params) {
+            const title = document.getElementById('productsTitle');
+            if (params.category) {
+                title.textContent = `${params.category}`;
+            } else if (params.search) {
+                title.textContent = `Search: "${params.search}"`;
+            } else if (params.deals) {
+                title.textContent = "Today's Deals";
+            } else {
+                title.textContent = "All Products";
+            }
         }
 
-        // Clear all filters
-        window.clearFilters = function() {
-            document.querySelectorAll('.category-filter').forEach(cb => cb.checked = false);
-            document.getElementById('minPrice').value = 0;
-            document.getElementById('maxPrice').value = 100000;
-            document.getElementById('rating4').checked = false;
-            document.getElementById('rating3').checked = false;
-            document.getElementById('rating2').checked = false;
-            document.getElementById('sortSelect').value = 'default';
-            
-            applyFilters();
-        }
-
-        // Render Products
         function renderProducts() {
             const grid = document.getElementById('productsGrid');
-            const countSpan = document.getElementById('productCount');
             
             if (filteredProducts.length === 0) {
-                grid.innerHTML = '<div class="no-products">No products found</div>';
-                countSpan.textContent = '0 products';
-                document.getElementById('pagination').innerHTML = '';
+                grid.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-search" style="font-size: 50px; color: #ddd; margin-bottom: 20px;"></i>
+                        <h2>No products found</h2>
+                        <p>Try adjusting your filters or search term</p>
+                    </div>
+                `;
                 return;
             }
             
-            // Pagination
-            const start = (currentPage - 1) * productsPerPage;
-            const end = start + productsPerPage;
-            const paginatedProducts = filteredProducts.slice(start, end);
-            
-            grid.innerHTML = paginatedProducts.map(product => `
+            grid.innerHTML = filteredProducts.map(product => `
                 <div class="product-card" onclick="viewProduct('${product.id}')">
                     <div class="product-image">
-                        <img src="${product.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" alt="${product.name}">
+                        <img src="${product.image || product.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" alt="${product.name}">
                     </div>
                     <div class="product-info">
                         <div class="product-category">${product.category}</div>
                         <div class="product-title">${product.name}</div>
                         <div class="product-rating">
                             ${generateStars(product.rating || 4.5)}
-                            <span>(${(product.reviews || 0).toLocaleString()})</span>
+                            <span>${(product.reviews || Math.floor(Math.random() * 1000)).toLocaleString()}</span>
                         </div>
-                        <div class="product-price">Rs ${product.price.toLocaleString()}</div>
+                        <div class="product-price">Rs ${product.price?.toLocaleString()}</div>
                     </div>
                 </div>
             `).join('');
-            
-            countSpan.textContent = `${filteredProducts.length} products`;
-            
-            // Render pagination
-            renderPagination();
         }
 
-        // Generate Stars
         function generateStars(rating) {
             let stars = '';
             for (let i = 1; i <= 5; i++) {
@@ -732,34 +530,65 @@
             return stars;
         }
 
-        // Render Pagination
-        function renderPagination() {
-            const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
-            const pagination = document.getElementById('pagination');
-            
-            if (totalPages <= 1) {
-                pagination.innerHTML = '';
-                return;
-            }
-            
-            let html = '';
-            for (let i = 1; i <= totalPages; i++) {
-                html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
-            }
-            
-            pagination.innerHTML = html;
-        }
-
-        // Go to Page
-        window.goToPage = function(page) {
-            currentPage = page;
-            renderProducts();
-        }
-
-        // View Product
         window.viewProduct = function(productId) {
             window.location.href = `product-detail.html?id=${productId}`;
-        }
+        };
+
+        window.applyFilters = function() {
+            const categories = [];
+            if (document.getElementById('catFashion').checked) categories.push('FASHION');
+            if (document.getElementById('catElectronics').checked) categories.push('ELECTRONICS');
+            if (document.getElementById('catWatches').checked) categories.push('WATCHES');
+            if (document.getElementById('catHome').checked) categories.push('HOME');
+            if (document.getElementById('catBeauty').checked) categories.push('BEAUTY');
+            
+            const minPrice = document.getElementById('minPrice').value;
+            const maxPrice = document.getElementById('maxPrice').value;
+            
+            const rating4 = document.getElementById('rating4').checked;
+            const rating3 = document.getElementById('rating3').checked;
+            const rating2 = document.getElementById('rating2').checked;
+            
+            filteredProducts = allProducts.filter(p => {
+                if (categories.length > 0 && !categories.includes(p.category?.toUpperCase())) {
+                    return false;
+                }
+                
+                if (minPrice && p.price < minPrice) return false;
+                if (maxPrice && p.price > maxPrice) return false;
+                
+                if (rating4 && p.rating < 4) return false;
+                if (rating3 && p.rating < 3) return false;
+                if (rating2 && p.rating < 2) return false;
+                
+                return true;
+            });
+            
+            renderProducts();
+        };
+
+        window.sortProducts = function() {
+            const sortBy = document.getElementById('sortSelect').value;
+            
+            switch(sortBy) {
+                case 'priceLow':
+                    filteredProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'priceHigh':
+                    filteredProducts.sort((a, b) => b.price - a.price);
+                    break;
+                case 'rating':
+                    filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+                    break;
+                case 'newest':
+                    filteredProducts.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                    break;
+                default:
+                    filteredProducts = [...allProducts];
+            }
+            
+            renderProducts();
+        };
 
         // Initialize
         loadProducts();
