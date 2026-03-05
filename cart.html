@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart - ZYVORASHOP</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
@@ -20,11 +22,11 @@
         body {
             font-family: 'Inter', sans-serif;
             background: #f3f3f3;
-            color: #0f1111;
         }
 
         .header {
             background: #131921;
+            padding: 15px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -33,10 +35,9 @@
         .header-content {
             max-width: 1500px;
             margin: 0 auto;
-            padding: 10px 20px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
 
         .logo {
@@ -53,18 +54,15 @@
         .back-btn {
             color: white;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
+            font-size: 16px;
         }
 
-        .back-btn:hover {
-            color: #ff9900;
+        .back-btn i {
+            margin-right: 5px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1500px;
             margin: 30px auto;
             padding: 0 20px;
             display: grid;
@@ -83,68 +81,55 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 15px;
+            padding-bottom: 20px;
             border-bottom: 1px solid #ddd;
-            margin-bottom: 20px;
         }
 
         .cart-header h1 {
             font-size: 24px;
-            color: #131921;
         }
 
         .cart-header span {
-            color: #565959;
-            font-size: 14px;
+            color: #666;
         }
 
         .cart-item {
             display: grid;
-            grid-template-columns: 100px 1fr auto;
+            grid-template-columns: 120px 1fr auto;
             gap: 20px;
             padding: 20px 0;
             border-bottom: 1px solid #eee;
         }
 
         .cart-item-image {
-            width: 100px;
-            height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 120px;
+            height: 120px;
             background: #f9f9f9;
             border-radius: 8px;
+            overflow: hidden;
         }
 
         .cart-item-image img {
-            max-width: 90%;
-            max-height: 90%;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
         }
 
         .cart-item-details h3 {
-            font-size: 16px;
+            font-size: 18px;
             margin-bottom: 8px;
-            color: #007185;
-            cursor: pointer;
-        }
-
-        .cart-item-details h3:hover {
-            color: #ff9900;
-            text-decoration: underline;
         }
 
         .cart-item-category {
-            font-size: 12px;
-            color: #565959;
+            color: #007185;
+            font-size: 14px;
             margin-bottom: 5px;
         }
 
         .cart-item-price {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
             color: #b12704;
-            margin-bottom: 10px;
         }
 
         .cart-item-actions {
@@ -153,49 +138,43 @@
             align-items: center;
         }
 
-        .quantity-selector {
+        .quantity-control {
             display: flex;
             align-items: center;
             border: 1px solid #ddd;
-            border-radius: 20px;
+            border-radius: 5px;
             overflow: hidden;
         }
 
-        .quantity-btn {
+        .quantity-control button {
             width: 30px;
             height: 30px;
-            background: #f0f2f2;
             border: none;
+            background: #f5f5f5;
             cursor: pointer;
             font-size: 16px;
-            font-weight: 600;
         }
 
-        .quantity-btn:hover {
-            background: #e3e6e6;
+        .quantity-control button:hover {
+            background: #e5e5e5;
         }
 
-        .quantity-input {
+        .quantity-control span {
             width: 40px;
-            height: 30px;
-            border: none;
-            border-left: 1px solid #ddd;
-            border-right: 1px solid #ddd;
             text-align: center;
             font-weight: 500;
         }
 
         .remove-btn {
-            color: #007185;
+            color: #666;
             background: none;
             border: none;
-            font-size: 13px;
             cursor: pointer;
-            text-decoration: underline;
+            font-size: 14px;
         }
 
         .remove-btn:hover {
-            color: #ff9900;
+            color: #b12704;
         }
 
         .cart-summary {
@@ -204,45 +183,38 @@
             padding: 20px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             height: fit-content;
-            position: sticky;
-            top: 100px;
         }
 
         .cart-summary h2 {
             font-size: 20px;
             margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #ddd;
         }
 
         .summary-row {
             display: flex;
             justify-content: space-between;
             margin-bottom: 15px;
-            font-size: 14px;
+            font-size: 16px;
         }
 
         .summary-total {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px 0;
-            padding-top: 20px;
-            border-top: 2px solid #ddd;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 700;
+            border-top: 1px solid #ddd;
+            padding-top: 15px;
+            margin-top: 15px;
         }
 
         .checkout-btn {
             width: 100%;
-            padding: 15px;
+            padding: 12px;
             background: #ffd814;
             border: none;
-            border-radius: 30px;
+            border-radius: 20px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
-            transition: background 0.3s;
-            margin-bottom: 10px;
+            margin-top: 20px;
         }
 
         .checkout-btn:hover {
@@ -251,38 +223,31 @@
 
         .empty-cart {
             text-align: center;
-            padding: 50px 20px;
+            padding: 60px 20px;
         }
 
         .empty-cart i {
-            font-size: 60px;
+            font-size: 80px;
             color: #ddd;
             margin-bottom: 20px;
         }
 
         .empty-cart h2 {
-            font-size: 24px;
             margin-bottom: 10px;
-            color: #131921;
         }
 
         .empty-cart p {
-            color: #565959;
+            color: #666;
             margin-bottom: 30px;
         }
 
         .shop-now-btn {
-            display: inline-block;
-            padding: 12px 40px;
-            background: #ffd814;
-            border-radius: 30px;
+            padding: 12px 30px;
+            background: #ff9900;
+            color: white;
             text-decoration: none;
-            color: #131921;
-            font-weight: 600;
-        }
-
-        .shop-now-btn:hover {
-            background: #f7ca00;
+            border-radius: 20px;
+            font-weight: 500;
         }
 
         .notification {
@@ -309,37 +274,9 @@
             }
         }
 
-        .loading {
-            text-align: center;
-            padding: 50px;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #ff9900;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         @media (max-width: 768px) {
             .container {
                 grid-template-columns: 1fr;
-            }
-            
-            .cart-item {
-                grid-template-columns: 80px 1fr;
-            }
-            
-            .cart-item-actions {
-                grid-column: 1/-1;
             }
         }
     </style>
@@ -352,21 +289,16 @@
         </div>
     </header>
 
-    <div class="container">
+    <div class="container" id="cartContainer">
+        <!-- Cart content will be loaded here -->
         <div class="cart-items">
-            <div class="cart-header">
-                <h1>Shopping Cart</h1>
-                <span id="itemCount">0 items</span>
-            </div>
-            
-            <div id="cartItemsContainer">
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <p>Loading your cart...</p>
-                </div>
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <h2>Your cart is empty</h2>
+                <p>Looks like you haven't added anything to your cart yet</p>
+                <a href="index.html" class="shop-now-btn">Shop Now</a>
             </div>
         </div>
-
         <div class="cart-summary">
             <h2>Order Summary</h2>
             <div class="summary-row">
@@ -375,25 +307,17 @@
             </div>
             <div class="summary-row">
                 <span>Shipping</span>
-                <span id="shipping">Rs 0</span>
+                <span>Free</span>
             </div>
-            <div class="summary-row">
-                <span>Tax (10%)</span>
-                <span id="tax">Rs 0</span>
-            </div>
-            <div class="summary-total">
+            <div class="summary-row summary-total">
                 <span>Total</span>
                 <span id="total">Rs 0</span>
             </div>
             <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
-            <p style="font-size: 12px; color: #565959; text-align: center;">
-                <i class="fas fa-lock"></i> Secure checkout
-            </p>
         </div>
     </div>
 
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
             authDomain: "shopverse-c2642.firebaseapp.com",
@@ -403,173 +327,164 @@
             appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
         let currentUser = null;
         let cartItems = [];
+        let products = {};
 
-        // Auth State Observer
         auth.onAuthStateChanged((user) => {
+            currentUser = user;
             if (user) {
-                currentUser = user;
                 loadCart();
             } else {
-                // Redirect to login if not logged in
-                window.location.href = 'account.html';
+                document.querySelector('.cart-items').innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-user"></i>
+                        <h2>Please sign in</h2>
+                        <p>You need to be signed in to view your cart</p>
+                        <a href="account.html" class="shop-now-btn">Sign In</a>
+                    </div>
+                `;
             }
         });
 
-        // Load Cart Items
         async function loadCart() {
-            if (!currentUser) return;
-
             try {
-                const cartSnapshot = await db.collection('cart')
+                const cartSnap = await db.collection('cart')
                     .where('userId', '==', currentUser.uid)
                     .get();
-
-                if (cartSnapshot.empty) {
+                
+                if (cartSnap.empty) {
                     showEmptyCart();
                     return;
                 }
-
-                const cartData = [];
-                for (const doc of cartSnapshot.docs) {
-                    const cartItem = { id: doc.id, ...doc.data() };
-                    
-                    // Get product details
-                    const productDoc = await db.collection('products').doc(cartItem.productId).get();
-                    if (productDoc.exists) {
-                        cartItem.product = { id: productDoc.id, ...productDoc.data() };
-                    } else {
-                        // Use sample product if not found
-                        cartItem.product = getSampleProduct(cartItem.productId);
-                    }
-                    
-                    cartData.push(cartItem);
-                }
-
-                cartItems = cartData;
+                
+                cartItems = cartSnap.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                
+                await loadProducts();
                 renderCart();
-
+                
             } catch (error) {
                 console.error('Error loading cart:', error);
-                showSampleCart();
+                showNotification('Error loading cart');
             }
         }
 
-        // Get Sample Product
-        function getSampleProduct(productId) {
-            const products = {
-                'fashion1': {
-                    name: 'new trending',
-                    category: 'FASHION',
-                    price: 1233,
-                    images: ['https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400']
-                },
-                'fashion2': {
-                    name: 'life',
-                    category: 'FASHION',
-                    price: 12000,
-                    images: ['https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400']
-                },
-                'fashion3': {
-                    name: 'Today Trending Dress',
-                    category: 'FASHION PREMIUM',
-                    price: 6999,
-                    images: ['https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400']
-                }
-            };
-            return products[productId] || {
-                name: 'Product',
-                category: 'General',
-                price: 1999,
-                images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400']
-            };
-        }
-
-        // Show Sample Cart (for demo)
-        function showSampleCart() {
-            cartItems = [
-                {
-                    id: 'cart1',
-                    productId: 'fashion1',
-                    quantity: 1,
-                    product: {
-                        name: 'new trending',
-                        category: 'FASHION',
-                        price: 1233,
-                        images: ['https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400']
-                    }
-                },
-                {
-                    id: 'cart2',
-                    productId: 'fashion2',
-                    quantity: 2,
-                    product: {
-                        name: 'life',
-                        category: 'FASHION',
-                        price: 12000,
-                        images: ['https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400']
-                    }
-                }
-            ];
-            renderCart();
-        }
-
-        // Render Cart
-        function renderCart() {
-            const container = document.getElementById('cartItemsContainer');
+        async function loadProducts() {
+            const productIds = [...new Set(cartItems.map(item => item.productId))];
             
-            if (cartItems.length === 0) {
-                showEmptyCart();
-                return;
+            for (const id of productIds) {
+                try {
+                    const productSnap = await db.collection('products').doc(id).get();
+                    if (productSnap.exists) {
+                        products[id] = productSnap.data();
+                    } else {
+                        // Sample product data
+                        products[id] = {
+                            name: 'Product ' + id,
+                            price: Math.floor(Math.random() * 5000) + 1000,
+                            category: 'Fashion',
+                            images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400']
+                        };
+                    }
+                } catch (error) {
+                    console.error('Error loading product:', error);
+                }
             }
+        }
 
-            let html = '';
+        function renderCart() {
             let subtotal = 0;
-
+            let cartHtml = `
+                <div class="cart-header">
+                    <h1>Shopping Cart</h1>
+                    <span>${cartItems.length} item(s)</span>
+                </div>
+            `;
+            
             cartItems.forEach(item => {
-                const itemTotal = item.product.price * item.quantity;
+                const product = products[item.productId] || {
+                    name: 'Product',
+                    price: 1000,
+                    category: 'General',
+                    images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400']
+                };
+                
+                const itemTotal = product.price * (item.quantity || 1);
                 subtotal += itemTotal;
-
-                html += `
+                
+                cartHtml += `
                     <div class="cart-item" data-id="${item.id}">
                         <div class="cart-item-image">
-                            <img src="${item.product.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" alt="${item.product.name}">
+                            <img src="${product.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" alt="${product.name}">
                         </div>
                         <div class="cart-item-details">
-                            <h3 onclick="viewProduct('${item.productId}')">${item.product.name}</h3>
-                            <div class="cart-item-category">${item.product.category || 'General'}</div>
-                            <div class="cart-item-price">Rs ${item.product.price.toLocaleString()}</div>
-                            <div class="cart-item-actions">
-                                <div class="quantity-selector">
-                                    <button class="quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity - 1})">−</button>
-                                    <input type="text" class="quantity-input" value="${item.quantity}" readonly>
-                                    <button class="quantity-btn" onclick="updateQuantity('${item.id}', ${item.quantity + 1})">+</button>
-                                </div>
-                                <button class="remove-btn" onclick="removeFromCart('${item.id}')">Remove</button>
-                            </div>
+                            <div class="cart-item-category">${product.category || 'Fashion'}</div>
+                            <h3>${product.name}</h3>
+                            <div class="cart-item-price">Rs ${product.price?.toLocaleString()}</div>
                         </div>
-                        <div class="cart-item-price">Rs ${itemTotal.toLocaleString()}</div>
+                        <div class="cart-item-actions">
+                            <div class="quantity-control">
+                                <button onclick="updateQuantity('${item.id}', ${(item.quantity || 1) - 1})">-</button>
+                                <span>${item.quantity || 1}</span>
+                                <button onclick="updateQuantity('${item.id}', ${(item.quantity || 1) + 1})">+</button>
+                            </div>
+                            <button class="remove-btn" onclick="removeFromCart('${item.id}')">
+                                <i class="fas fa-trash"></i> Remove
+                            </button>
+                        </div>
                     </div>
                 `;
             });
-
-            container.innerHTML = html;
             
-            // Update summary
-            updateSummary(subtotal);
-            document.getElementById('itemCount').textContent = `${cartItems.length} item${cartItems.length > 1 ? 's' : ''}`;
+            document.querySelector('.cart-items').innerHTML = cartHtml;
+            document.getElementById('subtotal').textContent = `Rs ${subtotal.toLocaleString()}`;
+            document.getElementById('total').textContent = `Rs ${subtotal.toLocaleString()}`;
         }
 
-        // Show Empty Cart
+        window.updateQuantity = async function(cartItemId, newQuantity) {
+            if (newQuantity < 1) {
+                removeFromCart(cartItemId);
+                return;
+            }
+            
+            try {
+                await db.collection('cart').doc(cartItemId).update({
+                    quantity: newQuantity
+                });
+                
+                // Reload cart
+                await loadCart();
+                showNotification('Cart updated');
+                
+            } catch (error) {
+                console.error('Error updating quantity:', error);
+                showNotification('Error updating cart');
+            }
+        };
+
+        window.removeFromCart = async function(cartItemId) {
+            try {
+                await db.collection('cart').doc(cartItemId).delete();
+                
+                // Reload cart
+                await loadCart();
+                showNotification('Item removed from cart');
+                
+            } catch (error) {
+                console.error('Error removing item:', error);
+                showNotification('Error removing item');
+            }
+        };
+
         function showEmptyCart() {
-            const container = document.getElementById('cartItemsContainer');
-            container.innerHTML = `
+            document.querySelector('.cart-items').innerHTML = `
                 <div class="empty-cart">
                     <i class="fas fa-shopping-cart"></i>
                     <h2>Your cart is empty</h2>
@@ -577,126 +492,25 @@
                     <a href="index.html" class="shop-now-btn">Shop Now</a>
                 </div>
             `;
-            
-            document.getElementById('itemCount').textContent = '0 items';
-            updateSummary(0);
+            document.getElementById('subtotal').textContent = 'Rs 0';
+            document.getElementById('total').textContent = 'Rs 0';
         }
 
-        // Update Order Summary
-        function updateSummary(subtotal) {
-            const shipping = subtotal > 0 ? 200 : 0;
-            const tax = subtotal * 0.1;
-            const total = subtotal + shipping + tax;
-
-            document.getElementById('subtotal').textContent = `Rs ${subtotal.toLocaleString()}`;
-            document.getElementById('shipping').textContent = shipping === 0 ? 'Free' : `Rs ${shipping}`;
-            document.getElementById('tax').textContent = `Rs ${Math.round(tax).toLocaleString()}`;
-            document.getElementById('total').textContent = `Rs ${Math.round(total).toLocaleString()}`;
-        }
-
-        // Update Quantity
-        window.updateQuantity = async function(cartId, newQuantity) {
-            if (newQuantity < 1) {
-                removeFromCart(cartId);
+        window.checkout = function() {
+            if (!currentUser) {
+                showNotification('Please sign in first');
+                window.location.href = 'account.html';
                 return;
             }
-
-            try {
-                await db.collection('cart').doc(cartId).update({
-                    quantity: newQuantity
-                });
-                
-                // Reload cart
-                loadCart();
-                showNotification('Cart updated');
-                
-            } catch (error) {
-                console.error('Error updating quantity:', error);
-                
-                // Update locally for demo
-                const item = cartItems.find(i => i.id === cartId);
-                if (item) {
-                    item.quantity = newQuantity;
-                    renderCart();
-                }
-            }
-        }
-
-        // Remove from Cart
-        window.removeFromCart = async function(cartId) {
-            try {
-                await db.collection('cart').doc(cartId).delete();
-                
-                // Remove from local array
-                cartItems = cartItems.filter(i => i.id !== cartId);
-                
-                if (cartItems.length === 0) {
-                    showEmptyCart();
-                } else {
-                    renderCart();
-                }
-                
-                showNotification('Item removed from cart');
-                
-                // Update cart count in header
-                updateCartCount();
-                
-            } catch (error) {
-                console.error('Error removing item:', error);
-                
-                // Remove locally for demo
-                cartItems = cartItems.filter(i => i.id !== cartId);
-                if (cartItems.length === 0) {
-                    showEmptyCart();
-                } else {
-                    renderCart();
-                }
-            }
-        }
-
-        // Update Cart Count in Header
-        async function updateCartCount() {
-            if (!currentUser) return;
             
-            try {
-                const cartSnapshot = await db.collection('cart')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
-                
-                const count = cartSnapshot.docs.reduce((sum, doc) => sum + (doc.data().quantity || 1), 0);
-                
-                // Update badge if exists on page
-                const badge = document.querySelector('.badge');
-                if (badge) {
-                    badge.textContent = count;
-                }
-                
-            } catch (error) {
-                console.error('Error updating cart count:', error);
-            }
-        }
-
-        // Checkout
-        window.checkout = function() {
             if (cartItems.length === 0) {
                 showNotification('Your cart is empty');
                 return;
             }
             
-            if (!currentUser) {
-                window.location.href = 'account.html';
-                return;
-            }
-            
             window.location.href = 'checkout.html';
-        }
+        };
 
-        // View Product
-        window.viewProduct = function(productId) {
-            window.location.href = `product-detail.html?id=${productId}`;
-        }
-
-        // Show Notification
         function showNotification(message) {
             const notification = document.createElement('div');
             notification.className = 'notification';
