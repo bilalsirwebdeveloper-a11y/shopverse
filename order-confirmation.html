@@ -256,7 +256,10 @@
             appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const db = firebase.firestore();
 
         function getOrderIdFromUrl() {
@@ -283,22 +286,39 @@
                         <div class="number">#${orderId.slice(-8).toUpperCase()}</div>
                     `;
 
+                    const orderDate = order.createdAt ? new Date(order.createdAt.toDate()).toLocaleDateString() : new Date().toLocaleDateString();
+
+                    document.getElementById('orderDetails').innerHTML = `
+                        <div class="detail-row">
+                            <span class="detail-label">Order Date:</span>
+                            <span class="detail-value">${orderDate}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Total Amount:</span>
+                            <span class="detail-value">Rs ${order.total?.toLocaleString() || '0'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Payment Method:</span>
+                            <span class="detail-value">${order.paymentMethod || 'N/A'}</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Shipping to:</span>
+                            <span class="detail-value">${order.shippingAddress?.city || 'N/A'}</span>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('orderNumber').innerHTML = `
+                        <h3>Order Number</h3>
+                        <div class="number">#${orderId.slice(-8).toUpperCase()}</div>
+                    `;
                     document.getElementById('orderDetails').innerHTML = `
                         <div class="detail-row">
                             <span class="detail-label">Order Date:</span>
                             <span class="detail-value">${new Date().toLocaleDateString()}</span>
                         </div>
                         <div class="detail-row">
-                            <span class="detail-label">Total Amount:</span>
-                            <span class="detail-value">Rs ${order.total?.toLocaleString()}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Payment Method:</span>
-                            <span class="detail-value">${order.paymentMethod}</span>
-                        </div>
-                        <div class="detail-row">
-                            <span class="detail-label">Shipping to:</span>
-                            <span class="detail-value">${order.shippingAddress?.city}</span>
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value">Processing</span>
                         </div>
                     `;
                 }
