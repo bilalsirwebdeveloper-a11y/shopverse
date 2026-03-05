@@ -3,111 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZYVORASHOP - Account</title>
-    
+    <title>Account - ZYVORASHOP</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     
     <style>
-        :root {
-            --primary: #1a1a2e;
-            --secondary: #16213e;
-            --accent: #e94560;
-            --background: #f9f9f9;
-            --text: #0f1111;
-            --text-light: #666;
-            --border: #e0e0e0;
-            --card-bg: #ffffff;
-            --gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        }
-
-        .dark-mode {
-            --primary: #0f0f0f;
-            --secondary: #1a1a1a;
-            --accent: #e94560;
-            --background: #121212;
-            --text: #ffffff;
-            --text-light: #b0b0b0;
-            --border: #2d2d2d;
-            --card-bg: #1e1e1e;
-        }
-
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--gradient);
-            min-height: 100vh;
+            background: #f3f3f3;
+            color: #0f1111;
+        }
+
+        .header {
+            background: #131921;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 10px 20px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .auth-container {
-            width: 100%;
-            max-width: 450px;
-        }
-
-        .auth-card {
-            background: var(--card-bg);
-            border-radius: 30px;
-            padding: 40px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .auth-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(233,69,96,0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+            justify-content: space-between;
         }
 
         .logo {
-            font-size: 36px;
+            font-size: 24px;
             font-weight: 700;
-            text-align: center;
-            margin-bottom: 10px;
-            color: var(--primary);
-            position: relative;
-            z-index: 1;
+            color: white;
+            text-decoration: none;
         }
 
         .logo span {
-            color: var(--accent);
+            color: #ff9900;
         }
 
-        .subtitle {
-            text-align: center;
-            color: var(--text-light);
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 1;
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
         }
 
-        .form-container {
-            position: relative;
-            z-index: 1;
+        .back-btn:hover {
+            color: #ff9900;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .account-box {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .account-box h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #131921;
         }
 
         .form-group {
@@ -116,55 +88,45 @@
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            color: var(--text-light);
-            font-size: 14px;
+            margin-bottom: 5px;
             font-weight: 500;
+            font-size: 14px;
         }
 
         .form-group input {
             width: 100%;
-            padding: 15px;
-            background: var(--background);
-            border: 2px solid var(--border);
-            border-radius: 15px;
-            color: var(--text);
-            font-size: 15px;
-            transition: all 0.3s;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border 0.3s;
         }
 
         .form-group input:focus {
             outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(233,69,96,0.1);
+            border-color: #ff9900;
         }
 
         .btn {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
+            background: #ffd814;
             border: none;
-            border-radius: 15px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            font-size: 16px;
-            margin: 10px 0;
+            transition: background 0.3s;
+            margin-bottom: 15px;
         }
 
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(233,69,96,0.3);
+        .btn:hover {
+            background: #f7ca00;
         }
 
         .btn-google {
             background: white;
-            color: var(--text);
-            border: 2px solid var(--border);
+            border: 1px solid #ddd;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -172,107 +134,97 @@
         }
 
         .btn-google:hover {
-            border-color: var(--accent);
-            background: rgba(233,69,96,0.05);
+            background: #f5f5f5;
         }
 
-        .btn-google i {
-            color: #4285f4;
-            font-size: 20px;
-        }
-
-        .toggle-text {
-            text-align: center;
-            color: var(--text-light);
-            margin: 20px 0;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-
-        .toggle-text:hover {
-            color: var(--accent);
+        .btn-google img {
+            width: 20px;
         }
 
         .divider {
-            position: relative;
             text-align: center;
-            margin: 30px 0;
+            margin: 20px 0;
+            position: relative;
         }
 
-        .divider::before {
+        .divider::before,
+        .divider::after {
             content: '';
             position: absolute;
             top: 50%;
+            width: 45%;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .divider::before {
             left: 0;
+        }
+
+        .divider::after {
             right: 0;
-            height: 2px;
-            background: var(--border);
-            z-index: 1;
         }
 
         .divider span {
-            background: var(--card-bg);
-            padding: 0 15px;
-            color: var(--text-light);
-            position: relative;
-            z-index: 2;
-            font-size: 14px;
+            background: white;
+            padding: 0 10px;
+            color: #666;
+            font-size: 12px;
         }
 
-        .back-link {
+        .toggle-link {
             text-align: center;
             margin-top: 20px;
-        }
-
-        .back-link a {
-            color: var(--text-light);
-            text-decoration: none;
             font-size: 14px;
-            transition: color 0.3s;
         }
 
-        .back-link a:hover {
-            color: var(--accent);
+        .toggle-link a {
+            color: #007185;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
         }
 
-        .back-link i {
-            margin-right: 5px;
+        .toggle-link a:hover {
+            color: #ff9900;
+            text-decoration: underline;
         }
 
         .error-message {
-            background: rgba(233,69,96,0.1);
-            border: 2px solid var(--accent);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
-            color: var(--accent);
-            text-align: center;
+            color: #b12704;
+            font-size: 13px;
+            margin-top: 5px;
             display: none;
         }
 
-        .theme-toggle {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--card-bg);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            color: var(--text);
-            font-size: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            z-index: 9999;
-            transition: all 0.3s;
+        .success-message {
+            color: #067d62;
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
         }
 
-        .theme-toggle:hover {
-            transform: rotate(180deg);
-            background: var(--accent);
-            color: white;
+        .info-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .forgot-password {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+
+        .forgot-password a {
+            color: #007185;
+            font-size: 13px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .forgot-password a:hover {
+            color: #ff9900;
+            text-decoration: underline;
         }
 
         .notification {
@@ -280,10 +232,9 @@
             top: 100px;
             right: 20px;
             padding: 15px 30px;
-            background: var(--card-bg);
-            border-left: 4px solid var(--accent);
-            border-radius: 15px;
-            color: var(--text);
+            background: white;
+            border-left: 4px solid #ff9900;
+            border-radius: 8px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.2);
             z-index: 9999;
             animation: slideIn 0.3s ease;
@@ -300,74 +251,111 @@
             }
         }
 
-        @media (max-width: 768px) {
-            .auth-card {
-                padding: 30px 20px;
-            }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #ff9900;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 30px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="auth-container">
-        <div class="auth-card">
-            <div class="logo">ZYVORA<span>SHOP</span></div>
-            <div class="subtitle">Your premium shopping experience</div>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">ZYVORA<span>SHOP</span></a>
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Store</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="account-box" id="accountBox">
+            <h1 id="formTitle">Sign In</h1>
             
-            <div class="error-message" id="errorMessage"></div>
-            
-            <div class="form-container" id="loginForm">
+            <!-- Login Form -->
+            <div id="loginForm">
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="loginEmail" placeholder="your@email.com">
+                    <label>Email address</label>
+                    <input type="email" id="loginEmail" placeholder="Enter your email">
+                    <div class="error-message" id="loginEmailError"></div>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="loginPassword" placeholder="••••••••">
+                    <input type="password" id="loginPassword" placeholder="Enter your password">
+                    <div class="error-message" id="loginPasswordError"></div>
                 </div>
-                <button class="btn btn-primary" onclick="login()">Sign In</button>
-                <div class="toggle-text" onclick="showSignup()">Don't have an account? Create one</div>
+                
+                <div class="forgot-password">
+                    <a onclick="showForgotPassword()">Forgot Password?</a>
+                </div>
+                
+                <button class="btn" onclick="login()">Sign In</button>
             </div>
-            
-            <div class="form-container" id="signupForm" style="display: none;">
+
+            <!-- Signup Form -->
+            <div id="signupForm" style="display: none;">
                 <div class="form-group">
                     <label>Full Name</label>
-                    <input type="text" id="signupName" placeholder="John Doe">
+                    <input type="text" id="signupName" placeholder="Enter your full name">
+                    <div class="error-message" id="signupNameError"></div>
                 </div>
                 <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="signupEmail" placeholder="your@email.com">
+                    <label>Email address</label>
+                    <input type="email" id="signupEmail" placeholder="Enter your email">
+                    <div class="error-message" id="signupEmailError"></div>
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="signupPassword" placeholder="••••••••">
+                    <input type="password" id="signupPassword" placeholder="Create a password">
+                    <div class="info-text">Must be at least 6 characters</div>
+                    <div class="error-message" id="signupPasswordError"></div>
                 </div>
                 <div class="form-group">
                     <label>Confirm Password</label>
-                    <input type="password" id="signupConfirm" placeholder="••••••••">
+                    <input type="password" id="signupConfirmPassword" placeholder="Confirm your password">
+                    <div class="error-message" id="signupConfirmError"></div>
                 </div>
-                <button class="btn btn-primary" onclick="signup()">Create Account</button>
-                <div class="toggle-text" onclick="showLogin()">Already have an account? Sign in</div>
+                
+                <button class="btn" onclick="signup()">Create Account</button>
             </div>
-            
+
+            <!-- Forgot Password Form -->
+            <div id="forgotForm" style="display: none;">
+                <div class="form-group">
+                    <label>Email address</label>
+                    <input type="email" id="forgotEmail" placeholder="Enter your email">
+                    <div class="error-message" id="forgotEmailError"></div>
+                </div>
+                
+                <button class="btn" onclick="resetPassword()">Send Reset Link</button>
+                <button class="btn-google btn" onclick="backToLogin()">Back to Sign In</button>
+            </div>
+
             <div class="divider">
                 <span>OR</span>
             </div>
-            
-            <button class="btn btn-google" onclick="googleSignIn()">
-                <i class="fab fa-google"></i> Continue with Google
+
+            <button class="btn-google btn" onclick="googleSignIn()">
+                <i class="fab fa-google"></i>
+                Continue with Google
             </button>
-            
-            <div class="back-link">
-                <a href="index.html"><i class="fas fa-arrow-left"></i> Back to Shopping</a>
+
+            <div class="toggle-link" id="toggleContainer">
+                <span id="toggleText">New to ZYVORASHOP? </span>
+                <a id="toggleAction" onclick="showSignup()">Create your account</a>
             </div>
         </div>
     </div>
 
-    <div class="theme-toggle" onclick="toggleTheme()">
-        <i class="fas fa-sun" id="themeIcon"></i>
-    </div>
-
     <script>
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
             authDomain: "shopverse-c2642.firebaseapp.com",
@@ -377,113 +365,302 @@
             appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
         };
 
+        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
-        const db = firebase.firestore();
 
-        // Theme Toggle
-        function toggleTheme() {
-            document.body.classList.toggle('dark-mode');
-            const icon = document.getElementById('themeIcon');
-            icon.className = document.body.classList.contains('dark-mode') ? 'fas fa-moon' : 'fas fa-sun';
-            localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
-        }
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-mode');
-            document.getElementById('themeIcon').className = 'fas fa-moon';
-        }
-
-        function showError(msg) {
-            const error = document.getElementById('errorMessage');
-            error.style.display = 'block';
-            error.textContent = msg;
-            setTimeout(() => error.style.display = 'none', 3000);
-        }
-
-        function showNotification(msg) {
-            const notif = document.createElement('div');
-            notif.className = 'notification';
-            notif.textContent = msg;
-            document.body.appendChild(notif);
-            setTimeout(() => notif.remove(), 2000);
-        }
-
-        // Google Sign In
-        window.googleSignIn = function() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            auth.signInWithPopup(provider)
-                .then(result => {
-                    return db.collection('users').doc(result.user.uid).set({
-                        name: result.user.displayName,
-                        email: result.user.email,
-                        photoURL: result.user.photoURL,
-                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                    }, { merge: true });
-                })
-                .then(() => {
-                    showNotification('Login successful!');
-                    setTimeout(() => window.location.href = 'index.html', 1000);
-                })
-                .catch(error => showError(error.message));
-        };
-
-        // Email Login
-        window.login = function() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            auth.signInWithEmailAndPassword(email, password)
-                .then(() => {
-                    showNotification('Login successful!');
-                    setTimeout(() => window.location.href = 'index.html', 1000);
-                })
-                .catch(error => showError(error.message));
-        };
-
-        // Sign Up
-        window.signup = function() {
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
-            const confirm = document.getElementById('signupConfirm').value;
-            
-            if (!name || !email || !password) {
-                showError('Please fill all fields');
-                return;
+        // Auth State Observer
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, redirect to home
+                window.location.href = 'index.html';
             }
-            
-            if (password !== confirm) {
-                showError('Passwords do not match');
-                return;
-            }
-            
-            auth.createUserWithEmailAndPassword(email, password)
-                .then(result => {
-                    return result.user.updateProfile({ displayName: name }).then(() => {
-                        return db.collection('users').doc(result.user.uid).set({
-                            name: name,
-                            email: email,
-                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                            lastLogin: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    });
-                })
-                .then(() => {
-                    showNotification('Account created!');
-                    setTimeout(() => window.location.href = 'index.html', 1000);
-                })
-                .catch(error => showError(error.message));
-        };
+        });
 
+        // Show Signup Form
         window.showSignup = function() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('signupForm').style.display = 'block';
-        };
+            document.getElementById('forgotForm').style.display = 'none';
+            document.getElementById('formTitle').textContent = 'Create Account';
+            document.getElementById('toggleText').textContent = 'Already have an account? ';
+            document.getElementById('toggleAction').textContent = 'Sign in';
+            document.getElementById('toggleAction').onclick = showLogin;
+            clearErrors();
+        }
 
+        // Show Login Form
         window.showLogin = function() {
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('signupForm').style.display = 'none';
-        };
+            document.getElementById('forgotForm').style.display = 'none';
+            document.getElementById('formTitle').textContent = 'Sign In';
+            document.getElementById('toggleText').textContent = 'New to ZYVORASHOP? ';
+            document.getElementById('toggleAction').textContent = 'Create your account';
+            document.getElementById('toggleAction').onclick = showSignup;
+            clearErrors();
+        }
+
+        // Show Forgot Password Form
+        window.showForgotPassword = function() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'none';
+            document.getElementById('forgotForm').style.display = 'block';
+            document.getElementById('formTitle').textContent = 'Reset Password';
+            clearErrors();
+        }
+
+        // Back to Login
+        window.backToLogin = function() {
+            showLogin();
+        }
+
+        // Clear all errors
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+                el.textContent = '';
+            });
+        }
+
+        // Show Error
+        function showError(elementId, message) {
+            const errorEl = document.getElementById(elementId);
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+
+        // Show Notification
+        function showNotification(message, isError = false) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.style.borderLeftColor = isError ? '#b12704' : '#ff9900';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Login Function
+        window.login = async function() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            // Clear previous errors
+            clearErrors();
+            
+            // Validation
+            let isValid = true;
+            
+            if (!email) {
+                showError('loginEmailError', 'Email is required');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showError('loginEmailError', 'Please enter a valid email');
+                isValid = false;
+            }
+            
+            if (!password) {
+                showError('loginPasswordError', 'Password is required');
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                showNotification('Login successful! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } catch (error) {
+                console.error('Login error:', error);
+                
+                switch(error.code) {
+                    case 'auth/user-not-found':
+                        showError('loginEmailError', 'No account found with this email');
+                        break;
+                    case 'auth/wrong-password':
+                        showError('loginPasswordError', 'Incorrect password');
+                        break;
+                    case 'auth/invalid-email':
+                        showError('loginEmailError', 'Invalid email format');
+                        break;
+                    case 'auth/user-disabled':
+                        showError('loginEmailError', 'This account has been disabled');
+                        break;
+                    case 'auth/too-many-requests':
+                        showNotification('Too many failed attempts. Try again later.', true);
+                        break;
+                    default:
+                        showNotification('Login failed: ' + error.message, true);
+                }
+            }
+        }
+
+        // Signup Function
+        window.signup = async function() {
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            
+            // Clear previous errors
+            clearErrors();
+            
+            // Validation
+            let isValid = true;
+            
+            if (!name) {
+                showError('signupNameError', 'Name is required');
+                isValid = false;
+            }
+            
+            if (!email) {
+                showError('signupEmailError', 'Email is required');
+                isValid = false;
+            } else if (!isValidEmail(email)) {
+                showError('signupEmailError', 'Please enter a valid email');
+                isValid = false;
+            }
+            
+            if (!password) {
+                showError('signupPasswordError', 'Password is required');
+                isValid = false;
+            } else if (password.length < 6) {
+                showError('signupPasswordError', 'Password must be at least 6 characters');
+                isValid = false;
+            }
+            
+            if (password !== confirmPassword) {
+                showError('signupConfirmError', 'Passwords do not match');
+                isValid = false;
+            }
+            
+            if (!isValid) return;
+            
+            try {
+                // Create user
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                
+                // Update profile with name
+                await userCredential.user.updateProfile({
+                    displayName: name
+                });
+                
+                // Save additional user data to Firestore
+                const db = firebase.firestore();
+                await db.collection('users').doc(userCredential.user.uid).set({
+                    name: name,
+                    email: email,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                showNotification('Account created successfully! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Signup error:', error);
+                
+                switch(error.code) {
+                    case 'auth/email-already-in-use':
+                        showError('signupEmailError', 'Email already in use');
+                        break;
+                    case 'auth/invalid-email':
+                        showError('signupEmailError', 'Invalid email format');
+                        break;
+                    case 'auth/weak-password':
+                        showError('signupPasswordError', 'Password is too weak');
+                        break;
+                    default:
+                        showNotification('Signup failed: ' + error.message, true);
+                }
+            }
+        }
+
+        // Reset Password
+        window.resetPassword = async function() {
+            const email = document.getElementById('forgotEmail').value.trim();
+            
+            clearErrors();
+            
+            if (!email) {
+                showError('forgotEmailError', 'Email is required');
+                return;
+            } else if (!isValidEmail(email)) {
+                showError('forgotEmailError', 'Please enter a valid email');
+                return;
+            }
+            
+            try {
+                await auth.sendPasswordResetEmail(email);
+                showNotification('Password reset email sent! Check your inbox.');
+                setTimeout(() => {
+                    showLogin();
+                }, 2000);
+            } catch (error) {
+                console.error('Reset password error:', error);
+                
+                switch(error.code) {
+                    case 'auth/user-not-found':
+                        showError('forgotEmailError', 'No account found with this email');
+                        break;
+                    case 'auth/invalid-email':
+                        showError('forgotEmailError', 'Invalid email format');
+                        break;
+                    default:
+                        showNotification('Failed to send reset email', true);
+                }
+            }
+        }
+
+        // Google Sign In
+        window.googleSignIn = async function() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                await auth.signInWithPopup(provider);
+                showNotification('Login successful! Redirecting...');
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+            } catch (error) {
+                console.error('Google sign in error:', error);
+                showNotification('Google sign in failed: ' + error.message, true);
+            }
+        }
+
+        // Email validation helper
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Check if user is already logged in
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // If on account page and logged in, redirect to home
+                if (window.location.pathname.includes('account.html')) {
+                    window.location.href = 'index.html';
+                }
+            }
+        });
+
+        // Enter key handlers
+        document.getElementById('loginPassword')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') login();
+        });
+
+        document.getElementById('signupConfirmPassword')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') signup();
+        });
+
+        document.getElementById('forgotEmail')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') resetPassword();
+        });
     </script>
 </body>
 </html>
