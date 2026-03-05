@@ -301,7 +301,10 @@
             appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const auth = firebase.auth();
         const db = firebase.firestore();
 
@@ -391,9 +394,9 @@
                         <div class="detail-section">
                             <h3>Shipping Address</h3>
                             <div class="detail-item">
-                                <span class="value">${order.shippingAddress?.fullName}</span>
-                                <span class="value">${order.shippingAddress?.address}</span>
-                                <span class="value">${order.shippingAddress?.city}, ${order.shippingAddress?.postalCode || ''}</span>
+                                <span class="value">${order.shippingAddress?.fullName || 'N/A'}</span>
+                                <span class="value">${order.shippingAddress?.address || 'N/A'}</span>
+                                <span class="value">${order.shippingAddress?.city || 'N/A'}${order.shippingAddress?.postalCode ? ', ' + order.shippingAddress.postalCode : ''}</span>
                             </div>
                         </div>
 
@@ -402,20 +405,62 @@
                             <div class="detail-grid">
                                 <div class="detail-item">
                                     <span class="label">Items Total</span>
-                                    <span class="value">Rs ${order.subtotal?.toLocaleString()}</span>
+                                    <span class="value">Rs ${order.subtotal?.toLocaleString() || '0'}</span>
                                 </div>
                                 <div class="detail-item">
                                     <span class="label">Tax</span>
-                                    <span class="value">Rs ${order.tax?.toLocaleString()}</span>
+                                    <span class="value">Rs ${order.tax?.toLocaleString() || '0'}</span>
                                 </div>
                                 <div class="detail-item">
                                     <span class="label">Total Amount</span>
-                                    <span class="value">Rs ${order.total?.toLocaleString()}</span>
+                                    <span class="value">Rs ${order.total?.toLocaleString() || '0'}</span>
                                 </div>
                                 <div class="detail-item">
                                     <span class="label">Payment Method</span>
-                                    <span class="value">${order.paymentMethod}</span>
+                                    <span class="value">${order.paymentMethod || 'N/A'}</span>
                                 </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('orderStatus').textContent = 'PROCESSING';
+                    document.getElementById('timelineProgress').style.width = '25%';
+                    
+                    document.getElementById('timelineSteps').innerHTML = `
+                        <div class="timeline-step">
+                            <div class="step-icon completed">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <div class="step-label">Order Placed</div>
+                                <div class="step-date">Today</div>
+                            </div>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="step-icon">
+                                <i class="fas fa-box"></i>
+                            </div>
+                            <div>
+                                <div class="step-label">Shipped</div>
+                                <div class="step-date">Pending</div>
+                            </div>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="step-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div>
+                                <div class="step-label">Out for Delivery</div>
+                                <div class="step-date">Pending</div>
+                            </div>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="step-icon">
+                                <i class="fas fa-home"></i>
+                            </div>
+                            <div>
+                                <div class="step-label">Delivered</div>
+                                <div class="step-date">Pending</div>
                             </div>
                         </div>
                     `;
