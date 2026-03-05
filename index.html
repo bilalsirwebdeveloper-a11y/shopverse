@@ -4,11 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ZYVORASHOP - Pakistan's Best Online Store</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Firebase Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
@@ -26,7 +23,6 @@
             color: #0f1111;
         }
 
-        /* Amazon Style Header */
         .header {
             background: #131921;
             position: sticky;
@@ -56,7 +52,6 @@
             font-weight: 800;
         }
 
-        /* Amazon Style Search Bar */
         .search-bar {
             flex: 1;
             display: flex;
@@ -114,6 +109,8 @@
             font-size: 12px;
             position: relative;
             cursor: pointer;
+            background: none;
+            border: none;
         }
 
         .icon-btn i {
@@ -139,7 +136,6 @@
             text-align: center;
         }
 
-        /* Secondary Navigation */
         .nav-secondary {
             background: #232f3e;
             padding: 8px 20px;
@@ -164,14 +160,12 @@
             margin-right: 5px;
         }
 
-        /* Main Container */
         .container {
             max-width: 1500px;
             margin: 20px auto;
             padding: 0 20px;
         }
 
-        /* Welcome Banner */
         .welcome-banner {
             background: linear-gradient(to right, #1a1a2e, #16213e);
             border-radius: 12px;
@@ -191,7 +185,6 @@
             opacity: 0.95;
         }
 
-        /* Section Header */
         .section-header {
             display: flex;
             justify-content: space-between;
@@ -231,7 +224,6 @@
             text-decoration: underline;
         }
 
-        /* Products Grid - Amazon Style Cards */
         .products-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -254,7 +246,7 @@
         }
 
         .product-image {
-            height: 250px;
+            height: 200px;
             padding: 20px;
             display: flex;
             align-items: center;
@@ -282,8 +274,6 @@
             font-size: 16px;
             font-weight: 600;
             margin-bottom: 5px;
-            line-height: 1.4;
-            color: #0f1111;
         }
 
         .product-rating {
@@ -294,7 +284,7 @@
 
         .product-rating span {
             color: #007185;
-            margin-left: 8px;
+            margin-left: 5px;
             font-size: 13px;
         }
 
@@ -303,12 +293,6 @@
             font-weight: 700;
             color: #b12704;
             margin-bottom: 10px;
-        }
-
-        .product-price small {
-            font-size: 12px;
-            font-weight: normal;
-            color: #565959;
         }
 
         .delivery-badge {
@@ -336,7 +320,6 @@
             font-weight: 500;
             cursor: pointer;
             font-size: 13px;
-            transition: background 0.2s;
         }
 
         .btn-add:hover {
@@ -352,19 +335,17 @@
             font-weight: 500;
             cursor: pointer;
             font-size: 13px;
-            transition: background 0.2s;
         }
 
         .btn-buy:hover {
             background: #ff8c00;
         }
 
-        /* Category Strip */
         .category-strip {
             background: white;
             padding: 20px;
             border-radius: 8px;
-            margin-bottom: 30px;
+            margin: 30px 0;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
@@ -401,33 +382,6 @@
             font-weight: 500;
         }
 
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            padding: 15px 30px;
-            background: white;
-            border-left: 4px solid #ff9900;
-            border-radius: 8px;
-            color: #0f1111;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            z-index: 9999;
-            animation: slideIn 0.3s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        /* Footer */
         .footer {
             background: #232f3e;
             color: white;
@@ -473,123 +427,128 @@
             font-size: 13px;
         }
 
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 30px;
+            background: white;
+            border-left: 4px solid #ff9900;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #ff9900;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         @media (max-width: 1200px) {
-            .products-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
+            .products-grid { grid-template-columns: repeat(3, 1fr); }
         }
-
         @media (max-width: 992px) {
-            .products-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .footer-content {
-                grid-template-columns: repeat(2, 1fr);
-            }
+            .products-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer-content { grid-template-columns: repeat(2, 1fr); }
         }
-
         @media (max-width: 768px) {
-            .products-grid {
-                grid-template-columns: 1fr;
-            }
-            .footer-content {
-                grid-template-columns: 1fr;
-            }
-            .search-category {
-                display: none;
-            }
+            .products-grid { grid-template-columns: 1fr; }
+            .footer-content { grid-template-columns: 1fr; }
+            .search-category { display: none; }
         }
     </style>
 </head>
 <body>
-    <!-- Amazon Style Header -->
     <header class="header">
         <div class="header-content">
-            <a href="#" class="logo">ZYVORA<span>SHOP</span></a>
+            <a href="index.html" class="logo">ZYVORA<span>SHOP</span></a>
             
-            <!-- Full Search Bar with Category Dropdown -->
             <div class="search-bar">
                 <select class="search-category" id="searchCategory">
                     <option value="all">All Categories</option>
                     <option value="Fashion">Fashion</option>
                     <option value="Electronics">Electronics</option>
                     <option value="Watches">Watches</option>
-                    <option value="Home">Home</option>
                 </select>
                 <input type="text" id="searchInput" placeholder="Search for products, brands and more...">
                 <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
             </div>
             
             <div class="header-icons">
-                <div class="icon-btn" onclick="window.location.href='account.html'">
+                <button class="icon-btn" onclick="handleAccountClick()">
                     <i class="far fa-user"></i>
                     <span id="authStatus">Sign In</span>
-                </div>
-                <div class="icon-btn" onclick="window.location.href='orders.html'">
-                    <i class="fas fa-box"></i>
-                    <span>Orders</span>
-                </div>
-                <div class="icon-btn" onclick="window.location.href='cart.html'">
+                </button>
+                <button class="icon-btn" onclick="window.location.href='wishlist.html'">
+                    <i class="far fa-heart"></i>
+                    <span>Wishlist</span>
+                    <span class="badge" id="wishlistCount">0</span>
+                </button>
+                <button class="icon-btn" onclick="window.location.href='cart.html'">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Cart</span>
                     <span class="badge" id="cartCount">0</span>
-                </div>
+                </button>
             </div>
         </div>
         
-        <!-- Secondary Navigation -->
         <div class="nav-secondary">
             <a href="#"><i class="fas fa-bars"></i> All</a>
-            <a href="#" onclick="filterByCategory('Fashion')">Fashion</a>
-            <a href="#" onclick="filterByCategory('Electronics')">Electronics</a>
-            <a href="#" onclick="filterByCategory('Watches')">Watches</a>
-            <a href="#" onclick="filterByCategory('Home')">Home</a>
-            <a href="#" onclick="showTodayDeals()">Today's Deals</a>
-            <a href="#" onclick="showNewArrivals()">New Arrivals</a>
+            <a href="products.html?category=Fashion">Fashion</a>
+            <a href="products.html?category=Electronics">Electronics</a>
+            <a href="products.html?category=Watches">Watches</a>
+            <a href="products.html">Today's Deals</a>
+            <a href="products.html">New Arrivals</a>
         </div>
     </header>
 
     <div class="container">
-        <!-- Welcome Banner - Exactly as per image -->
         <div class="welcome-banner">
             <h1>Welcome to ZYVORASHOP</h1>
             <p>Quality you can trust, prices you'll love — delivered fast anywhere in Pakistan.</p>
         </div>
 
-        <!-- Featured Products Section - Dynamic from Firebase -->
         <div class="section-header">
             <h2>Featured Products</h2>
-            <a class="view-all" onclick="viewAllProducts()">See all offers <i class="fas fa-chevron-right"></i></a>
+            <a class="view-all" onclick="window.location.href='products.html'">See all offers <i class="fas fa-chevron-right"></i></a>
         </div>
         
         <div class="products-grid" id="featuredProductsGrid">
-            <!-- Products will be loaded here from Firebase -->
             <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
-                <div class="spinner" style="width:50px;height:50px;border:3px solid #f3f3f3;border-top:3px solid #ff9900;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto;"></div>
-                <p style="margin-top:20px;">Loading products...</p>
+                <div class="spinner"></div>
+                <p>Loading products...</p>
             </div>
         </div>
 
-        <!-- Category Strip for better UX -->
         <div class="category-strip">
             <h3>Shop by Category</h3>
-            <div class="category-items" id="categoryItems">
-                <!-- Categories will be loaded here -->
-            </div>
+            <div class="category-items" id="categoryItems"></div>
         </div>
 
-        <!-- New Arrivals Section -->
         <div class="section-header">
             <h2>New Arrivals</h2>
-            <a class="view-all" onclick="viewAllProducts()">See all offers <i class="fas fa-chevron-right"></i></a>
+            <a class="view-all" onclick="window.location.href='products.html'">See all offers <i class="fas fa-chevron-right"></i></a>
         </div>
         
-        <div class="products-grid" id="newArrivalsGrid">
-            <!-- New arrivals will be loaded here from Firebase -->
-        </div>
+        <div class="products-grid" id="newArrivalsGrid"></div>
     </div>
 
-    <!-- Amazon Style Footer -->
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
@@ -597,44 +556,32 @@
                 <a href="#">About Us</a>
                 <a href="#">Careers</a>
                 <a href="#">Press Releases</a>
-                <a href="#">ZYVORA Cares</a>
             </div>
             <div class="footer-section">
                 <h3>Make Money with Us</h3>
                 <a href="#">Sell on ZYVORA</a>
                 <a href="#">Become an Affiliate</a>
                 <a href="#">Advertise Your Products</a>
-                <a href="#">Self-Publish with Us</a>
             </div>
             <div class="footer-section">
                 <h3>Payment Products</h3>
                 <a href="#">ZYVORA Visa Card</a>
                 <a href="#">Shop with Points</a>
                 <a href="#">Reload Your Balance</a>
-                <a href="#">Currency Converter</a>
             </div>
             <div class="footer-section">
                 <h3>Let Us Help You</h3>
-                <a href="#" onclick="window.location.href='account.html'">Your Account</a>
-                <a href="#" onclick="window.location.href='orders.html'">Your Orders</a>
+                <a href="account.html">Your Account</a>
+                <a href="orders.html">Your Orders</a>
                 <a href="#">Shipping Rates</a>
-                <a href="#">Returns & Replacements</a>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2024 ZYVORASHOP.com, Inc. or its affiliates. All rights reserved. | Designed for Pakistan</p>
+            <p>© 2024 ZYVORASHOP.com, Inc. All rights reserved. | Designed for Pakistan</p>
         </div>
     </footer>
 
-    <style>
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
-
     <script>
-        // Your Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
             authDomain: "shopverse-c2642.firebaseapp.com",
@@ -644,532 +591,153 @@
             appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Global variables
         let currentUser = null;
-        let allProducts = [];
-        let wishlist = [];
 
-        // Auth State Observer
         auth.onAuthStateChanged((user) => {
+            currentUser = user;
             if (user) {
-                currentUser = user;
-                document.getElementById('authStatus').textContent = 'Account';
-                loadUserData();
+                document.getElementById('authStatus').textContent = user.displayName ? user.displayName.split(' ')[0] : 'Account';
+                loadCounts();
             } else {
-                currentUser = null;
                 document.getElementById('authStatus').textContent = 'Sign In';
-                document.getElementById('cartCount').textContent = '0';
             }
-            // Load products after auth state is determined
             loadProducts();
             loadCategories();
         });
 
-        // Load User Data (Wishlist, Cart)
-        async function loadUserData() {
+        async function loadCounts() {
             if (!currentUser) return;
-            
             try {
-                // Load cart count
-                const cartSnap = await db.collection('cart')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
-                
+                const cartSnap = await db.collection('cart').where('userId', '==', currentUser.uid).get();
                 const cartCount = cartSnap.docs.reduce((sum, doc) => sum + (doc.data().quantity || 1), 0);
                 document.getElementById('cartCount').textContent = cartCount;
                 
-                // Load wishlist
-                const wishlistSnap = await db.collection('wishlist')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
-                wishlist = wishlistSnap.docs.map(doc => doc.data().productId);
-                
+                const wishlistSnap = await db.collection('wishlist').where('userId', '==', currentUser.uid).get();
+                document.getElementById('wishlistCount').textContent = wishlistSnap.size;
             } catch (error) {
-                console.error('Error loading user data:', error);
+                console.error('Error loading counts:', error);
             }
         }
 
-        // Load Products from Firebase
-        async function loadProducts() {
-            try {
-                const snapshot = await db.collection('products').limit(8).get();
-                
-                if (snapshot.empty) {
-                    // If no products in Firebase, show sample products
-                    showSampleProducts();
-                    return;
-                }
-                
-                allProducts = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-                
-                // Show featured products (first 4)
-                const featuredGrid = document.getElementById('featuredProductsGrid');
-                featuredGrid.innerHTML = allProducts.slice(0, 4).map(product => createProductCard(product)).join('');
-                
-                // Show new arrivals (next 4)
-                const newGrid = document.getElementById('newArrivalsGrid');
-                if (allProducts.length > 4) {
-                    newGrid.innerHTML = allProducts.slice(4, 8).map(product => createProductCard(product)).join('');
-                } else {
-                    // If less than 8 products, duplicate some for demo
-                    newGrid.innerHTML = allProducts.map(product => createProductCard(product)).join('');
-                }
-                
-            } catch (error) {
-                console.error('Error loading products:', error);
-                showSampleProducts();
-            }
-        }
-
-        // Create Product Card HTML
-        function createProductCard(product) {
-            const inWishlist = wishlist.includes(product.id);
-            const rating = product.rating || 4.5;
-            const reviews = product.reviews || Math.floor(Math.random() * 1000);
+        function loadProducts() {
+            const products = [
+                { id: 'fashion1', name: 'new trending', category: 'FASHION', price: 1233, rating: 4.5, reviews: 1233, image: 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400' },
+                { id: 'fashion2', name: 'life', category: 'FASHION', price: 12000, rating: 5, reviews: 12000, image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400' },
+                { id: 'fashion3', name: 'Today Trending Dress', category: 'FASHION PREMIUM', price: 6999, rating: 5, reviews: 6999, image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400' },
+                { id: 'product4', name: 'Wireless Headphones', category: 'Electronics', price: 5499, rating: 4.5, reviews: 2500, image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400' }
+            ];
             
-            return `
-                <div class="product-card" onclick="viewProduct('${product.id}')">
-                    <div class="product-image">
-                        <img src="${product.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" alt="${product.name}">
-                    </div>
+            document.getElementById('featuredProductsGrid').innerHTML = products.map(p => `
+                <div class="product-card" onclick="viewProduct('${p.id}')">
+                    <div class="product-image"><img src="${p.image}" alt="${p.name}"></div>
                     <div class="product-info">
-                        <div class="product-category">${product.category || 'FASHION'}</div>
-                        <div class="product-title">${product.name || 'new trending'}</div>
-                        <div class="product-rating">
-                            ${generateStars(rating)}
-                            <span>${reviews.toLocaleString()}</span>
-                        </div>
-                        <div class="product-price">Rs ${product.price?.toLocaleString() || '1,233'}</div>
-                        <div class="delivery-badge">
-                            <i class="fas fa-truck"></i> Free Delivery
-                        </div>
+                        <div class="product-category">${p.category}</div>
+                        <div class="product-title">${p.name}</div>
+                        <div class="product-rating">${generateStars(p.rating)} <span>(${p.reviews.toLocaleString()})</span></div>
+                        <div class="product-price">Rs ${p.price.toLocaleString()}</div>
+                        <div class="delivery-badge"><i class="fas fa-truck"></i> Free Delivery</div>
                         <div class="product-actions">
-                            <button class="btn-add" onclick="addToCart('${product.id}', event)">Add to Cart</button>
-                            <button class="btn-buy" onclick="buyNow('${product.id}', event)">Buy Now</button>
+                            <button class="btn-add" onclick="addToCart('${p.id}', event)">Add to Cart</button>
+                            <button class="btn-buy" onclick="buyNow('${p.id}', event)">Buy Now</button>
                         </div>
                     </div>
                 </div>
-            `;
+            `).join('');
+            
+            document.getElementById('newArrivalsGrid').innerHTML = products.slice(0,3).map(p => `
+                <div class="product-card" onclick="viewProduct('${p.id}')">
+                    <div class="product-image"><img src="${p.image}" alt="${p.name}"></div>
+                    <div class="product-info">
+                        <div class="product-category">${p.category}</div>
+                        <div class="product-title">${p.name}</div>
+                        <div class="product-rating">${generateStars(p.rating)} <span>(${p.reviews.toLocaleString()})</span></div>
+                        <div class="product-price">Rs ${p.price.toLocaleString()}</div>
+                        <div class="product-actions">
+                            <button class="btn-add" onclick="addToCart('${p.id}', event)">Add to Cart</button>
+                            <button class="btn-buy" onclick="buyNow('${p.id}', event)">Buy Now</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        // Generate star ratings
         function generateStars(rating) {
             let stars = '';
             for (let i = 1; i <= 5; i++) {
-                if (i <= rating) {
-                    stars += '<i class="fas fa-star"></i>';
-                } else if (i - rating < 1) {
-                    stars += '<i class="fas fa-star-half-alt"></i>';
-                } else {
-                    stars += '<i class="far fa-star"></i>';
-                }
+                if (i <= rating) stars += '<i class="fas fa-star"></i>';
+                else if (i - rating < 1) stars += '<i class="fas fa-star-half-alt"></i>';
+                else stars += '<i class="far fa-star"></i>';
             }
             return stars;
         }
 
-        // Show sample products (exactly as per image)
-        function showSampleProducts() {
-            const featuredGrid = document.getElementById('featuredProductsGrid');
-            featuredGrid.innerHTML = `
-                <div class="product-card" onclick="viewProduct('fashion1')">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400" alt="Fashion">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">FASHION</div>
-                        <div class="product-title">new trending</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                            <span>1,233</span>
-                        </div>
-                        <div class="product-price">Rs 1,233</div>
-                        <div class="delivery-badge">
-                            <i class="fas fa-truck"></i> Free Delivery
-                        </div>
-                        <div class="product-actions">
-                            <button class="btn-add" onclick="addToCart('fashion1', event)">Add to Cart</button>
-                            <button class="btn-buy" onclick="buyNow('fashion1', event)">Buy Now</button>
-                        </div>
-                    </div>
+        function loadCategories() {
+            const categories = ['Fashion', 'Electronics', 'Watches', 'Home', 'Beauty'];
+            document.getElementById('categoryItems').innerHTML = categories.map(cat => `
+                <div class="category-item" onclick="window.location.href='products.html?category=${cat}'">
+                    <img src="https://images.unsplash.com/photo-${cat === 'Fashion' ? '1539008835657' : cat === 'Electronics' ? '1505740420928' : cat === 'Watches' ? '1523275335684' : '1484101403633'}-9e8e9680c956?w=200" alt="${cat}">
+                    <span>${cat}</span>
                 </div>
-                <div class="product-card" onclick="viewProduct('fashion2')">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400" alt="Fashion">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">FASHION</div>
-                        <div class="product-title">life</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span>12,000</span>
-                        </div>
-                        <div class="product-price">Rs 12,000</div>
-                        <div class="delivery-badge">
-                            <i class="fas fa-truck"></i> Free Delivery
-                        </div>
-                        <div class="product-actions">
-                            <button class="btn-add" onclick="addToCart('fashion2', event)">Add to Cart</button>
-                            <button class="btn-buy" onclick="buyNow('fashion2', event)">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-card" onclick="viewProduct('fashion3')">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400" alt="Fashion Premium">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">FASHION PREMIUM</div>
-                        <div class="product-title">Today Trending Dress</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span>6,999</span>
-                        </div>
-                        <div class="product-price">Rs 6,999</div>
-                        <div class="delivery-badge">
-                            <i class="fas fa-truck"></i> Free Delivery
-                        </div>
-                        <div class="product-actions">
-                            <button class="btn-add" onclick="addToCart('fashion3', event)">Add to Cart</button>
-                            <button class="btn-buy" onclick="buyNow('fashion3', event)">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-card" onclick="viewProduct('sample1')">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400" alt="Electronics">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">ELECTRONICS</div>
-                        <div class="product-title">Wireless Headphones</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                            <span>2.5k+</span>
-                        </div>
-                        <div class="product-price">Rs 5,499</div>
-                        <div class="delivery-badge">
-                            <i class="fas fa-truck"></i> Free Delivery
-                        </div>
-                        <div class="product-actions">
-                            <button class="btn-add" onclick="addToCart('sample1', event)">Add to Cart</button>
-                            <button class="btn-buy" onclick="buyNow('sample1', event)">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-
-            // New arrivals
-            const newGrid = document.getElementById('newArrivalsGrid');
-            newGrid.innerHTML = `
-                <div class="product-card" onclick="viewProduct('watch1')">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400" alt="Watch">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">WATCHES</div>
-                        <div class="product-title">Premium Watch</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>89</span>
-                        </div>
-                        <div class="product-price">Rs 3,299</div>
-                        <div class="product-actions">
-                            <button class="btn-add" onclick="addToCart('watch1', event)">Add to Cart</button>
-                            <button class="btn-buy" onclick="buyNow('watch1', event)">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-card" onclick="viewProduct('shoes1')">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" alt="Shoes">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">FASHION</div>
-                        <div class="product-title">Running Shoes</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                            <span>210</span>
-                        </div>
-                        <div class="product-price">Rs 4,599</div>
-                        <div class="product-actions">
-                            <button class="btn-add" onclick="addToCart('shoes1', event)">Add to Cart</button>
-                            <button class="btn-buy" onclick="buyNow('shoes1', event)">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-card" onclick="viewProduct('smartwatch1')">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=400" alt="Smart Watch">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">ELECTRONICS</div>
-                        <div class="product-title">Smart Watch</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span>56</span>
-                        </div>
-                        <div class="product-price">Rs 8,999</div>
-                        <div class="product-actions">
-                            <button class="btn-add" onclick="addToCart('smartwatch1', event)">Add to Cart</button>
-                            <button class="btn-buy" onclick="buyNow('smartwatch1', event)">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-card" onclick="viewProduct('handbag1')">
-                    <div class="product-image">
-                        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=400" alt="Handbag">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-category">FASHION</div>
-                        <div class="product-title">Designer Handbag</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                            <span>134</span>
-                        </div>
-                        <div class="product-price">Rs 4,299</div>
-                        <div class="product-actions">
-                            <button class="btn-add" onclick="addToCart('handbag1', event)">Add to Cart</button>
-                            <button class="btn-buy" onclick="buyNow('handbag1', event)">Buy Now</button>
-                        </div>
-                    </div>
-                </div>
-            `;
+            `).join('');
         }
 
-        // Load Categories from Firebase
-        async function loadCategories() {
-            try {
-                const snapshot = await db.collection('categories').limit(5).get();
-                
-                if (snapshot.empty) {
-                    showSampleCategories();
-                    return;
-                }
-                
-                const categories = snapshot.docs.map(doc => doc.data().name);
-                const categoryItems = document.getElementById('categoryItems');
-                
-                // Get icons for categories
-                categoryItems.innerHTML = categories.map(cat => `
-                    <div class="category-item" onclick="filterByCategory('${cat}')">
-                        <img src="https://images.unsplash.com/photo-${getCategoryImageId(cat)}?w=200" alt="${cat}">
-                        <span>${cat}</span>
-                    </div>
-                `).join('');
-                
-            } catch (error) {
-                console.error('Error loading categories:', error);
-                showSampleCategories();
+        window.handleAccountClick = function() {
+            if (currentUser) {
+                window.location.href = 'account-dashboard.html';
+            } else {
+                window.location.href = 'account.html';
             }
-        }
+        };
 
-        function getCategoryImageId(category) {
-            const images = {
-                'Fashion': '1539008835657-9e8e9680c956',
-                'Electronics': '1505740420928-5e560c06d30e',
-                'Watches': '1523275335684-37898b6baf30',
-                'Home': '1484101403633-562f891dc89a',
-                'Beauty': '1526045612212-70caf35c14df'
-            };
-            return images[category] || '1505740420928-5e560c06d30e';
-        }
-
-        function showSampleCategories() {
-            const categoryItems = document.getElementById('categoryItems');
-            categoryItems.innerHTML = `
-                <div class="category-item" onclick="filterByCategory('Fashion')">
-                    <img src="https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=200" alt="Fashion">
-                    <span>Fashion</span>
-                </div>
-                <div class="category-item" onclick="filterByCategory('Electronics')">
-                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200" alt="Electronics">
-                    <span>Electronics</span>
-                </div>
-                <div class="category-item" onclick="filterByCategory('Watches')">
-                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200" alt="Watches">
-                    <span>Watches</span>
-                </div>
-                <div class="category-item" onclick="filterByCategory('Home')">
-                    <img src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?w=200" alt="Home">
-                    <span>Home</span>
-                </div>
-                <div class="category-item" onclick="filterByCategory('Beauty')">
-                    <img src="https://images.unsplash.com/photo-1526045612212-70caf35c14df?w=200" alt="Beauty">
-                    <span>Beauty</span>
-                </div>
-            `;
-        }
-
-        // Add to Cart Function
         window.addToCart = async function(productId, event) {
             event.stopPropagation();
-            
             if (!currentUser) {
                 showNotification('Please sign in first');
-                setTimeout(() => {
-                    window.location.href = 'account.html';
-                }, 1500);
+                setTimeout(() => window.location.href = 'account.html', 1500);
                 return;
             }
-            
             try {
-                // Check if product already in cart
-                const existingCart = await db.collection('cart')
-                    .where('userId', '==', currentUser.uid)
-                    .where('productId', '==', productId)
-                    .get();
-                
-                if (!existingCart.empty) {
-                    // Update quantity
-                    const cartItem = existingCart.docs[0];
-                    await cartItem.ref.update({
-                        quantity: (cartItem.data().quantity || 1) + 1
-                    });
+                const existing = await db.collection('cart').where('userId', '==', currentUser.uid).where('productId', '==', productId).get();
+                if (!existing.empty) {
+                    const cartItem = existing.docs[0];
+                    await cartItem.ref.update({ quantity: (cartItem.data().quantity || 1) + 1 });
                 } else {
-                    // Add new item
-                    await db.collection('cart').add({
-                        userId: currentUser.uid,
-                        productId: productId,
-                        quantity: 1,
-                        addedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+                    await db.collection('cart').add({ userId: currentUser.uid, productId, quantity: 1 });
                 }
-                
-                // Update cart count
-                const cartSnap = await db.collection('cart')
-                    .where('userId', '==', currentUser.uid)
-                    .get();
-                const cartCount = cartSnap.docs.reduce((sum, doc) => sum + (doc.data().quantity || 1), 0);
-                document.getElementById('cartCount').textContent = cartCount;
-                
                 showNotification('Added to cart!');
-                
+                loadCounts();
             } catch (error) {
-                console.error('Error adding to cart:', error);
                 showNotification('Error adding to cart');
             }
         };
 
-        // Buy Now Function
         window.buyNow = function(productId, event) {
             event.stopPropagation();
             if (!currentUser) {
                 showNotification('Please sign in first');
-                setTimeout(() => {
-                    window.location.href = 'account.html';
-                }, 1500);
+                setTimeout(() => window.location.href = 'account.html', 1500);
                 return;
             }
             window.location.href = `checkout.html?product=${productId}`;
         };
 
-        // View Product Function
-        window.viewProduct = function(productId) {
-            window.location.href = `product.html?id=${productId}`;
+        window.viewProduct = (id) => window.location.href = `product-detail.html?id=${id}`;
+        
+        window.searchProducts = () => {
+            const term = document.getElementById('searchInput').value;
+            if (term) window.location.href = `products.html?search=${encodeURIComponent(term)}`;
         };
 
-        // Search Products
-        window.searchProducts = function() {
-            const searchTerm = document.getElementById('searchInput').value;
-            const category = document.getElementById('searchCategory').value;
-            
-            if (!searchTerm) {
-                showNotification('Please enter a search term');
-                return;
-            }
-            
-            // Navigate to search results page
-            window.location.href = `products.html?search=${encodeURIComponent(searchTerm)}&category=${category}`;
-        };
-
-        // Filter by Category
-        window.filterByCategory = function(category) {
-            window.location.href = `products.html?category=${encodeURIComponent(category)}`;
-        };
-
-        // Show Today's Deals
-        window.showTodayDeals = function() {
-            window.location.href = 'deals.html';
-        };
-
-        // Show New Arrivals
-        window.showNewArrivals = function() {
-            window.location.href = 'products.html?sort=new';
-        };
-
-        // View All Products
-        window.viewAllProducts = function() {
-            window.location.href = 'products.html';
-        };
-
-        // Show Notification
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.className = 'notification';
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 2000);
-        }
-
-        // Enter key for search
-        document.getElementById('searchInput')?.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                searchProducts();
-            }
-        });
-
-        // Demo sign in (for testing)
-        window.demoSignIn = async function() {
-            try {
-                await auth.signInAnonymously();
-                showNotification('Signed in as guest');
-            } catch (error) {
-                console.error('Sign in error:', error);
-            }
-        };
-
-        // Check if we should auto sign in for demo
-        if (!currentUser && window.location.href.includes('demo')) {
-            demoSignIn();
+        function showNotification(msg) {
+            const n = document.createElement('div');
+            n.className = 'notification';
+            n.textContent = msg;
+            document.body.appendChild(n);
+            setTimeout(() => n.remove(), 2000);
         }
     </script>
 </body>
