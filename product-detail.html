@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Details - ZYVORASHOP</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
@@ -20,11 +22,11 @@
         body {
             font-family: 'Inter', sans-serif;
             background: #f3f3f3;
-            color: #0f1111;
         }
 
         .header {
             background: #131921;
+            padding: 15px 20px;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -33,10 +35,9 @@
         .header-content {
             max-width: 1500px;
             margin: 0 auto;
-            padding: 10px 20px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
 
         .logo {
@@ -53,18 +54,15 @@
         .back-btn {
             color: white;
             text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
+            font-size: 16px;
         }
 
-        .back-btn:hover {
-            color: #ff9900;
+        .back-btn i {
+            margin-right: 5px;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1500px;
             margin: 30px auto;
             padding: 0 20px;
         }
@@ -73,46 +71,42 @@
             background: white;
             border-radius: 8px;
             padding: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .product-images {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+        .product-gallery {
+            position: relative;
         }
 
         .main-image {
+            width: 100%;
+            height: 400px;
             background: #f9f9f9;
             border-radius: 8px;
-            padding: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 400px;
+            overflow: hidden;
+            margin-bottom: 20px;
         }
 
         .main-image img {
-            max-width: 100%;
-            max-height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
         }
 
         .thumbnail-images {
             display: flex;
             gap: 10px;
-            overflow-x: auto;
         }
 
         .thumbnail {
             width: 80px;
             height: 80px;
             background: #f9f9f9;
-            border-radius: 4px;
-            padding: 10px;
+            border-radius: 5px;
+            overflow: hidden;
             cursor: pointer;
             border: 2px solid transparent;
         }
@@ -130,12 +124,11 @@
         .product-info h1 {
             font-size: 28px;
             margin-bottom: 10px;
-            color: #131921;
         }
 
         .product-category {
-            font-size: 14px;
             color: #007185;
+            font-size: 14px;
             margin-bottom: 10px;
         }
 
@@ -148,20 +141,13 @@
         .product-rating span {
             color: #007185;
             margin-left: 10px;
-            font-size: 14px;
         }
 
         .product-price {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
             color: #b12704;
             margin-bottom: 20px;
-        }
-
-        .product-price small {
-            font-size: 14px;
-            font-weight: normal;
-            color: #565959;
         }
 
         .product-description {
@@ -169,69 +155,29 @@
         }
 
         .product-description h3 {
-            font-size: 18px;
             margin-bottom: 10px;
         }
 
         .product-description p {
-            color: #565959;
+            color: #666;
             line-height: 1.6;
-        }
-
-        .product-meta {
-            margin-bottom: 30px;
-            padding: 20px 0;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .meta-item {
-            display: flex;
-            margin-bottom: 10px;
-        }
-
-        .meta-label {
-            width: 100px;
-            color: #565959;
-        }
-
-        .meta-value {
-            color: #131921;
-            font-weight: 500;
-        }
-
-        .delivery-info {
-            background: #f9f9f9;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-        }
-
-        .delivery-info i {
-            color: #ff9900;
-            margin-right: 10px;
-        }
-
-        .delivery-info p {
-            margin-bottom: 5px;
-            font-size: 14px;
         }
 
         .product-actions {
             display: flex;
             gap: 15px;
+            margin-bottom: 30px;
         }
 
         .btn-add {
-            flex: 2;
+            flex: 1;
             padding: 15px;
             background: #ffd814;
             border: none;
             border-radius: 30px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
-            transition: background 0.3s;
         }
 
         .btn-add:hover {
@@ -245,36 +191,28 @@
             border: none;
             border-radius: 30px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
-            transition: background 0.3s;
         }
 
         .btn-buy:hover {
             background: #ff8c00;
         }
 
-        .btn-wishlist {
-            width: 50px;
-            height: 50px;
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 20px;
+        .delivery-info {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .delivery-info p {
+            margin-bottom: 10px;
             color: #666;
-            transition: all 0.3s;
         }
 
-        .btn-wishlist:hover {
-            border-color: #ff9900;
+        .delivery-info i {
             color: #ff9900;
-        }
-
-        .btn-wishlist.active {
-            background: #ff9900;
-            color: white;
-            border-color: #ff9900;
+            margin-right: 10px;
         }
 
         .notification {
@@ -301,26 +239,6 @@
             }
         }
 
-        .loading {
-            text-align: center;
-            padding: 50px;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #ff9900;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         @media (max-width: 768px) {
             .product-detail {
                 grid-template-columns: 1fr;
@@ -337,16 +255,22 @@
     </header>
 
     <div class="container">
-        <div id="productDetailContainer">
-            <div class="loading">
-                <div class="spinner"></div>
-                <p>Loading product details...</p>
+        <div class="product-detail" id="productDetail">
+            <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                <div class="spinner" style="width:50px;height:50px;border:3px solid #f3f3f3;border-top:3px solid #ff9900;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto;"></div>
+                <p style="margin-top:20px;">Loading product...</p>
             </div>
         </div>
     </div>
 
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
             authDomain: "shopverse-c2642.firebaseapp.com",
@@ -356,189 +280,109 @@
             appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
         };
 
-        // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
         let currentUser = null;
-        let currentProduct = null;
-        let inWishlist = false;
+        let productId = null;
 
-        // Get product ID from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const productId = urlParams.get('id') || 'fashion1';
-
-        // Auth State Observer
         auth.onAuthStateChanged((user) => {
             currentUser = user;
-            loadProduct();
         });
 
-        // Load Product
+        function getProductIdFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('id');
+        }
+
         async function loadProduct() {
-            try {
-                const productDoc = await db.collection('products').doc(productId).get();
-                
-                if (productDoc.exists) {
-                    currentProduct = { id: productDoc.id, ...productDoc.data() };
-                } else {
-                    // Use sample product
-                    currentProduct = getSampleProduct(productId);
-                }
-                
-                // Check if in wishlist
-                if (currentUser) {
-                    const wishlistSnap = await db.collection('wishlist')
-                        .where('userId', '==', currentUser.uid)
-                        .where('productId', '==', productId)
-                        .get();
-                    inWishlist = !wishlistSnap.empty;
-                }
-                
-                renderProduct();
-                
-            } catch (error) {
-                console.error('Error loading product:', error);
-                currentProduct = getSampleProduct(productId);
-                renderProduct();
-            }
-        }
-
-        // Get Sample Product
-        function getSampleProduct(id) {
-            const products = {
-                'fashion1': {
-                    name: 'new trending',
-                    category: 'FASHION',
-                    price: 1233,
-                    rating: 4.5,
-                    reviews: 1233,
-                    description: 'Stay ahead of the curve with our latest trending fashion piece. Perfect for any occasion, this item combines style and comfort effortlessly.',
-                    brand: 'ZYVORA',
-                    availability: 'In Stock',
-                    images: [
-                        'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400',
-                        'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400',
-                        'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400'
-                    ]
-                },
-                'fashion2': {
-                    name: 'life',
-                    category: 'FASHION',
-                    price: 12000,
-                    rating: 5,
-                    reviews: 12000,
-                    description: 'Embrace the essence of life with our premium collection. Designed for those who appreciate quality and style.',
-                    brand: 'ZYVORA',
-                    availability: 'In Stock',
-                    images: [
-                        'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400',
-                        'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400',
-                        'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400'
-                    ]
-                },
-                'fashion3': {
-                    name: 'Today Trending Dress',
-                    category: 'FASHION PREMIUM',
-                    price: 6999,
-                    rating: 5,
-                    reviews: 6999,
-                    description: 'Make a statement with today\'s most wanted dress. Premium quality fabric with exquisite design that turns heads.',
-                    brand: 'ZYVORA PREMIUM',
-                    availability: 'Limited Stock',
-                    images: [
-                        'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400',
-                        'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400',
-                        'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400'
-                    ]
-                }
-            };
-            return products[id] || products['fashion1'];
-        }
-
-        // Render Product
-        function renderProduct() {
-            const container = document.getElementById('productDetailContainer');
+            productId = getProductIdFromUrl();
             
-            if (!currentProduct) {
-                container.innerHTML = '<div class="loading">Product not found</div>';
+            if (!productId) {
+                showSampleProduct();
                 return;
             }
-
-            const images = currentProduct.images || [currentProduct.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'];
             
-            let thumbnailsHtml = '';
-            images.forEach((img, index) => {
-                thumbnailsHtml += `
-                    <div class="thumbnail ${index === 0 ? 'active' : ''}" onclick="changeImage(${index})">
-                        <img src="${img}" alt="Thumbnail ${index + 1}">
-                    </div>
-                `;
-            });
+            try {
+                const productSnap = await db.collection('products').doc(productId).get();
+                
+                if (productSnap.exists) {
+                    renderProduct({ id: productId, ...productSnap.data() });
+                } else {
+                    showSampleProduct();
+                }
+            } catch (error) {
+                console.error('Error loading product:', error);
+                showSampleProduct();
+            }
+        }
 
-            container.innerHTML = `
-                <div class="product-detail">
-                    <div class="product-images">
-                        <div class="main-image">
-                            <img src="${images[0]}" alt="${currentProduct.name}" id="mainImage">
-                        </div>
-                        <div class="thumbnail-images">
-                            ${thumbnailsHtml}
-                        </div>
+        function renderProduct(product) {
+            const images = product.images || [
+                'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400',
+                'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400',
+                'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400'
+            ];
+            
+            const rating = product.rating || 4.5;
+            const reviews = product.reviews || 1233;
+            
+            document.getElementById('productDetail').innerHTML = `
+                <div class="product-gallery">
+                    <div class="main-image">
+                        <img src="${images[0]}" alt="${product.name}" id="mainImage">
                     </div>
-                    
-                    <div class="product-info">
-                        <div class="product-category">${currentProduct.category || 'FASHION'}</div>
-                        <h1>${currentProduct.name}</h1>
-                        
-                        <div class="product-rating">
-                            ${generateStars(currentProduct.rating || 4.5)}
-                            <span>${(currentProduct.reviews || 0).toLocaleString()} ratings</span>
-                        </div>
-                        
-                        <div class="product-price">
-                            Rs ${currentProduct.price?.toLocaleString() || '1,233'}
-                            <small>inclusive of all taxes</small>
-                        </div>
-                        
-                        <div class="delivery-info">
-                            <p><i class="fas fa-truck"></i> Free Delivery to Pakistan</p>
-                            <p><i class="fas fa-clock"></i> Usually delivered in 3-5 business days</p>
-                            <p><i class="fas fa-undo-alt"></i> 7-day return policy</p>
-                        </div>
-                        
-                        <div class="product-description">
-                            <h3>About this item</h3>
-                            <p>${currentProduct.description || 'Premium quality product from ZYVORASHOP. Made with care and attention to detail to ensure customer satisfaction.'}</p>
-                        </div>
-                        
-                        <div class="product-meta">
-                            <div class="meta-item">
-                                <span class="meta-label">Brand</span>
-                                <span class="meta-value">${currentProduct.brand || 'ZYVORA'}</span>
+                    <div class="thumbnail-images">
+                        ${images.map((img, index) => `
+                            <div class="thumbnail ${index === 0 ? 'active' : ''}" onclick="changeImage('${img}', this)">
+                                <img src="${img}" alt="Thumbnail">
                             </div>
-                            <div class="meta-item">
-                                <span class="meta-label">Availability</span>
-                                <span class="meta-value" style="color: #067d62;">${currentProduct.availability || 'In Stock'}</span>
-                            </div>
-                        </div>
-                        
-                        <div class="product-actions">
-                            <button class="btn-add" onclick="addToCart()">
-                                <i class="fas fa-shopping-cart"></i> Add to Cart
-                            </button>
-                            <button class="btn-buy" onclick="buyNow()">Buy Now</button>
-                            <button class="btn-wishlist ${inWishlist ? 'active' : ''}" onclick="toggleWishlist()">
-                                <i class="fa${inWishlist ? 's' : 'r'} fa-heart"></i>
-                            </button>
-                        </div>
+                        `).join('')}
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">${product.category || 'FASHION'}</div>
+                    <h1>${product.name || 'Premium Product'}</h1>
+                    <div class="product-rating">
+                        ${generateStars(rating)}
+                        <span>${reviews.toLocaleString()} ratings</span>
+                    </div>
+                    <div class="product-price">Rs ${product.price?.toLocaleString() || '1,233'}</div>
+                    <div class="product-description">
+                        <h3>About this item</h3>
+                        <p>${product.description || 'High quality product with premium finish. Made with care and attention to detail. Perfect for everyday use.'}</p>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn-add" onclick="addToCart('${product.id}')">Add to Cart</button>
+                        <button class="btn-buy" onclick="buyNow('${product.id}')">Buy Now</button>
+                    </div>
+                    <div class="delivery-info">
+                        <p><i class="fas fa-truck"></i> Free Delivery to Pakistan</p>
+                        <p><i class="fas fa-undo"></i> 7 Days Return Policy</p>
+                        <p><i class="fas fa-shield-alt"></i> Secure Transaction</p>
                     </div>
                 </div>
             `;
         }
 
-        // Generate Stars
+        function showSampleProduct() {
+            renderProduct({
+                id: 'sample',
+                name: 'new trending',
+                category: 'FASHION',
+                price: 1233,
+                rating: 4.5,
+                reviews: 1233,
+                description: 'Trending fashion item with premium quality. Perfect for any occasion.',
+                images: [
+                    'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400',
+                    'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400',
+                    'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400'
+                ]
+            });
+        }
+
         function generateStars(rating) {
             let stars = '';
             for (let i = 1; i <= 5; i++) {
@@ -553,24 +397,15 @@
             return stars;
         }
 
-        // Change Image
-        window.changeImage = function(index) {
-            const mainImage = document.getElementById('mainImage');
-            const images = currentProduct.images || [currentProduct.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'];
-            mainImage.src = images[index];
-            
-            // Update active thumbnail
-            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
-                if (i === index) {
-                    thumb.classList.add('active');
-                } else {
-                    thumb.classList.remove('active');
-                }
+        window.changeImage = function(src, element) {
+            document.getElementById('mainImage').src = src;
+            document.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.classList.remove('active');
             });
-        }
+            element.classList.add('active');
+        };
 
-        // Add to Cart
-        window.addToCart = async function() {
+        window.addToCart = async function(productId) {
             if (!currentUser) {
                 showNotification('Please sign in first');
                 setTimeout(() => {
@@ -578,22 +413,19 @@
                 }, 1500);
                 return;
             }
-
+            
             try {
-                // Check if already in cart
                 const existingCart = await db.collection('cart')
                     .where('userId', '==', currentUser.uid)
                     .where('productId', '==', productId)
                     .get();
-
+                
                 if (!existingCart.empty) {
-                    // Update quantity
                     const cartItem = existingCart.docs[0];
                     await cartItem.ref.update({
                         quantity: (cartItem.data().quantity || 1) + 1
                     });
                 } else {
-                    // Add new item
                     await db.collection('cart').add({
                         userId: currentUser.uid,
                         productId: productId,
@@ -601,27 +433,16 @@
                         addedAt: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 }
-
+                
                 showNotification('Added to cart!');
                 
-                // Update cart count if badge exists
-                const badge = document.querySelector('.badge');
-                if (badge) {
-                    const cartSnap = await db.collection('cart')
-                        .where('userId', '==', currentUser.uid)
-                        .get();
-                    const count = cartSnap.docs.reduce((sum, doc) => sum + (doc.data().quantity || 1), 0);
-                    badge.textContent = count;
-                }
-
             } catch (error) {
                 console.error('Error adding to cart:', error);
                 showNotification('Error adding to cart');
             }
-        }
+        };
 
-        // Buy Now
-        window.buyNow = function() {
+        window.buyNow = function(productId) {
             if (!currentUser) {
                 showNotification('Please sign in first');
                 setTimeout(() => {
@@ -629,68 +450,9 @@
                 }, 1500);
                 return;
             }
-            
-            // Store product ID in session for checkout
-            sessionStorage.setItem('buyNowProduct', productId);
-            window.location.href = 'checkout.html?buynow=true';
-        }
+            window.location.href = `checkout.html?product=${productId}`;
+        };
 
-        // Toggle Wishlist
-        window.toggleWishlist = async function() {
-            if (!currentUser) {
-                showNotification('Please sign in first');
-                setTimeout(() => {
-                    window.location.href = 'account.html';
-                }, 1500);
-                return;
-            }
-
-            try {
-                if (inWishlist) {
-                    // Remove from wishlist
-                    const wishlistSnap = await db.collection('wishlist')
-                        .where('userId', '==', currentUser.uid)
-                        .where('productId', '==', productId)
-                        .get();
-                    
-                    wishlistSnap.forEach(doc => doc.ref.delete());
-                    inWishlist = false;
-                    showNotification('Removed from wishlist');
-                } else {
-                    // Add to wishlist
-                    await db.collection('wishlist').add({
-                        userId: currentUser.uid,
-                        productId: productId,
-                        addedAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    inWishlist = true;
-                    showNotification('Added to wishlist');
-                }
-                
-                // Update button
-                const wishlistBtn = document.querySelector('.btn-wishlist');
-                if (wishlistBtn) {
-                    wishlistBtn.classList.toggle('active');
-                    const icon = wishlistBtn.querySelector('i');
-                    icon.className = inWishlist ? 'fas fa-heart' : 'far fa-heart';
-                }
-                
-                // Update wishlist count if badge exists
-                const wishlistBadge = document.getElementById('wishlistCount');
-                if (wishlistBadge) {
-                    const wishlistSnap = await db.collection('wishlist')
-                        .where('userId', '==', currentUser.uid)
-                        .get();
-                    wishlistBadge.textContent = wishlistSnap.size;
-                }
-                
-            } catch (error) {
-                console.error('Error toggling wishlist:', error);
-                showNotification('Error updating wishlist');
-            }
-        }
-
-        // Show Notification
         function showNotification(message) {
             const notification = document.createElement('div');
             notification.className = 'notification';
@@ -701,6 +463,19 @@
                 notification.remove();
             }, 2000);
         }
+
+        // Check for buy now parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('buynow') === 'true') {
+            setTimeout(() => {
+                if (confirm('Proceed to checkout?')) {
+                    window.location.href = `checkout.html?product=${getProductIdFromUrl()}`;
+                }
+            }, 500);
+        }
+
+        // Load product
+        loadProduct();
     </script>
 </body>
 </html>
