@@ -130,10 +130,6 @@
             background: #f5f5f5;
         }
 
-        .btn-google img {
-            width: 20px;
-        }
-
         .divider {
             text-align: center;
             margin: 20px 0;
@@ -183,12 +179,6 @@
 
         .error-message {
             color: #b12704;
-            font-size: 14px;
-            margin-top: 5px;
-        }
-
-        .success-message {
-            color: #007600;
             font-size: 14px;
             margin-top: 5px;
         }
@@ -275,7 +265,10 @@
             appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const auth = firebase.auth();
 
         let isLogin = true;
