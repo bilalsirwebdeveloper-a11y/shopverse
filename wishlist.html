@@ -1,32 +1,513 @@
-// Products collection mein ye data add karo
-{
-  name: "new trending",
-  category: "FASHION",
-  price: 1233,
-  rating: 4.5,
-  reviews: 1233,
-  description: "Stay ahead of the curve with our latest trending fashion piece.",
-  images: ["https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400"],
-  badge: "TRENDING"
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Wishlist - ZYVORASHOP</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-{
-  name: "life",
-  category: "FASHION",
-  price: 12000,
-  rating: 5,
-  reviews: 12000,
-  description: "Embrace the essence of life with our premium collection.",
-  images: ["https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400"]
-}
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f3f3f3;
+        }
 
-{
-  name: "Today Trending Dress",
-  category: "FASHION PREMIUM",
-  price: 6999,
-  rating: 5,
-  reviews: 6999,
-  description: "Make a statement with today's most wanted dress.",
-  images: ["https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400"],
-  badge: "HOT"
-}
+        .header {
+            background: #131921;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1500px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #ff9900;
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .back-btn i {
+            margin-right: 5px;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .wishlist-header {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .wishlist-header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .wishlist-header p {
+            color: #666;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .wishlist-remove {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 35px;
+            height: 35px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: #ff4444;
+            border: none;
+            z-index: 2;
+        }
+
+        .wishlist-remove:hover {
+            background: #ff4444;
+            color: white;
+        }
+
+        .product-image {
+            height: 200px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f9f9f9;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .product-info {
+            padding: 15px;
+        }
+
+        .product-category {
+            font-size: 12px;
+            color: #007185;
+            margin-bottom: 5px;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        .product-rating {
+            color: #ff9900;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .product-rating span {
+            color: #007185;
+            margin-left: 8px;
+        }
+
+        .product-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: #b12704;
+            margin-bottom: 10px;
+        }
+
+        .btn-add {
+            width: 100%;
+            padding: 8px;
+            background: #ffd814;
+            border: none;
+            border-radius: 20px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-add:hover {
+            background: #f7ca00;
+        }
+
+        .empty-wishlist {
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .empty-wishlist i {
+            font-size: 80px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .empty-wishlist h2 {
+            margin-bottom: 10px;
+        }
+
+        .empty-wishlist p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .shop-now-btn {
+            padding: 12px 30px;
+            background: #ff9900;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 30px;
+            background: white;
+            border-left: 4px solid #ff9900;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">ZYVORA<span>SHOP</span></a>
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="wishlist-header">
+            <h1>My Wishlist</h1>
+            <p>Items you've saved for later</p>
+        </div>
+
+        <div class="products-grid" id="wishlistGrid">
+            <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
+                <div class="spinner" style="width:50px;height:50px;border:3px solid #f3f3f3;border-top:3px solid #ff9900;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto;"></div>
+                <p style="margin-top:20px;">Loading wishlist...</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
+            authDomain: "shopverse-c2642.firebaseapp.com",
+            projectId: "shopverse-c2642",
+            storageBucket: "shopverse-c2642.firebasestorage.app",
+            messagingSenderId: "281981664356",
+            appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUser = null;
+        let wishlistItems = [];
+        let products = {};
+
+        auth.onAuthStateChanged((user) => {
+            currentUser = user;
+            if (user) {
+                loadWishlist();
+            } else {
+                showEmptyWishlist('Please sign in to view your wishlist');
+            }
+        });
+
+        async function loadWishlist() {
+            try {
+                const wishlistSnap = await db.collection('wishlist')
+                    .where('userId', '==', currentUser.uid)
+                    .get();
+                
+                if (wishlistSnap.empty) {
+                    showEmptyWishlist('Your wishlist is empty');
+                    return;
+                }
+                
+                wishlistItems = wishlistSnap.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+                
+                await loadProducts();
+                renderWishlist();
+                
+            } catch (error) {
+                console.error('Error loading wishlist:', error);
+                showNotification('Error loading wishlist');
+            }
+        }
+
+        async function loadProducts() {
+            const productIds = wishlistItems.map(item => item.productId);
+            
+            for (const id of productIds) {
+                try {
+                    const productSnap = await db.collection('products').doc(id).get();
+                    if (productSnap.exists) {
+                        products[id] = productSnap.data();
+                    } else {
+                        // Sample product data
+                        products[id] = {
+                            name: 'Product ' + id,
+                            price: Math.floor(Math.random() * 5000) + 1000,
+                            category: 'Fashion',
+                            rating: 4.5,
+                            reviews: Math.floor(Math.random() * 1000),
+                            images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400']
+                        };
+                    }
+                } catch (error) {
+                    console.error('Error loading product:', error);
+                }
+            }
+        }
+
+        function renderWishlist() {
+            if (wishlistItems.length === 0) {
+                showEmptyWishlist('Your wishlist is empty');
+                return;
+            }
+            
+            const grid = document.getElementById('wishlistGrid');
+            
+            grid.innerHTML = wishlistItems.map(item => {
+                const product = products[item.productId] || {
+                    name: 'Product',
+                    price: 1000,
+                    category: 'Fashion',
+                    rating: 4.5,
+                    reviews: 100,
+                    images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400']
+                };
+                
+                return `
+                    <div class="product-card" onclick="viewProduct('${item.productId}')">
+                        <button class="wishlist-remove" onclick="removeFromWishlist('${item.id}', event)">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <div class="product-image">
+                            <img src="${product.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" alt="${product.name}">
+                        </div>
+                        <div class="product-info">
+                            <div class="product-category">${product.category}</div>
+                            <div class="product-title">${product.name}</div>
+                            <div class="product-rating">
+                                ${generateStars(product.rating || 4.5)}
+                                <span>${(product.reviews || 100).toLocaleString()}</span>
+                            </div>
+                            <div class="product-price">Rs ${product.price?.toLocaleString()}</div>
+                            <button class="btn-add" onclick="addToCart('${item.productId}', event)">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function generateStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= rating) {
+                    stars += '<i class="fas fa-star"></i>';
+                } else if (i - rating < 1) {
+                    stars += '<i class="fas fa-star-half-alt"></i>';
+                } else {
+                    stars += '<i class="far fa-star"></i>';
+                }
+            }
+            return stars;
+        }
+
+        function showEmptyWishlist(message) {
+            document.getElementById('wishlistGrid').innerHTML = `
+                <div class="empty-wishlist">
+                    <i class="far fa-heart"></i>
+                    <h2>${message}</h2>
+                    <p>Browse our products and add items to your wishlist</p>
+                    <a href="products.html" class="shop-now-btn">Shop Now</a>
+                </div>
+            `;
+        }
+
+        window.removeFromWishlist = async function(wishlistId, event) {
+            event.stopPropagation();
+            
+            try {
+                await db.collection('wishlist').doc(wishlistId).delete();
+                
+                wishlistItems = wishlistItems.filter(item => item.id !== wishlistId);
+                renderWishlist();
+                
+                showNotification('Removed from wishlist');
+                
+            } catch (error) {
+                console.error('Error removing from wishlist:', error);
+                showNotification('Error removing item');
+            }
+        };
+
+        window.addToCart = async function(productId, event) {
+            event.stopPropagation();
+            
+            if (!currentUser) {
+                showNotification('Please sign in first');
+                setTimeout(() => {
+                    window.location.href = 'account.html';
+                }, 1500);
+                return;
+            }
+            
+            try {
+                const existingCart = await db.collection('cart')
+                    .where('userId', '==', currentUser.uid)
+                    .where('productId', '==', productId)
+                    .get();
+                
+                if (!existingCart.empty) {
+                    const cartItem = existingCart.docs[0];
+                    await cartItem.ref.update({
+                        quantity: (cartItem.data().quantity || 1) + 1
+                    });
+                } else {
+                    await db.collection('cart').add({
+                        userId: currentUser.uid,
+                        productId: productId,
+                        quantity: 1,
+                        addedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                
+                showNotification('Added to cart!');
+                
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                showNotification('Error adding to cart');
+            }
+        };
+
+        window.viewProduct = function(productId) {
+            window.location.href = `product-detail.html?id=${productId}`;
+        };
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
