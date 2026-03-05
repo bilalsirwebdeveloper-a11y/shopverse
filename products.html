@@ -367,7 +367,10 @@
             appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const auth = firebase.auth();
         const db = firebase.firestore();
 
@@ -451,7 +454,7 @@
             
             if (params.category) {
                 filteredProducts = allProducts.filter(p => 
-                    p.category.toLowerCase().includes(params.category.toLowerCase())
+                    p.category.toUpperCase().includes(params.category.toUpperCase())
                 );
             } else if (params.search) {
                 const searchTerm = params.search.toLowerCase();
@@ -554,12 +557,12 @@
                     return false;
                 }
                 
-                if (minPrice && p.price < minPrice) return false;
-                if (maxPrice && p.price > maxPrice) return false;
+                if (minPrice && p.price < parseInt(minPrice)) return false;
+                if (maxPrice && p.price > parseInt(maxPrice)) return false;
                 
-                if (rating4 && p.rating < 4) return false;
-                if (rating3 && p.rating < 3) return false;
-                if (rating2 && p.rating < 2) return false;
+                if (rating4 && (p.rating || 4.5) < 4) return false;
+                if (rating3 && (p.rating || 4.5) < 3) return false;
+                if (rating2 && (p.rating || 4.5) < 2) return false;
                 
                 return true;
             });
@@ -572,10 +575,10 @@
             
             switch(sortBy) {
                 case 'priceLow':
-                    filteredProducts.sort((a, b) => a.price - b.price);
+                    filteredProducts.sort((a, b) => (a.price || 0) - (b.price || 0));
                     break;
                 case 'priceHigh':
-                    filteredProducts.sort((a, b) => b.price - a.price);
+                    filteredProducts.sort((a, b) => (b.price || 0) - (a.price || 0));
                     break;
                 case 'rating':
                     filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
