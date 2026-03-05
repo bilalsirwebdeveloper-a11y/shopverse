@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - ZYVORASHOP</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f3f3f3;
+        }
+
+        .header {
+            background: #131921;
+            padding: 15px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1500px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: #ff9900;
+        }
+
+        .back-btn {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 25px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #ff9900;
+        }
+
+        .back-btn i {
+            margin-right: 5px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            margin-bottom: 30px;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .page-title p {
+            color: #666;
+        }
+
+        /* Order Tabs */
+        .order-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            padding: 10px 25px;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            color: #666;
+            position: relative;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: #ff9900;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #ff9900;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .tab-btn:hover {
+            color: #ff9900;
+        }
+
+        /* Orders Grid */
+        .orders-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .order-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .order-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .order-info h3 {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .order-info .order-id {
+            font-size: 18px;
+            font-weight: 600;
+            color: #131921;
+        }
+
+        .order-status {
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .status-delivered {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-shipped {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-processing {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .order-body {
+            padding: 20px;
+        }
+
+        .order-items {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .order-item {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .item-image {
+            width: 80px;
+            height: 80px;
+            background: #f9f9f9;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .item-details {
+            flex: 1;
+        }
+
+        .item-details h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .item-details .item-meta {
+            display: flex;
+            gap: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .item-price {
+            font-weight: 600;
+            color: #b12704;
+        }
+
+        .order-footer {
+            padding: 15px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-total {
+            font-size: 18px;
+        }
+
+        .order-total strong {
+            color: #b12704;
+            margin-left: 10px;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-track, .btn-review, .btn-reorder {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-track {
+            background: #ff9900;
+            color: white;
+        }
+
+        .btn-track:hover {
+            background: #e68900;
+        }
+
+        .btn-review {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .btn-review:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-reorder {
+            background: #ffd814;
+            color: #131921;
+        }
+
+        .btn-reorder:hover {
+            background: #f7ca00;
+        }
+
+        /* Empty State */
+        .empty-orders {
+            text-align: center;
+            padding: 80px 20px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        .empty-orders i {
+            font-size: 80px;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .empty-orders h2 {
+            margin-bottom: 10px;
+        }
+
+        .empty-orders p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .shop-now-btn {
+            padding: 12px 30px;
+            background: #ff9900;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .shop-now-btn:hover {
+            background: #e68900;
+            transform: translateY(-2px);
+        }
+
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 50px;
+            box-shadow: 0 15px 40px rgba(102,126,234,0.4);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .order-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: start;
+            }
+            
+            .order-footer {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .order-actions {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">ZYVORA<span>SHOP</span></a>
+            <a href="index.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Shopping</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-title">
+            <h1>My Orders</h1>
+            <p>Track and manage your orders</p>
+        </div>
+
+        <div class="order-tabs">
+            <button class="tab-btn active" onclick="filterOrders('all')">All Orders</button>
+            <button class="tab-btn" onclick="filterOrders('processing')">Processing</button>
+            <button class="tab-btn" onclick="filterOrders('shipped')">Shipped</button>
+            <button class="tab-btn" onclick="filterOrders('delivered')">Delivered</button>
+            <button class="tab-btn" onclick="filterOrders('cancelled')">Cancelled</button>
+        </div>
+
+        <div class="orders-grid" id="ordersGrid">
+            <div style="text-align: center; padding: 50px;">
+                <div class="spinner" style="width:50px;height:50px;border:3px solid #f3f3f3;border-top:3px solid #ff9900;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto;"></div>
+                <p style="margin-top:20px;">Loading your orders...</p>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBh2f98ybCR6Zn3RwsFuS6mT4e3PfwvnKs",
+            authDomain: "shopverse-c2642.firebaseapp.com",
+            projectId: "shopverse-c2642",
+            storageBucket: "shopverse-c2642.firebasestorage.app",
+            messagingSenderId: "281981664356",
+            appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let allOrders = [];
+        let currentFilter = 'all';
+
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                loadOrders();
+            } else {
+                showLoginPrompt();
+            }
+        });
+
+        async function loadOrders() {
+            try {
+                const ordersSnap = await db.collection('orders')
+                    .where('userId', '==', auth.currentUser.uid)
+                    .orderBy('createdAt', 'desc')
+                    .get();
+
+                if (ordersSnap.empty) {
+                    showEmptyOrders();
+                    return;
+                }
+
+                allOrders = ordersSnap.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data(),
+                    createdAt: doc.data().createdAt?.toDate() || new Date()
+                }));
+
+                renderOrders();
+
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                showSampleOrders();
+            }
+        }
+
+        function renderOrders() {
+            const filteredOrders = currentFilter === 'all' 
+                ? allOrders 
+                : allOrders.filter(order => order.status === currentFilter);
+
+            if (filteredOrders.length === 0) {
+                document.getElementById('ordersGrid').innerHTML = `
+                    <div class="empty-orders">
+                        <i class="fas fa-box-open"></i>
+                        <h2>No ${currentFilter !== 'all' ? currentFilter : ''} orders found</h2>
+                        <p>When you place orders, they will appear here</p>
+                        <a href="products.html" class="shop-now-btn">Shop Now</a>
+                    </div>
+                `;
+                return;
+            }
+
+            const ordersHtml = filteredOrders.map(order => `
+                <div class="order-card">
+                    <div class="order-header">
+                        <div class="order-info">
+                            <h3>Order Placed: ${formatDate(order.createdAt)}</h3>
+                            <div class="order-id">Order #${order.id.slice(-8).toUpperCase()}</div>
+                        </div>
+                        <div class="order-status status-${order.status}">
+                            ${order.status.toUpperCase()}
+                        </div>
+                    </div>
+                    
+                    <div class="order-body">
+                        <div class="order-items">
+                            ${order.items.map(item => `
+                                <div class="order-item">
+                                    <div class="item-image">
+                                        <img src="${item.image || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" alt="${item.name}">
+                                    </div>
+                                    <div class="item-details">
+                                        <h4>${item.name}</h4>
+                                        <div class="item-meta">
+                                            <span>Qty: ${item.quantity}</span>
+                                            <span class="item-price">Rs ${(item.price * item.quantity).toLocaleString()}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="order-footer">
+                        <div class="order-total">
+                            Total Amount: <strong>Rs ${order.total.toLocaleString()}</strong>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn-track" onclick="trackOrder('${order.id}')">
+                                <i class="fas fa-truck"></i> Track Order
+                            </button>
+                            ${order.status === 'delivered' ? 
+                                '<button class="btn-review" onclick="writeReview(\'' + order.id + '\')">Write Review</button>' : 
+                                '<button class="btn-reorder" onclick="reorder(\'' + order.id + '\')">Reorder</button>'
+                            }
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('ordersGrid').innerHTML = ordersHtml;
+        }
+
+        function showSampleOrders() {
+            const sampleOrders = [
+                {
+                    id: 'ORD123456',
+                    status: 'delivered',
+                    createdAt: new Date('2024-02-15'),
+                    total: 1233,
+                    items: [
+                        { name: 'new trending', quantity: 1, price: 1233, image: 'https://images.unsplash.com/photo-1539008835657-9e8e9680c956?w=400' }
+                    ]
+                },
+                {
+                    id: 'ORD789012',
+                    status: 'shipped',
+                    createdAt: new Date('2024-02-20'),
+                    total: 12000,
+                    items: [
+                        { name: 'life', quantity: 1, price: 12000, image: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=400' }
+                    ]
+                },
+                {
+                    id: 'ORD345678',
+                    status: 'processing',
+                    createdAt: new Date('2024-02-25'),
+                    total: 6999,
+                    items: [
+                        { name: 'Today Trending Dress', quantity: 1, price: 6999, image: 'https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=400' }
+                    ]
+                }
+            ];
+
+            allOrders = sampleOrders;
+            renderOrders();
+        }
+
+        function showEmptyOrders() {
+            document.getElementById('ordersGrid').innerHTML = `
+                <div class="empty-orders">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h2>No orders yet</h2>
+                    <p>Looks like you haven't placed any orders</p>
+                    <a href="products.html" class="shop-now-btn">Start Shopping</a>
+                </div>
+            `;
+        }
+
+        function showLoginPrompt() {
+            document.getElementById('ordersGrid').innerHTML = `
+                <div class="empty-orders">
+                    <i class="fas fa-user"></i>
+                    <h2>Please sign in</h2>
+                    <p>You need to be signed in to view your orders</p>
+                    <a href="account.html" class="shop-now-btn">Sign In</a>
+                </div>
+            `;
+        }
+
+        window.filterOrders = function(filter) {
+            currentFilter = filter;
+            
+            // Update active tab
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderOrders();
+        };
+
+        window.trackOrder = function(orderId) {
+            window.location.href = `track-order.html?id=${orderId}`;
+        };
+
+        window.writeReview = function(orderId) {
+            window.location.href = `write-review.html?order=${orderId}`;
+        };
+
+        window.reorder = function(orderId) {
+            const order = allOrders.find(o => o.id === orderId);
+            if (order) {
+                // Add items to cart
+                order.items.forEach(item => {
+                    // Add to cart logic
+                });
+                showNotification('Items added to cart');
+                setTimeout(() => {
+                    window.location.href = 'cart.html';
+                }, 1500);
+            }
+        };
+
+        function formatDate(date) {
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
