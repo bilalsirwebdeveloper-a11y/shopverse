@@ -404,11 +404,11 @@
         </div>
 
         <div class="order-tabs">
-            <button class="tab-btn active" onclick="filterOrders('all')">All Orders</button>
-            <button class="tab-btn" onclick="filterOrders('processing')">Processing</button>
-            <button class="tab-btn" onclick="filterOrders('shipped')">Shipped</button>
-            <button class="tab-btn" onclick="filterOrders('delivered')">Delivered</button>
-            <button class="tab-btn" onclick="filterOrders('cancelled')">Cancelled</button>
+            <button class="tab-btn active" onclick="filterOrders('all', this)">All Orders</button>
+            <button class="tab-btn" onclick="filterOrders('processing', this)">Processing</button>
+            <button class="tab-btn" onclick="filterOrders('shipped', this)">Shipped</button>
+            <button class="tab-btn" onclick="filterOrders('delivered', this)">Delivered</button>
+            <button class="tab-btn" onclick="filterOrders('cancelled', this)">Cancelled</button>
         </div>
 
         <div class="orders-grid" id="ordersGrid">
@@ -436,7 +436,10 @@
             appId: "1:281981664356:web:3c4419cd75f279e4ba7371"
         };
 
-        firebase.initializeApp(firebaseConfig);
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
         const auth = firebase.auth();
         const db = firebase.firestore();
 
@@ -502,13 +505,13 @@
                             <div class="order-id">Order #${order.id.slice(-8).toUpperCase()}</div>
                         </div>
                         <div class="order-status status-${order.status}">
-                            ${order.status.toUpperCase()}
+                            ${order.status?.toUpperCase() || 'PROCESSING'}
                         </div>
                     </div>
                     
                     <div class="order-body">
                         <div class="order-items">
-                            ${order.items.map(item => `
+                            ${order.items?.map(item => `
                                 <div class="order-item">
                                     <div class="item-image">
                                         <img src="${item.image || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400'}" alt="${item.name}">
@@ -521,13 +524,13 @@
                                         </div>
                                     </div>
                                 </div>
-                            `).join('')}
+                            `).join('') || '<p>No items</p>'}
                         </div>
                     </div>
                     
                     <div class="order-footer">
                         <div class="order-total">
-                            Total Amount: <strong>Rs ${order.total.toLocaleString()}</strong>
+                            Total Amount: <strong>Rs ${order.total?.toLocaleString() || '0'}</strong>
                         </div>
                         <div class="order-actions">
                             <button class="btn-track" onclick="trackOrder('${order.id}')">
@@ -602,14 +605,14 @@
             `;
         }
 
-        window.filterOrders = function(filter) {
+        window.filterOrders = function(filter, element) {
             currentFilter = filter;
             
             // Update active tab
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            event.target.classList.add('active');
+            element.classList.add('active');
             
             renderOrders();
         };
@@ -624,12 +627,8 @@
 
         window.reorder = function(orderId) {
             const order = allOrders.find(o => o.id === orderId);
-            if (order) {
-                // Add items to cart
-                order.items.forEach(item => {
-                    // Add to cart logic
-                });
-                showNotification('Items added to cart');
+            if (order && order.items) {
+                showNotification('Adding items to cart...');
                 setTimeout(() => {
                     window.location.href = 'cart.html';
                 }, 1500);
